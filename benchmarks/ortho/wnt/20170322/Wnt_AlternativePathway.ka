@@ -1,0 +1,72 @@
+# #####################################
+# ######## AGENT SIGNATURES
+# #####################################
+%agent: p-TAB2(i_MAP3K7, NZF) # TAB2_HUMAN, Q9NYJ8
+%agent: p-M3K7(Lys63~un~ub, Thr184~un~ph, Thr187~un~ph, Ser192~un~ph, Prot_kinase_cat_dom, i_TAB2, i_PP2) # M3K7_HUMAN, O43318
+%agent: p-NLK(Ser522~un~ph, Prot_kinase_cat_dom, Term_C) # NLK_HUMAN, Q9UBE8 
+%agent: p-ATM(Dim, TBM, Catalytic) # ATM_HUMAN, Q13315
+%agent: p-TRAF6(MATH_a, MATH_b, TRAF, Lys63~un~ub) # TRAF6_HUMAN, Q9Y4K3
+%agent: p-LEF1(CBD, i_NLK, HMGbox, Thr155~un~ph, Ser166~un~ph) # LEF1_HUMAN, Q9UJU2
+
+# Extra-Symbolic Agents
+%agent: Genome(i_BS)
+
+# #####################################
+# ######## OTHER RULES
+# #####################################
+'(Cat_BETA.LEF1).Genome' p-CTNB1(iARM!9), p-LEF1(CBD!9, Thr155~un, Ser166~un, HMGbox), Genome(i_BS) -> p-CTNB1(iARM!9), p-LEF1(CBD!9, Thr155~un, Ser166~un, HMGbox!1), Genome(i_BS!1) @ 'GeneralBinding'
+'(Cat_BETA.LEF1)..Genome' p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1) -> p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox), Genome(i_BS) @ 'GeneralUnbinding'
+
+# #####################################
+# ######## PERTURBATIONS & INITIALS
+# #####################################
+%var: 'Init_TAB2' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+%var: 'Init_M3K7' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+%var: 'Init_NLK' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+%var: 'Init_ATM' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+%var: 'Init_TRAF6' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+%var: 'Init_LEF1' 10 * 'Nano_Avo_Vol' * 'RescaleFactor' 
+
+%init: 'Init_TAB2' p-TAB2()
+%init: 'Init_M3K7' p-M3K7()
+%init: 'Init_NLK' p-NLK()
+%init: 'Init_ATM' p-ATM()
+%init: 'Init_TRAF6' p-TRAF6()
+%init: 'Init_LEF1' p-LEF1()
+%init: 1 Genome()
+
+# This block contains several elements common to the Ca2+ "non-cannonical" Wnt pathway. They are of relevance because they affect the transcriptional activity of the LEF1/Cat_BETA complex while taking as input Wnt1 <10.1074/jbc.M307801200>. The mode of action of this pathway is complicated, but upon induced DNA-damage-related Ca2+ influx, ATM translocates to the cytosol <10.1016/j.molcel.2010.09.008>. We speculate that Wnt induced Ca2+ influx also translocates ATM. Once in the cytosol, ATM can oligomerize, usually into 2mer o 4mer conformations. This oligomerizations bind the 1961-2046 region (Oligo) of one monomer, to a catalytic region of the next <10.1038/nature01368>. Of special interest is the fact that ATM con bind TRAF6 through the 2152-2157 region <10.1016/j.molcel.2010.09.008>, which happens to be VERY close to Oligo. Considering that TRAF6 can also multimerize <10.1002/jcp.21190>, it is logical to assume that ATM polymerization induces TRAF6 aggregation. Another key step in this cascade is the activation of the TRAF6 ubiquitination activity upon multimerization, and subsequent auto-ubiquitination <10.1002/jcp.21190>. This phenomenon leads to two events: firstly active TRAF6 binds & ubiquitinates MAP3K7 <10.1038/35085597>. Secondly, ubiquitinated TRAF6 is recognizable by TAB2'z zinc finger domain <10.1002/jcp.21190>. As this three components are found together <10.1038/35085597>, it is tempting to postulate that TRAF6 acts as a scaffold to assemble MAP3K7 to TAB1. Once MAP3K7 and TAB1 are assembled, MAP3K7 autophosphorylates and activates <10.1128/MCB.22.20.7158-7167.2002>. Active MAP3K7 then phosphorylates NLK, which activates it and triggers its translocation to the nucleus <10.1074/jbc.M307801200>. Once in the nucleus, it phosphorylates LEF1/TCF. The ensuring complex formation and nuclear export of TCFs mediated by 14-3-3 lies beyond the scope of this model. This block makes one assumption to fill the gap between Wnt input and MAP3K activation, and that hole is filled in by ATM & TRAF6.
+'ATM.ATM' p-ATM(Dim), p-ATM(Catalytic) -> p-ATM(Dim!1), p-ATM(Catalytic!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding' { 'RingClosureRate' * 'GeneralBinding' }
+'ATM..ATM' p-ATM(Dim!1), p-ATM(Catalytic!1) -> p-ATM(Dim), p-ATM(Catalytic) @ 'GeneralUnbinding'
+'ATM.TRAF6' p-ATM(TBM), p-TRAF6(MATH_a) -> p-ATM(TBM!1), p-TRAF6(MATH_a!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding' { 'RingClosureRate' * 'GeneralBinding' }
+'ATM..TRAF6' p-ATM(TBM!1), p-TRAF6(MATH_a!1) -> p-ATM(TBM), p-TRAF6(MATH_a) @ 'GeneralUnbinding'
+'TRAF6.TRAF6' p-TRAF6(MATH_b), p-TRAF6(MATH_b) -> p-TRAF6(MATH_b!1), p-TRAF6(MATH_b!1) @ 0.5 * (1/ 'RescaleFactor' ) * 'GeneralBinding' { 'RingClosureRate' * 'GeneralBinding' } # Automorphism preserved
+'TRAF6..TRAF6' p-TRAF6(MATH_b!1), p-TRAF6(MATH_b!1) -> p-TRAF6(MATH_b), p-TRAF6(MATH_b) @ 0.5 * 'GeneralUnbinding' # Automorphism preserved
+'TRAF6.MAP3K7' p-TRAF6(MATH_b!_, TRAF), p-M3K7(Lys63~un) -> p-TRAF6(MATH_b!_, TRAF!1), p-M3K7(Lys63~un!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'TRAF6..MAP3K7' p-TRAF6(MATH_b!_, TRAF!1), p-M3K7(Lys63~ub!1) -> p-TRAF6(MATH_b!_, TRAF), p-M3K7(Lys63~ub) @ 'GeneralUnbinding'
+'TRAF6.MAP3K7@' p-TRAF6(MATH_b!_, TRAF!9), p-M3K7(Lys63~un!9) -> p-TRAF6(MATH_b!_, TRAF!9), p-M3K7(Lys63~ub!9) @ 'GeneralUbiquitination'
+
+'TRAF6@' p-TRAF6(MATH_b!_, Lys63~un) -> p-TRAF6(MATH_b!_, Lys63~ub) @ 'GeneralUbiquitination' # Oligomerized TRAF6 has auto-ubiquitination activity
+
+'(TRAF6@).TAB2' p-TRAF6(Lys63~ub), p-TAB2(NZF) -> p-TRAF6(Lys63~ub!1), p-TAB2(NZF!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'(TRAF6@)..TAB2' p-TRAF6(Lys63!1), p-TAB2(NZF!1) -> p-TRAF6(Lys63), p-TAB2(NZF) @ 'GeneralUnbinding'
+'TAB2.MAP3K7' p-TAB2(i_MAP3K7), p-M3K7(i_TAB2) -> p-TAB2(i_MAP3K7!1), p-M3K7(i_TAB2!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding' { 'RingClosureRate' * 'GeneralBinding' }
+'TAB2..MAP3K7' p-TAB2(i_MAP3K7!1), p-M3K7(i_TAB2!1) -> p-TAB2(i_MAP3K7), p-M3K7(i_TAB2) @ 'GeneralUnbinding'
+'MAP3K7|Thr184*' p-M3K7(i_TAB2!_, Thr184~un) -> p-M3K7(i_TAB2!_, Thr184~ph) @ 'GeneralPhosphorylation'
+'MAP3K7|Thr187*' p-M3K7(i_TAB2!_, Thr187~un) -> p-M3K7(i_TAB2!_, Thr187~ph) @ 'GeneralPhosphorylation'
+'MAP3K7|Ser192*' p-M3K7(i_TAB2!_, Ser192~un) -> p-M3K7(i_TAB2!_, Ser192~ph) @ 'GeneralPhosphorylation'
+
+'MAP3K7.NLK' p-M3K7(Thr184~ph, Thr187~ph, Ser192~ph, Prot_kinase_cat_dom), p-NLK(Term_C) -> p-M3K7(Thr184~ph, Thr187~ph, Ser192~ph, Prot_kinase_cat_dom!1), p-NLK(Term_C!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'MAP3K7..NLK' p-M3K7(Prot_kinase_cat_dom!1), p-NLK(Term_C!1) -> p-M3K7(Prot_kinase_cat_dom), p-NLK(Term_C) @ 'GeneralUnbinding'
+'MAP3K7.NLK*' p-M3K7(Prot_kinase_cat_dom!9), p-NLK(Term_C!9, Ser522~un) -> p-M3K7(Prot_kinase_cat_dom!9), p-NLK(Term_C!9, Ser522~ph) @ 'GeneralPhosphorylation'
+
+
+# See the comment block on ATM, TRAF6, MAP3K7, TAB2, NLK, and LEF1.
+'NLK.LEF1' p-NLK(Prot_kinase_cat_dom), p-LEF1(i_NLK, HMGbox) -> p-NLK(Prot_kinase_cat_dom!1), p-LEF1(i_NLK!1, HMGbox) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'NLK..LEF1' p-NLK(Prot_kinase_cat_dom!1), p-LEF1(i_NLK!1) -> p-NLK(Prot_kinase_cat_dom), p-LEF1(i_NLK) @ 'GeneralUnbinding'
+'NLK.LEF1|Thr155*' p-NLK(Prot_kinase_cat_dom!9), p-LEF1(i_NLK!9, HMGbox, Thr155~un) -> p-NLK(Prot_kinase_cat_dom!9), p-LEF1(i_NLK!9, HMGbox, Thr155~ph) @ 'GeneralPhosphorylation'
+'NLK.LEF1|Ser166*' p-NLK(Prot_kinase_cat_dom!9), p-LEF1(i_NLK!9, HMGbox, Ser166~un) -> p-NLK(Prot_kinase_cat_dom!9), p-LEF1(i_NLK!9, HMGbox, Ser166~ph) @ 'GeneralPhosphorylation'
+
+'Cat_BETA.LEF1' p-CTNB1(iARM), p-LEF1(CBD) -> p-CTNB1(iARM!1), p-LEF1(CBD!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'Cat_BETA..LEF1' p-CTNB1(iARM!1), p-LEF1(CBD!1) -> p-CTNB1(iARM), p-LEF1(CBD) @ 'GeneralUnbinding'
+

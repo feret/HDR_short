@@ -1,0 +1,8 @@
+set xlabel '$t$'
+set ylabel '$\conc{\ABpp}-\myfrac{(\conc{\ABpu}+\conc{\ABpp})\product(\conc{\ABup}+\conc{\ABpp})}{\conc{\ABuu}+\conc{\ABup}+\conc{\ABpu}+\conc{\ABpp}}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/couple_exp_ode_delta.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/couple.data' using 1:10 title '' w l 

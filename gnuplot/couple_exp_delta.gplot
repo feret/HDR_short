@@ -1,0 +1,10 @@
+set xlabel '$t$'
+set ylabel '$\expec{n_{\ABpp}}{\Aub+\Apb+\Bub+\Bpb}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/couple_exp_delta.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/couple.data' using 1:7 title '' w l 
+
+

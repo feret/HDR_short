@@ -1,0 +1,16 @@
+% Just an ordinary comment
+%
+% Some special comments:
+% fmclass: report
+% fmclassopt: a4paper,twoside,8pt,twocolumn
+%
+% Another special comment:
+% head:
+% \usepackage{amsmath,amssymb}
+% \usepackage{kappa}
+% \usepackage{anyfontsize}
+% \usepackage{stmaryrd}
+% \newcommand{\ladottext}[1]{\text{$#1$}}
+% \usepackage{../../../fm_notations}
+% end head
+

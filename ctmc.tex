@@ -1,0 +1,640 @@
+\newcommand{\product}{}
+
+\chapter{Flot d'information dans la sémantique stochastique d'un modèle Kappa}
+
+\section{Système stochastique sous-jacent à un modèle Kappa}
+
+\section{Cas d'études}
+
+\newcommand{\reactionbi}[5]{ & #2  & \xrightleftharpoons[#5]{#4} & #3 }
+\newcommand{\reactionuni}[4]{ & #2 & \xrightarrow{#4} & #3}
+\newcommand{\kappauni}{\reactionuni}
+\newcommand{\kappabi}{\reactionbi}
+
+
+\newcommand{\smalltab}{\hspace*{7mm}}
+\newcommand{\tinytab}{\hspace*{3mm}}
+\newcommand{\conc}[1]{[#1]}
+%\newcommand{\diff}[1]{\frac{\strut d{#1}}{\strut \mathit{dt}}}
+\newcommand{\diff}[1]{#1'}
+\newcommand{\diffc}[1]{\diff{\conc{#1}}}
+%\newcommand{\bydef}{\stackrel{\Delta}{=}}
+\newcommand{\n}[1]{n_{#1}}
+\newcommand{\myfrac}[2]{\frac{\strut #1}{\strut #2}}
+\newcommand{\g}[1]{{#1}e^{-{#1}}}
+
+\newcommand{\Nat}{{\mathbb N}}
+\newcommand{\Real}{{\mathbb R}}
+\newcommand{\expec}[2]{E_t(#1 \mid #2)}
+\newcommand{\cexp}[2]{\tilde{E}_t(#1 \mid #2)}
+\def\lastname{FERET}
+
+Les modèles d'interaction entre protéines souffrent d'une très grande complexité combinatoire.
+Les protéines peuvent se lier entre elles et modifier leurs états, ce qui conduit potentiellement à la formation de très grands complexes biochimiques.
+Ceci empêche toute description extensionnelle des systèmes dynamiques engendré par ces modèles, que ce soit dans un cadre différentiel ou stochastique.
+
+Le chapitre précédent portait sur une approche qui permettait de réduire le nombre de variables nécessaire pour décrire la dynamique de ces modèles dans le cadre différentiel. En suivant le flot d'information potentiel entre les différentes parties des espèces biochimiques, elle consiste à identifier quelles corrélations entre états de sites d'interaction ont une importance sur la dynamique du système, puis à oublier les autres en découpant les espèces biochimiques en petite unité d'information, appelées fragments.
+Alors qu'elle donne des résultats prometteurs dans le cadre différentiel, le présent chapitre montre au contraire qu'il est beaucoup plus difficile de réduire la dimension des modèles stochastiques engendrés par un modèle de réécriture de graphes à sites.
+
+Ce chapitre commence par la description formelle de la sémantique stochastique d'un modèle Kappa.
+En Sect.~\ref{sec:ctmc:examples} sont fournis trois exemples pour illustrer en quoi l'approche décrite dans le chapitre \ref{chap:ode} pour la réduction des systèmes différentiels engendrés ne peut pas s'appliquer directement pour réduire les systèmes stochastiques sous-jacents. En Sect.~\ref{} ...
+
+\section{Sémantique stochastique d'un modèle de réécritures de graphes à sites}
+
+\section{Cas d'étude}
+
+Trois cas d'études sont considérés.
+Le premier, qui est décrit en Sect.~\ref{sec:independent}, fait intervenir une sorte de protéine pouvant se lier indépendament à deux autres sortes de protéines. La première sorte de protéine peut alors être vue comme deux morceaux entièrement indépendant, ce qui conduit à une réduction du modèle correcte à la fois dans le cadre différentiel ou stochastique.
+Dans le second exemple, qui est donné en Sect.~\ref{sec:coupled}, il est montré que, par rapport à la réduction du système différentiel engendré par un modèle de réécriture de graphes à sites,
+des corrélations supplémentaires sont souvent nécessaires pour simuler fidèlement les systèmes stochastiques. Dans cette exemple, une règle de déliaison ne peut être simplifiée sans  connaître précisément la distribution des différents états des deux protéines qu'elles séparent pour préserver la dynamique du système sous-jacent dans le cadre stochastique. Dans le cadre différentiel,  cette information peut être oubliée tout en obtenant une réduction exacte du système engendré.
+Enfin, le troisième exemple, qui est expliqué en Sect.~\ref{sec:distant}, montre l'existence de flot d'information entre différentes composantes connexes du membre gauche d'une règle, ce qui une fois encore interdit certaines réductions qui sont pourtant correctes dans le cadre différentiel.
+
+\subsection{Un example d'indépendance entre deux liaisons}
+\label{sec:independent}
+
+{
+%adapter
+\newcommand{\equskip}{}
+\newcommand{\species}{}
+\newcommand{\concentration}[1]{[#1]}
+\newcommand{\rar}{\unireaction}
+\newcommand{\void}{}
+\newcommand{\unknown}{\species{{?}}}
+\newcommand{\A}[1]{#1{\species{A}}}
+\newcommand{\B}[1]{#1{\void{\species{B}}\void}}
+\newcommand{\C}[1]{#1{\species{C}}}
+\newcommand{\AB}[1]{#1{\A{}{\species{B}}\void}}
+\newcommand{\BC}[1]{#1{\void{\species{B}}\C{}}}
+\newcommand{\ABC}[1]{#1{\A{}{\species{B}}\C{}}}
+\newcommand{\asso}[1]{k\text{$^{\scriptscriptstyle{#1}}$}}
+\newcommand{\disso}[1]{k\text{$_{\scriptscriptstyle{d}}^{\scriptscriptstyle{#1}}$}}
+\newcommand{\ka}{\asso{\species{AB}}}
+\newcommand{\kda}{\disso{\species{AB}}}
+\newcommand{\kc}{\asso{\species{BC}}}
+\newcommand{\kdc}{\disso{\species{BC}}}
+\newcommand{\rgives}{$\longleftrightarrow$}
+\newcommand{\gives}{$\rar$}
+\newcommand{\uBC}[1]{#1{\unknown{\species{B}}\C{}}}
+\newcommand{\ABu}[1]{#1{\A{}{\species{B}}\unknown}}
+\newcommand{\uB}[1]{#1{\unknown{\species{B}}\void}}
+\newcommand{\Bu}[1]{#1{\void{\species{B}}\unknown}}
+\newcommand{\uBu}[1]{#1{\unknown{\species{B}}\unknown}}
+\newcommand{\daright}[1]{\kda{\product}\left({\AB{#1}}+
+                                       {\ABC{#1}}\right) - \ka{\product}\left({\B{#1}}+{\BC{#1}}\right)\product{\A{#1}}}
+\newcommand{\dbright}[1]{\kda{\product}{\AB{#1}} + \kdc{\product}{\BC{#1}} - \left(\ka{\product}{\A{#1}} + \kc\product{\C{#1}}\right){\product}{\B{#1}}}
+\newcommand{\dcright}[1]{\kdc{\product}\left({\BC{#1}}+{\ABC{#1}}\right) - \kc{\product}\left({\B{#1}}+{\AB{#1}}\right){\product}{\C{#1}}}
+\newcommand{\dabright}[1]{\ka{\product}{\A{#1}}{\product}{\B{#1}}+ \kdc{\product}{\ABC{#1}}- \left(\kda+ \kc{\product}{\C{#1}}\right){\product}{\AB{#1}}}
+\newcommand{\dbcright}[1]{\kda{\product}{\ABC{#1}} + \kc{\product}{\B{#1}}{\product}{\C{#1}} - \left(\kdc + \ka{\product}{\A{#1}}\right){\product}{\BC{#1}}}
+\newcommand{\dabcright}[1]{\ka{\product}{\A{#1}}{\product}{\BC{#1}} + \kc{\product}{\AB{#1}}{\product}{\C{#1}} - \left(\kda+ \kdc\right){\product}{\ABC{#1}}}
+\newcommand{\dadt}[4]{#1{{\A{#2}}} & #4 & \daright{#3}}
+\newcommand{\dcdt}[4]{#1{{\C{#2}}} & #4 & \dcright{#3}}
+\newcommand{\dbdt}[4]{#1{{\B{#2}}} & #4 & \dbright{#3}}
+\newcommand{\dabdt}[4]{#1{{\AB{#2}}} & #4 & \dabright{#3}}
+\newcommand{\dbcdt}[4]{#1{{\BC{#2}}} & #4 & \dbcright{#3}}
+\newcommand{\dabcdt}[4]{#1{{\ABC{#2}}} & #4 & \dabcright{#3}}
+\newcommand{\flatsystem}
+{\begin{center}
+\begin{tabular}{rclrc}
+\A{}~,~\B{}  & \rgives &\AB{} &  & \ka,\kda \equskip\cr
+\A{}~,~\BC{} & \rgives &\ABC{} &  & \ka,\kda \equskip\cr
+\B{}~,~\C{}  & \rgives &\BC{}  &  & \kc,\kdc \equskip\cr
+\AB{}~,~\C{}  & \rgives &\ABC{} &  & \kc,\kdc \equskip\cr
+\end{tabular}
+\end{center}}
+\newcommand{\ode}{\begin{array}{rcl}
+\dadt{\diff}{\concentration}{\concentration}{=} \equskip\cr
+\dcdt{\diff}{\concentration}{\concentration}{=} \equskip\cr
+\dbdt{\diff}{\concentration}{\concentration}{=} \equskip\cr
+\dabdt{\diff}{\concentration}{\concentration}{=} \equskip\cr
+\dbcdt{\diff}{\concentration}{\concentration}{=} \equskip\cr
+\dabcdt{\diff}{\concentration}{\concentration}{=}. \equskip
+\end{array}}
+\newcommand{\leftequa}[2]{{\ABu{#1}} #2 \bydef #2 {\AB{#1}} + {\ABC{#1}}}
+\newcommand{\leftequb}[2]{{\Bu{#1}}  #2 \bydef #2 {\B{#1}} + {\BC{#1}}}
+\newcommand{\abstractda}[1]{ \kda{\product}{\ABu{#1}} - \ka{\product}{\A{#1}}{\product}{\Bu{#1}}}
+\newcommand{\abstractdabu}[1]{\ka{\product}{\A{#1}}{\product}{\Bu{#1}} - \kda{\product}{\ABu{#1}}}
+\newcommand{\abstractdbu}[1]{\kda{\product}{\ABu{#1}} - \ka{\product}{\A{#1}}{\product}{\Bu{#1}}}
+\newcommand{\leftode}[2]{#1{{\A{#2}}} & = & \abstractda{#2}\cr
+#1{{\Bu{#2}}} & = & \abstractdbu{#2} \cr
+#1{{\ABu{#2}}} & = & \abstractdabu{#2}}
+\newcommand{\abstractdc}[1]{\kdc{\product}{\uBC{#1}} - \kc{\product}{\uB{#1}}{\product}{\C{#1}}}
+\newcommand{\abstractdubc}[1]{\kc{\product}{\uB{#1}}{\product}{\C{#1}} - \kdc{\product}{\uBC{#1}}}
+\newcommand{\abstractdub}[1]{\kdc{\product}{\uBC{#1}} - \kc{\product}{\uB{#1}}{\product}{\C{#1}}}
+
+\newcommand{\rightequa}[2]{{\uBC{#1}} #2 \bydef #2  {\BC{#1}} + {\ABC{#1}}}
+\newcommand{\rightequb}[2]{{\uB{#1}} #2 \bydef #2   {\B{#1}} + {\AB{#1}}}
+\newcommand{\rightode}[2]{#1{{\C{#2}}} & = & \abstractdc{#2}\cr
+#1{{\uB{#2}}} & = & \abstractdub{#2} \cr
+#1{{\uBC{#2}}} & = & \abstractdubc{#2} }
+
+
+\newcommand{\defX}{\ABC{\concentration}\product\uBu{\concentration} -\ABu{\concentration}\product\uBC{\concentration}}
+\newcommand{\dx}{-X\product(\ka\product{\A{\concentration}}+\kc\product{\C{\concentration}}+\kda+ \kdc)}
+
+
+
+
+
+
+\renewcommand{\state}[6]{\langle \A{\n}{#1},\B{\n}{#2},\C{\n}{#3},\AB{\n}{#4},\BC{\n}{#5},\ABC{\n}{#6}\rangle}
+
+\newcommand{\Astate}[3]{\langle \A{\n}{#1},\Bu{\n}{#2},\ABu{\n}{#3}\rangle}
+
+\newcommand{\Cstate}[3]{\langle \C{\n}{#1},\uB{\n}{#2},\uBC{\n}{#3}\rangle}
+
+Voici un modèle dans lequel chaque occurrence d'une protéine peut être découpée en deux morceaux indépendants, ce qui permet de réduire la dimension de l'espace d'états de la chaîne de Markov sous-jacente.
+
+Soit une protéine \agent{B} avec deux sites de liaison
+\site{a}{}{} et \site{c}{}{}. Dans chaque occurrence de la protéine \agent{B}{}, le site \site{a}{}{} peut se lier au site \site{b}{}{} des occurrences d'une autre protéine, appelée \agent{A}{}, alors que le \site{c}{}{}
+peut se liet au site \site{b}{}{} des occurrences d'une troisième protéine, appelée \agent{C}{}.
+Les règles de liaison et de déliaison sont dessinées en Fig.~\ref{ctmc:ex1:regles}.
+
+\begin{equation*}
+\begin{array}{rrclc}
+\reactionbi{(I.1)}{\A{} + \B{}}{\AB{}}{\ka}{\kda}\smallskip\cr
+\reactionbi{(I.2)}{\A{} + \BC{}}{\ABC{}}{\ka}{\kda}
+\end{array}\smalltab
+\begin{array}{rrclc}
+\reactionbi{(II.1)}{\B{} + \C{}}{\BC{}}{\kc}{\kdc}\smallskip\cr
+\reactionbi{(II.2)}{\AB{} + \C{}}{\ABC{}}{\kc}{\kdc}
+\end{array}
+\end{equation*}
+
+Les constantes de réactions pour les règles d'association et de dissociation sont indépendantes du fait que l'occurrence de la protéine \agent{B}{} est lié, ou non, sur son autre site de liaison. C'est essentiel pour permettre la réduction du modèle.
+
+La sémantique différentielle de ce modèle est défini
+par le système d'équations différentielles ordinaire suivant.
+
+\begin{equation*}
+\ode
+\end{equation*}
+
+Le modèle ayant peu de complexes biochimiques différents.
+Ceux-ci sont représentés par la liste des occurrences des protéines qui les constituent. Ainsi, les notations $\A$, $\B$ et $\C$ représentent les protéines correspondantes, alors que les notations $\AB{}$, $\BC{}$, $\ABC{}$ représentent les complexes formés d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{}, d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{C}{} et d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{} et à une occurrence de la protéine \agent{C}{}.
+
+Il est possible de passer sous silence la correlation entre l'état des deux sites de liaisons des occurrences de la protéine \agent{B}{}. Ainsi,
+les equations suivantes~:
+\begin{equation*}
+\begin{array}{rcl}
+\leftode{\diff}{\concentration}
+\end{array}\smalltab
+\begin{array}{rcl}
+\rightode{\diff}{\concentration}
+\end{array}
+\end{equation*}
+où\footnote{Un point d'interrogation `?' à la gauche (resp.~à la droite) de la lettre \agent{B}{} indique
+que de savoir si l'occurrence correspondante de la protéine \agent{B}{} est liée, ou non, à une occurrence de la protéine \agent{A}{} (resp.~\agent{C}{}) n'a pas d'importance.}
+$\leftequa{\concentration}{}$, $\leftequb{\concentration}{}$, $\rightequa{\concentration}{}$, et $\rightequb{\concentration}{}$, sont satisfaîtes.
+
+
+Est-ce que cette réduction est, elle-aussi, exacte dans le système stochastique engendré par les règles de cet exemple~? Il faut regarder ce qui se passe au niveau de l'évolution de la distribution des différents états du système. L'état du système peut être representer par
+un sextuplet d'entiers naturels $\state{}{}{}{}{}{}$ où la composante $\n{X}$ représente le nombre d'occurrences du complexe biochimique $X$ dans cet état, pour n'importe quel complexe biochimique
+$X$ du modèle. La probabilité  $P_t(\sigma)$ que le système soit dans l'état $\sigma$ au temps $t$ est alors donnée par l'équation maîtresse suivante~:
+{\[\begin{array}{l}
+\diff{P_t(\state{}{}{}{}{}{})}  =\cr
+\tinytab\begin{array}{ll}
+&\ka\product(\A{\n}+1)\product(\B{\n}+1)\product P_t(\state{+1}{+1}{}{-1}{}{})\cr
++&\kda\product(\AB{\n}+1)\product P_t(\state{-1}{-1}{}{+1}{}{})\cr
++&\ka\product(\A{\n}+1)\product(\BC{\n}+1)\product P_t(\state{+1}{}{}{}{+1}{-1})\cr
++&\kda\product(\ABC{\n}+1)\product P_t(\state{-1}{}{}{}{-1}{+1})\cr
++&\kc\product(\B{\n}+1)\product(\C{\n}+1)\product P_t(\state{}{+1}{+1}{}{-1}{})\cr
++&\kdc\product(\BC{\n}+1)\product P_t(\state{}{-1}{-1}{}{+1}{})\cr
++&\kc\product(\AB{\n}+1)\product(\C{\n}+1)\product P_t(\state{}{}{+1}{+1}{}{-1})\cr
++&\kdc\product(\ABC{\n}+1)\product P_t(\state{}{}{-1}{-1}{}{+1})\cr
+
+-&\ka\product \A{\n}\product(\B{\n}+\BC{\n})\product P_t(\state{}{}{}{}{}{}) \cr
+-&\kda\product(\AB{\n}+\ABC{\n})\product P_t(\state{}{}{}{}{}{}) \cr
+-&\kc\product(\B{\n}+\AB{\n})\product\C{\n}\product P_t(\state{}{}{}{}{}{}) \cr
+-&\kdc\product(\BC{\n}+\ABC{\n})\product P_t(\state{}{}{}{}{}{})
+\end{array}\end{array}\]}
+
+Dans cet exemple particulier, il est possible d'ignorer la corrélation entre l'état des deux sites des occurrences de la protéine \agent{B}{} également dans la sémantique stochastique.
+
+Pour cela, chaque état $\sigma = \state{}{}{}{}{}{}$ est abstrait en un triplet  $\beta^{\A{}}(\sigma) = \langle \A{\n},\B{\n}+\BC{\n}, \AB{\n}+\ABC{\n} \rangle$, and by $\beta^{\C{}}(\sigma)$ the triple $\langle \C{\n},\B{\n}+\AB{\n},\BC{\n}+\ABC{\n}\rangle$. The probability $P_t^{\A{}}(\sigma^A)$ that the system is in a state $\sigma$ such that $\beta^{\A{}}(\sigma)=\sigma^A$ at time $t$, and  the probability $P_t^{\C{}}(\sigma^C)$ that the system is in a state $\sigma$ such that $\beta^{\C{}}(\sigma)=\sigma^C$ at time $t$, satisfy the following master equations:
+\begin{equation*}
+\begin{array}{l}
+\diff{P_t^{\A{}}(\Astate{}{}{})}  =\cr
+\tinytab\begin{array}{ll}
+&\ka\product(\A{\n}+1)\product(\Bu{\n}+1)\product P_t^{\A{}}(\Astate{+1}{+1}{-1})\cr
++&\kda\product(\ABu{\n}+1)\product P_t^{\A{}}(\Astate{-1}{-1}{+1})\cr
+-&(\ka\product\A{\n}\product{\Bu{\n}}+\kda\product\ABu{\n})\product P_t^{\A{}}(\Astate{}{}{})
+\end{array}\end{array}\end{equation*}\begin{equation*}
+\begin{array}{l}
+\diff{P_t^{\C{}}(\Cstate{}{}{})}  =\cr
+\tinytab\begin{array}{ll}
+&\kc\product(\uB{\n}+1)\product(\C{\n}+1)\product P_t^{\C{}}(\Cstate{+1}{+1}{-1})\cr
++&\kdc\product(\uBC{\n}+1)\product P_t^{\C{}}(\Cstate{-1}{-1}{+1})\cr
+-&(\kc\product{\uB{\n}}\product\C{\n}+\kda\product\uBC{\n})\product P^{\C{}}_t(\Cstate{}{}{}).
+\end{array}\end{array}\end{equation*}
+%\hspace*{0mm}L'état des deux sites de liaison des occurrences de la protéine \agent{B}{} sont statistiquement indépendants Statistical independence can be revisited in the context of stochastic semantics as follows. We say that the two binding states of the protein $\B{}$ are statistically independent, if and only if, $P_t(\sigma_1)=P_t(\sigma_2)$, for any states $\sigma_1$ and $\sigma_2$ such that $\beta^{\A{}}(\sigma_1)=\beta^{\A{}}(\sigma_2)$ and $\beta^{\C{}}(\sigma_1)=\beta^{\C{}}(\sigma_2)$. We can check analytically that in this particular example, the two binding states of the protein $\B{}$ are statistically independent.
+}
+
+\section{An example of coupled semi-reactions}
+\label{sec:coupled}
+
+
+
+{\newcommand{\back}{\!}
+ \newcommand{\ka}{k_{A+\back}}
+ \newcommand{\kda}{k_{A-\back}}
+ \newcommand{\kb}{k_{B+\back}}
+ \newcommand{\kdb}{k_{B-\back}}
+ \newcommand{\kab}{k_{AB}}
+ \newcommand{\kdab}{k_{A..B}}
+ \newcommand{\kkab}{k_{AB\star}}
+ \newcommand{\Auf}{A}
+\newcommand{\ABuu}{AB}
+\newcommand{\ABpp}{{A^\star}\!B^\star}
+\newcommand{\ABpu}{{A^\star}\!B}
+\newcommand{\ABup}{AB^\star}
+\newcommand{\Apf}{{A^\star}}
+ \newcommand{\Aub}{{AB^\diamond}}
+ \newcommand{\Apb}{{A^\star}\!B^\diamond}
+
+ \newcommand{\Buf}{B}
+ \newcommand{\Bpf}{B^\star}
+ \newcommand{\Bub}{{A^\diamond}\!B}
+ \newcommand{\Bpb}{{A^\diamond}\!B^\star}
+
+\renewcommand{\state}[8]{\langle \n{A}{#1},\n{A^\star}{#2},\n{B}{#3},\n{B^\star}{#4},\n{AB}{#5},\n{\ABpu}{#6},\n{\ABup}{#7},\n{{A^\star}{B^\star}}{#8}\rangle}
+\newcommand{\astate}[8]{\langle \n{A}{#1},\n{A^\star}{#2},\n{B}{#3},\n{B^\star}{#4},\n{\Aub}{#5},\n{\Apb}{#6},\n{\Bub}{#7},\n{\Bpb}{#8}\rangle}
+
+It hardly ever happens that two modules are fully independent in a model (as it was the case in the example in the previous section). In this section, we show an example with coupled semi-reactions, that is a reaction that operates of two fragments of a species simultaneously. We will see that such coupled semi-reactions do not prevent the reduction of the differential semantics, but they forbid the reduction of the stochastic semantics.
+
+We consider two kinds of proteins, $A$ and $B$. Each protein can be unphosphorilated, or phosphorilated. Moreover, a protein $A$ and a protein $B$ may form a complex $AB$. We use the symbol $\star$ as a superscript when a protein is phosphorilated. This way, a fully phosphorilated complex is denoted by $\ABpp$.
+
+The behavior of a chemical soup can be described by the following set of reactions:
+%\begin{figure}[t]
+\begin{equation*}
+\begin{array}{lrcll}
+\reactionbi{(I.1)}{A}{A^\star}{\ka}{\kda}\cr
+\reactionbi{(I.2)}{AB}{\ABpu}{\ka}{\kda} \cr
+\reactionbi{(I.3)}{{A}B^\star}{\ABpp}{\ka}{\kda}
+\end{array}\smalltab
+\begin{array}{lrclll}
+\reactionbi{(II.1)}{B}{B^\star}{\kb}{\kdb} \cr
+\reactionbi{(II.2)}{{A}B}{{A}B^\star}{\kb}{\kdb}\cr
+\reactionbi{(II.3)}{\ABpu}{\ABpp}{\kb}{\kdb}
+\end{array}\smalltab
+\begin{array}{lrclll}
+\reactionbi{(III.1)}{A + B}{{A}B}{\kab}{\kdab} \cr
+\reactionbi{(III.2)}{A^\star + B}{\ABpu}{\kab}{\kdab}\cr
+\reactionbi{(III.3)}{A + B^\star}{{A}B^\star}{\kab}{\kdab}\cr
+\reactionbi{(III.4)}{A^\star + B^\star}{\ABpp}{\kkab}{\kdab}
+\end{array}
+\end{equation*}
+We have assumed that the likelihood that two proteins form a complex may be different when both proteins are phosphorilated (if we take $\kab\neq \kkab$) (see third column, direct way).
+We have also assumed that all the other reactions are purely local.
+That is to say that the kinetic of phosphorilation and dephosphorilation of both the protein $A$ (see first column) and the protein $B$ (see second column) depends neither on the fact that the protein is in a complex, or not, nor (if it is in a complex) on the phosphorilation state of the other protein in the complex. Moreover, the kinetic of complex dissociation does not depend on the phosphorilation state of the two proteins in a given complex (see third column, converse way).
+
+In this example, we would like to abstract the correlation between the phosphorilation state of proteins in complex. This could be achieved, by splitting each complex into two parts, and by abstracting away which parts are connected together. With such an abstraction, a dissociation reaction can be seen as two semi-reactions: one to unbind a (bound) protein $A$ (phosphorilated, or not) and one to unbind  a (bound) protein $B$ (phosphorilated, or not). These two semi-reactions are coupled. Indeed the choice of the phosphorilation state of the protein $A$ and the choice of the phosphorilation state of the protein $B$ are entangled by the correlation between these two phosphorilation states. We will see in this section that it raises no issue in the abstraction of the differential semantics, but that this correlation cannot be abstracted away in the stochastic semantics.
+
+The differential semantics of this model is defined by the following system of differential equations:
+\[%\begin{cases}
+\begin{array}{rcl}
+\diffc{A} & = & \kda\product\conc{A^\star}+\kdab\product(\conc{AB}+\conc{\ABup})  -(\ka+\kab\product(\conc{B}+\conc{B^\star}))\product\conc{A} \cr
+\diffc{A^\star} & = &\ka\product\conc{A}+\kdab\product(\conc{\ABpu}+\conc{\ABpp})  -(\kda+\kab\product\conc{B}+\kkab\conc{B^\star})\product\conc{A^\star} \cr
+\diffc{B} & = & \kdb\product\conc{B^\star}+\kdab\product(\conc{AB}+\conc{\ABpu})  -(\kb+\kab\product(\conc{A}+\conc{A^\star}))\product\conc{B} \cr
+\diffc{B^\star} & = &\kb\product\conc{B}+\kdab\product(\conc{\ABup}+\conc{\ABpp})  -(\kdb+\kab\product\conc{A}+\kkab\conc{A^\star})\product\conc{B^\star} \cr
+\diffc{AB} & = & \kda\product\conc{\ABpu}+\kdb\product\conc{\ABup} +\kab\product\conc{A}\product\conc{B}-(\ka+\kb+\kdab)\product\conc{AB}\cr
+\diffc{\ABpu} & = & \ka\product\conc{AB} + \kdb\product\conc{\ABpp}+\kab\product\conc{A^\star}\product\conc{B}-(\kda+\kb+\kdab)\product\conc{\ABpu}\cr
+\diffc{\ABup} & = & \kda\product\conc{\ABpp} + \kb\product\conc{AB}+\kab\product\conc{A}\product\conc{B^\star}-(\ka+\kdb+\kdab)\product\conc{\ABup}\cr
+
+\diffc{\ABpp} & = & \ka\product\conc{\ABup}+\kb\product\conc{\ABpu}+ \kkab\product\conc{A^\star}\product\conc{B^\star} -(\kda+\kdb+\kdab)\product{\conc{\ABpp}}.
+\end{array}
+\]
+
+
+\begin{figure}
+\subfigure[]%[Quotient between $P_t(AB+\ABpp)$ and $P_t(\ABup+\ABpu)$.]
+{\scalebox{0.5}{\label{coupleode}\begin{minipage}{\linewidth}
+\input{generated_images/couple_exp_ode.tex}
+\end{minipage}}}\hfill
+\subfigure[]%[]%Difference between $E(\n{\ABpp})$ and $E\left(\myfrac{\scriptscriptstyle(\n{\ABpu}+\n{\ABpp})(\n{\ABup}+\n{\ABpp})}{\scriptscriptstyle(\n{AB}+\n{\ABpu}+\n{\ABup}+\n{\ABpp})}\right))$]
+{\label{coupleodedelta}\scalebox{0.5}{\begin{minipage}{\linewidth}
+\input{generated_images/couple_exp_ode_delta.tex}
+\end{minipage}}}
+\caption{On the left, the evolution of the concentration of the protein $\ABpp$. On the right, the evolution of the difference between the concentration of the protein $\ABpp$ and the expression ${(\conc{\ABpu}+\conc{\ABpp})(\conc{\ABup}+\conc{\ABpp})}/{(\conc{AB}+\conc{\ABpu}+\conc{\ABup}+\conc{\ABpp})}$. All rates are set to $1$, except $\kkab$ which is set to $10$. At time $0$, the concentration of $A$ is set to $2$, the concentration of $B$ as well, and the concentration of any other chemical species is set to $0$.}
+\end{figure}
+
+We can also notice, that unlike the example in Sect.~\ref{sec:independent}, the phosphorilation state of the two proteins in complex is in general correlated. We show in Fig.~\ref{coupleode} an example of trajectory for the concentration of the protein $\ABpp$ along the time, and in Fig.~\ref{coupleodedelta} the difference between this concentration and the value of the following expression:
+\begin{equation*}
+\myfrac{(\conc{\ABup}+\conc{\ABpp})\product(\conc{\ABpu}+\conc{\ABpp})}{\conc{AB}+\conc{\ABup}+\conc{\ABpu}+\conc{\ABpp}}.\end{equation*}
+
+
+Nevertheless, even if the phosphorilation state of proteins in complex is correlated, this correlation can be abstracted away. Indeed, we can notice that the following equations:
+\[\begin{array}{rcl}
+\diffc{\Auf} & = &
+\kda\product\conc{\Apf}+\kdab\product\conc{\Aub}-(\ka+\kab\product(\conc{\Buf}+\conc{\Bpf}))\product\conc{\Auf} \cr
+\diffc{\Apf} & = &\ka\product\conc{\Auf}+\kdab\product\conc{\Apb}
+-(\kda+\kab\product\conc{\Buf}+\kkab\conc{\Bpf})\product\conc{\Apf} \cr
+\diffc{\Buf} & = & \kdb\product\conc{\Bpf}+\kdab\product\conc{\Bub}  -(\kb+\kab\product(\conc{\Auf}+\conc{\Apf}))\product\conc{\Buf} \cr
+\diffc{\Bpf} & = &\kb\product\conc{\Buf}+\kdab\product\conc{\Bpb}  -(\kdb+\kab\product\conc{\Auf}+\kkab\conc{\Apf})\product\conc{\Bpf} \cr
+
+
+\diffc{\Aub} & = & \kda\product\conc{\Apb}+\kab\product\conc{\Auf}\product(\conc{\Buf}+\conc{\Bpf})-(\ka+\kdab)\product\conc{\Aub} \cr
+
+\diffc{\Apb} & = &\ka\product\conc{\Aub}+\kab\product\conc{\Apf}\product\conc{\Buf}+\kkab\product\conc{\Apf}\product\conc{\Bpf}-(\kda+\kdab)\product\conc{\Apb} \cr
+\diffc{\Bub} & = & \kdb\product\conc{\Bpb}+\kab\product\conc{\Buf}\product(\conc{\Auf}+\conc{\Apf})-(\kb+\kdab)\product\conc{\Bub} \cr
+
+
+\diffc{\Bpb} & = &\kb\product\conc{\Bub}+\kab\product\conc{\Auf}\product\conc{\Bpf}+\kkab\product\conc{\Apf}\product\conc{\Bpf}
+-(\kdb+\kdab)\product\conc{\Bpb},
+\end{array}\]
+where\footnote{The superscript $\diamond$ stands for ``whatever the phosphorilation state is''.} $\conc{\Aub}\bydef\conc{AB}+\conc{\ABup}$,
+$\conc{\Apb}\bydef\conc{\ABpu}+\conc{\ABpp}$,
+$\conc{\Bub}\bydef\conc{AB}+\conc{\ABpu}$, and
+$\conc{\Bpb}\bydef\conc{\ABup}+\conc{\ABpp}$, are satisfied.
+
+
+Yet, this correlation forbids the reduction of the stochastic semantics. Let us explain why.
+In the stochastic semantics, a chemical soup can be denoted by a 8-tuple $\state{}{}{}{}{}{}{}{}$ of natural numbers, where $\n{X}$ is the number of instance of $X$ in the chemical soup, for any $X\in\{A,A^\star,B,B^\star,AB,\ABpu,\ABup,\ABpp\}$. The probability $P_t(\state{}{}{}{}{}{}{}{})$ that the system is in a given state $\state{}{}{}{}{}{}{}{}$ at time $t$ is given by the following master equation:
+{\small
+\[\begin{array}{l}
+\diff{P_t(\state{}{}{}{}{}{}{}{})}  =\cr
+\tinytab\begin{array}{ll}&\ka\product(\n{A}+1)P_t(\state{+1}{-1}{}{}{}{}{}{}) \cr
++&\ka\product(\n{AB}+1)P_t(\state{}{}{}{}{+1}{-1}{}{})\cr
++&\ka\product(\n{\ABup}+1)P_t(\state{}{}{}{}{}{}{+1}{-1})\cr
++&\kda\product(\n{A^\star}+1)P_t(\state{-1}{+1}{}{}{}{}{}{})\cr
++&\kda\product(\n{\ABpu}+1)P_t(\state{}{}{}{}{-1}{+1}{}{})\cr
++&\kda\product(\n{\ABpp}+1)P_t(\state{}{}{}{}{}{}{-1}{+1})\cr
++&\kb\product(\n{B}+1)P_t(\state{}{}{+1}{-1}{}{}{}{})\cr
++&\kb\product(\n{AB}+1)P_t(\state{}{}{}{}{+1}{}{-1}{})\cr
++&\kb\product(\n{\ABpu}+1)P_t(\state{}{}{}{}{}{+1}{}{-1})\cr
++&\kdb\product(\n{B^\star}+1)P_t(\state{}{}{-1}{+1}{}{}{}{})\cr
++&\kdb\product(\n{\ABup}+1)P_t(\state{}{}{}{}{-1}{}{+1}{})\cr
++&\kdb\product(\n{\ABpp}+1)P_t(\state{}{}{}{}{}{-1}{}{+1})\cr
+%\end{array}\end{array}\end{equation*}
+%\begin{equation*}
+%\begin{array}{l}
+%\tinytab\begin{array}{ll}
++&\kab\product(\n{A}+1)(\n{B}+1)P_t(\state{+1}{}{+1}{}{-1}{}{}{})\cr
++&\kab\product(\n{A}+1)(\n{B^\star}+1)P_t(\state{+1}{}{}{+1}{}{}{-1}{})\cr
++&\kab\product((\n{A^\star}+1)(\n{B}+1))P_t(\state{}{+1}{+1}{}{}{-1}{}{})\cr
++&\kkab\product((\n{A^\star}+1)(\n{B^\star}+1))P_t(\state{}{+1}{}{+1}{}{}{}{-1})\cr
+&\text{(continued on the next page)}\end{array}\end{array}\end{equation*}
+\begin{equation*}
+\begin{array}{l}
+\hspace*{0.8cm}\begin{array}{ll}
++&\kdab\product(\n{AB}-1)P_t(\state{-1}{-1}{}{}{+1}{}{}{})\cr
++&\kdab\product(\n{\ABup}-1)P_t(\state{-1}{}{}{-1}{}{}{+1}{})\cr
++&\kdab\product(\n{\ABpu}-1)P_t(\state{}{-1}{-1}{}{}{+1}{}{})\cr
++&\kdab\product(\n{\ABpp}-1)P_t(\state{}{-1}{}{-1}{}{}{}{+1})\cr
+-&\ka\product(\n{A}+\n{AB}+\n{\ABup})P_t(\state{}{}{}{}{}{}{})\cr
+-&\kda\product(\n{A^\star}+\n{\ABpu}+\n{\ABpp})P_t(\state{}{}{}{}{}{}{}{})\cr
+-&\kb\product(\n{B}+\n{AB}+\n{\ABpu})P_t(\state{}{}{}{}{}{}{})\cr
+-&\kdb\product(\n{B^\star}+\n{A{B^\star}}+\n{\ABpp})P_t(\state{}{}{}{}{}{}{}{})\cr
+-&\kab\product((\n{A}+\n{A^\star})\product(\n{B}+\n{B^\star})-\n{A^\star}\n{B^\star})P_t(\state{}{}{}{}{}{}{}{})\cr
+-&\kkab\product\n{A^\star}\n{B^\star}P_t(\state{}{}{}{}{}{}{}{})\cr
+-&\kdab\product(\n{AB}+\n{\ABup}+\n{\ABpu}+\n{\ABpp})P_t(\state{}{}{}{}{}{}{}{})
+ \end{array}
+\end{array}\]}
+
+As in the example of Sect.~\ref{sec:independent}, we would like to abstract away the correlation between the phosphorilation state of the proteins $A$ and the phosphorilation state of the proteins $B$ which belong to the same complex.
+Given a state $\sigma=\state{}{}{}{}{}{}{}{}$, we denote by $\beta(\sigma)$ the 8-tuple $\astate{}{}{}{}{}{}{}{}$ (such a tuple is called an abstract state). The probability $P_t^\sharp(\sigma^\sharp)$ that the system is in a state $\sigma$ such that $\beta(\sigma)=\sigma^\sharp$ at time $t$, satisfies the following equation:
+{\small\begin{equation*}\begin{array}{l}
+\diff{P_t^\sharp(\astate{}{}{}{}{}{}{}{})}  =\cr
+\tinytab\begin{array}{ll}&\ka\product(\n{A}+1)P_t^\sharp(\astate{+1}{-1}{}{}{}{}{}{}) \cr
++&\ka\product(\n{\Aub}+1)P_t^\sharp(\astate{}{}{}{}{+1}{-1}{}{})\cr
++&\kda\product(\n{A^\star}+1)P_t^\sharp(\astate{-1}{+1}{}{}{}{}{}{})\cr
++&\kda\product(\n{\Apb}+1)P^\sharp_t(\astate{}{}{}{}{-1}{+1}{}{})\cr
++&\kb\product(\n{B}+1)P_t^\sharp(\astate{}{}{+1}{-1}{}{}{}{}) \cr
++&\kb\product(\n{\Bub}+1)P_t^\sharp(\astate{}{}{}{}{}{}{+1}{-1})\cr
++&\kdb\product(\n{B^\star}+1)P_t^\sharp(\astate{}{}{-1}{+1}{}{}{}{})\cr
++&\kdb\product(\n{\Bpb}+1)P^\sharp_t(\astate{}{}{}{}{}{}{-1}{+1})\cr
++&\kab\product(\n{A}+1)(\n{B}+1)P_t^\sharp(\astate{+1}{}{+1}{}{-1}{}{-1}{})\cr
++&\kab\product(\n{A}+1)(\n{B^\star}+1)P_t^\sharp(\astate{+1}{}{}{+1}{-1}{}{}{-1})\cr
++&\kab\product((\n{A^\star}+1)(\n{B}+1))P_t^\sharp(\astate{}{+1}{+1}{}{}{-1}{-1}{})\cr
++&\kkab\product((\n{A^\star}+1)(\n{B^\star}+1))P_t^\sharp(\astate{}{+1}{}{+1}{}{-1}{}{-1})\cr
++&\kdab\product\cexp{\n{AB}}{\astate{-1}{}{-1}{}{+1}{}{+1}{}} \cr
++&\kdab\product\cexp{\n{\ABup}}{\state{-1}{}{}{-1}{+1}{}{}{+1}}\cr
++&\kdab\product\cexp{\n{\ABpu}}{\state{}{-1}{-1}{}{}{+1}{+1}{}}\cr
++&\kdab\product\cexp{\n{\ABpp}}{\state{}{-1}{}{-1}{}{+1}{}{+1}}\cr
+-&\ka\product(\n{A}+\n{\Aub})P_t^\sharp(\astate{}{}{}{}{}{}{})\cr
+-&\kda\product(\n{A^\star}+\n{\Apb})P_t^\sharp(\astate{}{}{}{}{}{}{}{})\cr
+-&\kb\product(\n{B}+\n{\Bub})P_t^\sharp(\astate{}{}{}{}{}{}{})\cr
+-&\kdb\product(\n{B^\star}+\n{\Bpb})P_t^\sharp(\astate{}{}{}{}{}{}{}{})\cr
+-&\kab\product((\n{A}+\n{A^\star})\product(\n{B}+\n{B^\star})-\n{A^\star}\n{B^\star})P_t^\sharp(\astate{}{}{}{}{}{}{}{})\cr
+-&\kkab\product(\n{A^\star}\n{B^\star})P^\sharp_t(\astate{}{}{}{}{}{}{}{})\cr
+-&\kdab\product(\n{\Apb}+\n{\Aub})P^\sharp_t(\astate{}{}{}{}{}{}{}{}),
+\end{array}\end{array}\end{equation*}}
+\hspace*{-2.5mm}where for any expression $X(\sigma)$ and any (abstract) state $\sigma^\sharp$,  the expression $\cexp{X(\sigma)}{\sigma^\sharp}$ denotes the product between the conditional expectation $\expec{X(\sigma)}{\sigma^\sharp}$ of the expression $X(\sigma)$ knowing that $\beta(\sigma)=\sigma^\sharp$, and
+the probability $P^\sharp_t(\sigma^\sharp)$ of being in a state $\sigma$ such that $\beta(\sigma)=\sigma^\sharp$.
+
+Whenever $\kab=\kkab$, we can check that the fact that $P_t(\sigma)=P_t(\sigma')$ for any pair of states $\sigma$,$\sigma'$ such that $\beta(\sigma)=\beta(\sigma')$ is an invariant. Thus, provided that $\kab=\kkab$ and that there is no correlation between the phosphorilation state of the proteins $A$ and $B$ which are bound together at time $t=0$, one can use the following properties:
+\begin{equation*}
+\begin{array}{c} \expec{\n{AB}}{\astate{}{}{}{}{}{}{}{}}=\myfrac{\n{\Aub}\n{\Bub}}{\Aub+\Apb} \cr
+  \expec{\n{\ABup}}{\astate{}{}{}{}{}{}{}{}}=\myfrac{\n{\Aub}\n{\Bpb}}{\Aub+\Apb}\cr
+\expec{\n{\ABpu}}{\astate{}{}{}{}{}{}{}{}}=\myfrac{\n{\Apb}\n{\Bub}}{\Aub+\Apb} \cr \expec{\n{\ABpp}}{\astate{}{}{}{}{}{}{}{}}=\myfrac{\n{\Apb}\n{\Bpb}}{\Aub+\Apb},
+\end{array}
+\end{equation*}
+so as to write  conditional expectations of $\n{AB}$, $\n{\ABup}$, $\n{\ABpu}$, and $\n{\ABpp}$ as time-independent expressions of $\n{\Aub}$, $\n{\Apb}$, $\n{\Bub}$, and $\n{\Bpb}$.
+
+
+Whenever $\kab\neq\kkab$, these conditional expectations may be time-dependent.  We show in Fig.~\ref{coupleratio} that the ratio between the probability of being in the state $AB+\ABpp$ and the probability of being in the state $\ABup+\ABpu$ is time-dependent. Moreover, we show in Fig.~\ref{coupleexpdelta} that the conditional expectation of $\n{\ABpp}$ knowing that we are in the (abstract) state $\Aub+\Apb+\Bub+\Bpb$ is time-dependent as well,
+which forbids doing the same simplification as in the differential semantics.
+
+
+\begin{figure}
+\subfigure[]
+{\scalebox{0.5}{\label{coupleratio}\begin{minipage}{\linewidth}
+\input{generated_images/couple_ratio.tex}
+\end{minipage}}}\hfill
+\subfigure[]
+{\label{coupleexpdelta}\scalebox{0.5}{\begin{minipage}{\linewidth}
+\input{generated_images/couple_exp_delta.tex}
+\end{minipage}}}
+\caption{On the left, quotient between the probability of being in the state $AB+\ABpp$ and the probability of being in the state $\ABup+\ABpu$. On the right, conditional expectation of the number of fully phosphorilated complexes $\ABpp$ knowing that all proteins are bound, and that there is exactly one phosphorilated protein $A$ and exactly one phosphorilated $B$.
+All rates are set to $1$, except $\kkab$ which is set to $10$. At time $0$, the chemical soup is made of two proteins $A$ and two proteins $B$, none of these proteins being phosphorilated or bound.}
+\end{figure}
+We have seen through this example that some reactions may operate simultaneously over two fragments. This leads to coupled semi-reactions. We have noticed that coupled semi-reactions raise no issue when reducing the differential semantics. We say that the application of semi-rules is fair in the differential semantics, since the proportion of the concentration of a given fragment that is consumed by a semi-reaction does not depend on the correlation between the states of the two fragments. This is not the case in the stochastic semantics: we have noticed that the stochastic semantics can be reduced only if the state of the two fragments are not correlated, otherwise the choice of the fragments on which coupled semi-reactions operate is entangled, which forbids the reduction.
+In other words, we say that in the differential semantics, we can abstract away the correlations which are not observed by rules, whereas in the stochastic semantics, we have to prove that the rules cannot enforce correlations between the state of some fragments and we use this property so as to reduce the dimension of the state space of the system. In the later case, the reduction is only valid when there is no correlation at time $t=0$. }
+
+\section{An example of distant control}
+\label{sec:distant}
+
+In this section, we show that, in the stochastic semantics,  one protein can control the behavior of another one even if they are not in the same connected component in the left hand side of a reaction.
+{\newcommand{\A}{\textrm{A}}
+\newcommand{\Auu}{\A}
+\newcommand{\Aup}{\A_\star}
+\newcommand{\Apu}{\A^\star}
+\newcommand{\App}{\A^\star_\star}
+\newcommand{\Aau}{\A^\diamond}
+\newcommand{\Aap}{\A^\diamond_\star}
+\newcommand{\Aua}{\A_\diamond}
+\newcommand{\Apa}{\A^\star_\diamond}
+\newcommand{\kh}{k^+}
+\newcommand{\kdh}{k^-}
+\newcommand{\kd}{k_+}
+\newcommand{\kdd}{k_-}
+\renewcommand{\state}[4]{\langle \n{\Auu}{#1},\n{\Apu}{#2},\n{\Aup}{#3},\n{\App}{#4}\rangle}
+\newcommand{\astate}[4]{\langle \n{\Aua}{#1},\n{\Apa}{#2},n_{\Aau}{#3},n_{\Aap}{#4}\rangle}
+
+We consider a kind of proteins, $\A$, which bears two phosphorilation sites.
+Each phosphorilation site can be unphosphorilated, or phosphorilated.
+We use the symbol $\star$ to denote phosphorilated sites. The phosphorilation state of the first site is written as a superscript, whereas the phosphorilation state of the second site is written as a subscript. This way, a protein $\A$ having the first site phosphorilated and the second site unphosphorilated is denoted by $\Apu$.
+
+The behavior of a chemical soup can be described by the following set of reactions:
+\begin{equation*}
+\begin{array}{lrclll}
+\reactionbi{(I.1)}{\Auu}{\Apu}{\kh}{\kdh}\cr
+\reactionbi{(I.2)}{\Aup}{\App}{\kh}{\kdh}
+\end{array}
+\smalltab
+\begin{array}{lrclll}
+\reactionuni{(II.1)}{\Auu + \Apu}{\Aup + \Apu}{\kd}\cr
+\reactionuni{(II.2)}{\Apu + \Apu}{\App + \Apu}{\kd}\cr
+\reactionuni{(II.3)}{\Auu + \App}{\Aup + \App}{\kd}\cr
+\reactionuni{(II.4)}{\Apu + \App}{\App + \App}{\kd}
+\end{array}
+\smalltab
+\begin{array}{lrclll}
+\reactionuni{(III.1)}{\App}{\Apu}{\kdd}\cr
+\reactionuni{(III.2)}{\Aup}{\Auu}{\kdd}
+\end{array}
+\end{equation*}
+
+We have assumed (see second column) that the kinetic of the phosphorilation of the second site of a protein depends on the  number of the other proteins that are phosphorilated on their first site --- that is to say that the proteins that are phosphorilated on their first site catalyzes the phosphorilation of the second site in the other proteins. We have also assumed that other reactions are purely local, that is to say that the kinetic of phosphorilation and dephosphorilation on the first site does not depend on the phosphorilation state of the second site (neither of the protein being phosphorilated, nor of the other proteins) (see first column), and that the kinetic of dephosphorilation  of the second site does not depend on the phosphorilation state of the first site of the proteins in the soup (see third column).
+
+
+In this example, we would like to abstract the correlation between the phosphorilation state of the two sites of each protein. This could be achieved, by splitting each complex into two parts, and by abstracting away which parts are connected together. It raises an issue for reducing the stochastic semantics. Indeed, one can notice that the reaction which activates the second site of protein favors the phosphorilation of the second site of the protein in the state $\Auu$. For instance, if we assume that both the number of instances of the protein in state $\Auu$  and the number of instances of the protein in the state $\Apu$ is equal to $m$, and that the number of instances of the protein in the state $\App$ is equal to $n$. Then, the cumulative activity of the following two reactions:
+\begin{equation*}
+\begin{array}{lcrllllcrlll}
+\reactionuni{(II.1)}{\Auu + \Apu}{\Aup + \Apu}{\kd}\smalltab
+\reactionuni{(II.3)}{\Auu + \App}{\Aup + \App}{\kd}
+\end{array}\end{equation*}
+is equal to $\kd(n+m)m $, whereas the cumulative activity of the following two reactions:
+\begin{equation*}
+\begin{array}{lcrllllcrlll}
+\reactionuni{(II.2)}{\Apu + \Apu}{\App + \Apu}{\kd}\smalltab
+\reactionuni{(II.4)}{\Apu + \App}{\App + \App}{\kd}
+\end{array}
+\end{equation*}
+is equal to $\kd(n+m-1)m$ (the subtraction by $1$ comes from the fact that each reactant must be mapped to distinct instances of chemical species). Nevertheless, it does not forbid the reduction of the differential semantics: intuitively, the term $1$ vanishes because we consider an infinite number of instances, within an infinite volume.
+
+Let us check formally that the differential semantics of this model can be reduced and explain why we do not know how to abstract its stochastic semantics.
+This differential semantics is defined by the following system of differential equations:
+\begin{equation*}
+\begin{array}{rcl}
+\diffc{\Auu} & =  &\kdh\product\conc{\Apu} + \kdd\product\conc{\Aup} -(\kh+\kd\product(\conc{\Apu}+\conc{\App}))\product\conc{\Auu} \cr
+
+\diffc{\Apu} & = & \kh\product\conc{\Auu}+ \kdd\product\conc{\App} -(\kdh+\kd\product(\conc{\Apu}+\conc{\App}))\product\conc{\Apu} \cr
+\diffc{\Aup} & = & \kdh\product\conc{\App}+\kd\product\conc{\Auu}\product(\conc{\Apu}+\conc{\App})-(\kh+\kdd)\product\conc{\Aup} \cr
+\diffc{\App} & = & \kh\product\conc{\Aup}+\kd\product\conc{\Apu}\product(\conc{\Apu}+\conc{\App})-(\kdh+\kdd)\product\conc{\App}.
+\end{array}
+\end{equation*}
+We notice that the correlation between the two sites can be abstracted away.
+Indeed, we notice that the following equations:
+\[\begin{array}{rcl}
+\diffc{\Aua} &=& \kdh\product\conc{\Apa} - \kh\product\conc{\Aua}\cr
+\diffc{\Apa} &=& \kh\product\conc{\Aua} - \kdh\product\conc{\Apa}\cr
+\diffc{\Aau} &=& \kdd\product\conc{\Aap} - \kd\product\conc{\Aau}\conc{\Apa}\cr
+\diffc{\Aap} &=& \kd\product\conc{\Aau}\conc{\Apa} - \kdd\product\conc{\Aap},
+\end{array}\]
+where  $\conc{\Aua}\bydef\conc{\Auu}+\conc{\Aup}$,
+$\conc{\Apa}\bydef\conc{\Apu}+\conc{\App}$,
+$\conc{\Aau}\bydef\conc{\Auu}+\conc{\Apu}$, and
+$\conc{\Aap}\bydef\conc{\Aup}+\conc{\App}$, are satisfied.
+
+
+We now wonder whether the same reduction can be used in the case of the stochastic semantics.  In the stochastic semantics, a chemical soup can be denoted by a 4-tuple $\state{}{}{}{}$ of natural numbers, where $\n{X}$ is the number of instance of $X$ in the chemical soup, for any $X\in\{\Auu,\Aup,\Apu,\App\}$. The probability $P_t(\state{}{}{}{})$ that the system is in a given state $\state{}{}{}{}$ at time $t$ is given by the following master equation:
+\begin{equation*}
+\begin{array}{l}
+\diff{P_t(\state{}{}{}{})}  =\cr
+\tinytab\begin{array}{ll}
+&\kh\product(\n{\Auu}+1)\product P_t(\state{+1}{-1}{}{})\cr
++&\kh\product(\n{\Aup}+1)\product P_t(\state{}{}{+1}{-1})\cr
++&\kdh\product(\n{\Apu}+1)\product P_t(\state{-1}{+1}{}{})\cr
++&\kdh\product(\n{\App}+1)\product P_t(\state{}{}{-1}{+1})\cr
++&\kd\product(\n{\Auu}+1)\product(\n{\Apu}+\n{\App})\product P_t(\state{+1}{}{-1}{})\cr
++&\kd\product(\n{\Apu}+1)\product(\n{\Apu}+\n{\App}-1)\product P_t(\state{}{+1}{}{-1})\cr
++&\kdd\product(\n{\Aup}+1)\product P_t(\state{-1}{}{+1}{})\cr
++&\kdd\product(\n{\App}+1)\product P_t(\state{}{-1}{}{+1})\cr
+-&\kh\product(\n{\Auu}+\n{\Aup})\product P_t(\state{}{}{}{}) \cr
+-&\kdh\product(\n{\Apu}+\n{\App})\product P_t(\state{}{}{}{}) \cr
+-&\kd\product(\n{\Auu}\product(\n{\Apu}+\n{\App})+
+              \n{\Apu}\product(\n{\Apu}+\n{\App}-1))\product P_t(\state{}{}{}{}) \cr
+-&\kdd\product(\n{\Aup}+\n{\App})\product P_t(\state{}{}{}{}).
+\end{array}\end{array}\end{equation*}
+
+\begin{figure}
+\subfigure[]
+{\scalebox{0.5}{\label{distantratio}\begin{minipage}{\linewidth}
+\input{generated_images/distant_ratio.tex}
+\end{minipage}}}\hfill
+\subfigure[]
+{\label{distantexpdelta}\scalebox{0.5}{\begin{minipage}{\linewidth}
+\input{generated_images/distant_exp_delta.tex}
+\end{minipage}}}
+\caption{On the left, quotient between the probability of being in the state $\Auu+\App$ and the probability of being in the state $\Aup+\Apu$. On the right, conditional expectation of the number of protein in the state $\Apu$ knowing that (i) there are two proteins, (ii) exactly one protein is phosphorilated at its  the first site, and (iii) exactly one protein (potentially the same) is phosphorilated at its second site.
+All rates are set to $1$. At time $0$, the chemical soup is made of two proteins $A$ fully unphosphorilated.}
+\end{figure}
+
+Given a state $\sigma=\state{}{}{}{}$, we denote by $\beta(\sigma)$ the 4-tuple $\astate{}{}{}{}$ (such a tuple is called an abstract state). The probability $P_t^\sharp(\sigma^\sharp)$ that the system is in a state $\sigma$ such that $\beta(\sigma)=\sigma^\sharp$ at time $t$, satisfies the following equation:
+{\[\begin{array}{l}
+\diff{P_t^\sharp(\astate{}{}{}{})}  =\cr
+\tinytab\begin{array}{ll}&
+\kd\product (\n{\Aua}+1){\product}P_t^\sharp(\astate{+1}{-1}{}{}) \cr
++&\kdh\product(\n{\Apa}+1){\product}P_t^\sharp(\astate{-1}{+1}{}{}{}{}{}{})\cr
++&\kd\product(\n{\Aau}+1)\product\n{\Apa}{\product}P_t^\sharp(\astate{}{}{+1}{-1})\cr
++&\kdd\product(\n{\Aap}+1){\product}P_t^\sharp(\astate{}{}{-1}{+1})\cr
+-&(\kh\product\n{\Aua}+\kdh\product\n{\Apa}+\kd\product\n{\Aau}\product\n{\Apa}+\kdd\product\n{\Aap}){\product}P_t^\sharp(\astate{}{}{}{}{}{}{})\cr
+-&\kd\product\cexp{\n{\Apu}}{\astate{}{+1}{}{-1}}\cr
++&\kd\product\cexp{\n{\Apu}}{\astate{}{}{}{}},
+\end{array}
+\end{array}\]}
+\hspace*{-2.5mm}where for any expression $X(\sigma)$ and any (abstract) state $\sigma^\sharp$,  the expression $\cexp{X(\sigma)}{\sigma^\sharp}$ denotes the product between the conditional expectation $\expec{X(\sigma)}{\sigma^\sharp}$ of the expression $X(\sigma)$ knowing that $\beta(\sigma)=\sigma^\sharp$ and
+the probability $P^\sharp_t(\sigma^\sharp)$ of being in a state $\sigma$ such that $\beta(\sigma)=\sigma^\sharp$.
+
+In general, the conditional properties of the number of instances of proteins in the form $\Apu$ having fixed a given abstract state, is time-dependent. We show in Fig.~\ref{distantratio} that the ratio between the probability of being in the state $\Auu+\App$ and the probability of being in the state $\Aup+\Apu$ is time-dependent. Moreover, we show in Fig.~\ref{distantexpdelta} that the conditional expectation of $\n{\Apu}$ knowing that we are in the (abstract) state
+$\Aua+\Apa+\Aau+\Aap$ is time-dependent, which forbids doing the same simplication as in the differential semantics.
+
+We have seen through this example that,
+because a given instance of chemical species can only be used once as a reactant when applying a given chemical reaction, some corrective terms as $+1$ or $-1$ may appear in  master equations. These corrective terms may forbid the reduction of stochastic semantics. Nevertheless, this is not an issue when reducing differential semantics, since these corrective terms vanish when we consider an  infinite number of instances of proteins (within an infinite volume).
+}
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\begin{figure}[t]
+\begin{minipage}{\linewidth}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Model & early EGF & EGF/Insulin cross talk & SFB \cr
+\hline
+Species & $356$ & $2899$ & $\sim 2.10^{19}$\cr
+\hline
+ODE fragments & $38$ & $208$ & $\sim 2.10^5$\cr
+\hline
+Stochastic fragments & $356$ & $618$ & $\sim 2.10^{19}$ \cr
+\hline
+\end{tabular}
+\end{center}
+\end{minipage}
+\caption{Reduction factors for differential fragments \cite{pnas,lics2010} and stochastic fragments. We try these reduction methods on three models. The first one is the model of  the early events of the EGF pathway (see Sect.~\ref{sec:breach}); the second one, taken from \cite[table 7]{conzelmann:08}, describes the cross-talk  between another model of the  early events of the EGF pathway and the insulin receptor; whereas the third one is  a version of a pilot study on a larger section of the \textsc{EGF} pathway \cite{concur2007,bli:06,schoeberl,fb}. }
+\label{bench}
+\end{figure}
+
+In this paper, we have illustrated through small examples why it is more difficult to reduce the dimension of the state space of stochastic semantics than the one of differential semantics.
+In the case of the differential semantics, it is possible to abstract away some correlations between the state of some fragments of chemical species, because these correlations are not observed by the (groups of) reactions. This is not so easy in the case of stochastic semantics, because a given reaction application may operate on several fragments simultaneously, in such a case the choice for the state of fragments on which semi-reactions are applied is driven by the correlation between the state of these two fragments (see Sect.~\ref{sec:coupled}). Moreover, stochastic semantics counts individuals which leads to some constant corrective terms (such as increment or decrement by $1$) which also forbids exact reduction  (see Sect.~\ref{sec:distant}).
+
+In Fig.~\ref{bench}, we give the number of chemical species, the number of differential fragments, and the number of stochastic fragments for three bigger models. The reduction factor for the differential semantics is very interesting, whereas there is almost no reduction in the stochastic case. A careful look into the models would show that this is due to coupled semi-reactions.
+Moreover, the reduction that arises in the second model is due to a protein which has two fully independent parts (as in Sect.~\ref{sec:independent}).
+
+This emphasizes how interesting the stochastic semantics is: the stochastic semantics does not only describe a limit behavior, but also showes the variability of a system and how robust a system is to stochastic variations. The counterpart is that it is very difficult to handle with (as a formal object) and to simplify.
+
+
+
+
+
+%\bibliography{cs2bio2010}
+%\bibliographystyle{entcs}
+
+
+
+%\findechapitre
+%%% Local Variables:
+%%% ispell-local-dictionary: "french"
+%%% End:

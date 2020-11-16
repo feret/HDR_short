@@ -1,0 +1,8 @@
+set xlabel '$t$'
+set ylabel '$\myfrac{P_t(\Auu+\App)}{P_t(\Aup+\Apu)}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/distant_ratio.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/distant.data' using 1:4  title '' w l 

@@ -1,0 +1,8 @@
+set xlabel '$t$'
+set ylabel '$\myfrac{P_t(\ABuu+\ABpp)}{P_t(\ABup+\ABpu)}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/couple_ratio.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/couple.data' using 1:4  title '' w l 

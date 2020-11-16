@@ -1,0 +1,18 @@
+set xlabel '$t$ '
+set ylabel '$\text{Probabilities}$'
+set title 'State distribution VS Time'
+set term epslatex linewidth 5  
+set autoscale 
+set xrange [0.:1.]
+set yrange [0.:0.8]
+set output 'generated_pictures/sym_KO_lump_1.tex' 
+plot 'octave/sym_KO/sym.data' using 1:25 title '$\petit{\probstate{\Qzero}}$' w l
+set output 'generated_pictures/sym_KO_lump_1.tex' 
+replot 'octave/sym_KO/sym.data' using 1:26 title '$\petit{\probstate{\Qone}}$' w l  lt rgb "red"
+set output 'generated_pictures/sym_KO_lump_1.tex' 
+replot 'octave/sym_KO/sym.data' using 1:27 title '$\petit{\probstate{\Qtwo}}$' w l lt rgb "blue"
+set output 'generated_pictures/sym_KO_lump_1.tex' 
+replot 'octave/sym_KO/sym.data' using 1:28 title '$\petit{\probstate{\Qthree}}$' w l lt rgb "green" 
+
+
+

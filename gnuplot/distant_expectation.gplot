@@ -1,0 +1,9 @@
+set xlabel '$t$'
+set ylabel '$E_t(n_{\App})$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/distant_expectation.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/distant.data' using 1:5 title '' w l 
+

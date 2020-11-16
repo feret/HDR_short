@@ -1,0 +1,547 @@
+Kappa Static Analyzer (v4.0rc1-217-ge319369-dirty) (without Tk interface)
+Analysis launched at 2018/05/03 16:02:12 (GMT+2) on applecell.home
+Parsing 15_deg_num.ka...
+done
+Parsing 14_app_num.ka...
+done
+Parsing 13_applications.ka...
+done
+Parsing 12_activity.ka...
+done
+Parsing 10_perturbations.ka...
+done
+Parsing 09_rules.ka...
+done
+Parsing 08_gene_activity.ka...
+done
+Parsing 07_synthesis.ka...
+done
+Parsing 06_degradation.ka...
+done
+Parsing 05_equilibrium.ka...
+done
+Parsing 04_init.ka...
+done
+Parsing 03_signature.ka...
+done
+Parsing 02_rate_constants.ka...
+done
+Parsing 01_parameters.ka...
+done
+Parsing 00_unit.ka...
+done
+Compiling...
+Generating the raw contact map...
+Generating the raw influence map...
+Refining the influence map...
+Reachability analysis...
+------------------------------------------------------------
+every rule may be applied
+------------------------------------------------------------
+every agent may occur in the model
+
+------------------------------------------------------------
+The following transitions are separating:
+
+  * rule LTBP1_degradation (File "06_degradation.ka", line 50, characters 20-63:):
+      TGFB1(state{active},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{active},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{active},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{active},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule ITGAVB3_degradation (File "06_degradation.ka", line 56, characters 22-69:):
+      TGFB1(state{active},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{active},w[.],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+
+  * rule ITGAVB5_degradation (File "06_degradation.ka", line 57, characters 22-69:):
+      TGFB1(state{active},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{active},w[.],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+
+  * rule ITGAVB6_degradation (File "06_degradation.ka", line 58, characters 22-69:):
+      TGFB1(state{active},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{active},w[.],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+
+  * rule ITGAVB8_degradation (File "06_degradation.ka", line 59, characters 22-69:):
+      TGFB1(state{active},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{active},w[.],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+
+  * rule ADAMTS1_degradation (File "06_degradation.ka", line 62, characters 22-69:):
+      TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+
+  * rule THBS1_degradation (File "06_degradation.ka", line 69, characters 20-63:):
+      MMP2(state{active},Cat[z.THBS1],PEX[.]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{active},Cat[z.THBS1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[Cter.TIMP2])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+
+  * rule COL1_degradation (File "06_degradation.ka", line 70, characters 19-60:):
+      MMP2(state{active},CBD[c.COL1]) -> MMP2(state{active},CBD[.])
+
+  * rule MMP2_degradation (File "06_degradation.ka", line 73, characters 19-60:):
+      TGFB1(state{active},w[.],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[TB.LTBP1],z[.])
+
+  * rule MMP2_degradation_active (File "06_degradation.ka", line 75, characters 26-113:):
+      TGFB1(state{active},w[.],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[TB.LTBP1],z[.])
+
+  * rule MMP9_degradation (File "06_degradation.ka", line 76, characters 19-60:):
+      TGFB1(state{active},w[.],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{active},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[TB.LTBP1],d[.])
+
+  * rule MMP14_degradation (File "06_degradation.ka", line 77, characters 20-63:):
+      MMP2(state{active},PEX[Cter.TIMP2],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[Cter.TIMP2],Nter[.])
+      MMP2(state{active},PEX[.],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[.],Nter[.])
+      TGFB1(state{active},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+
+  * rule MMP14_degradation_active (File "06_degradation.ka", line 79, characters 27-117:):
+      MMP2(state{active},PEX[Cter.TIMP2],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[Cter.TIMP2],Nter[.])
+      MMP2(state{active},PEX[.],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[.],Nter[.])
+      TGFB1(state{active},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+
+  * rule TIMP2_degradation (File "06_degradation.ka", line 81, characters 20-63:):
+      MMP2(state{active},PEX[Cter.TIMP2],Nter[.]) -> MMP2(state{active},PEX[.],Nter[.])
+      MMP2(state{active},PEX[Cter.TIMP2],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[.],Nter[Cat.MMP14])
+      MMP2(state{active},Cat[Nter.TIMP3],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[Nter.TIMP3],PEX[.])
+      MMP2(state{active},Cat[Nter.TIMP2],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[Nter.TIMP2],PEX[.])
+      MMP2(state{active},Cat[Nter.TIMP2],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{active},Cat[.],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{active},Cat[Nter.TIMP1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[Nter.TIMP1],PEX[.])
+      MMP2(state{active},Cat[y.DCN],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[y.DCN],PEX[.])
+      MMP2(state{active},Cat[z.THBS1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[z.THBS1],PEX[.])
+      MMP2(state{active},Cat[Cter.FBN1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[Cter.FBN1],PEX[.])
+      MMP2(state{active},Cat[z.TGFB1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[z.TGFB1],PEX[.])
+
+  * rule TGFB1(state~latent)_ITGAVB8_MMP14_Activate (File "09_rules.ka", line 83, characters 45-253:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+      TGFB1(state{latent},w[.],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[.],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[TB.LTBP1],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2])
+      TGFB1(state{latent},w[.],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[.],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[TB.LTBP1],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[TB.LTBP1],d[Cat.MMP9])
+      TGFB1(state{latent},w[.],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[.],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+      TGFB1(state{latent},w[.],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[.],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule TGFB1(state~latent)_LTBP1_ITGAVB6_Activate (File "09_rules.ka", line 93, characters 45-268:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule TGFB1(state~latent)_LTBP1_ITGAVB5_Activate (File "09_rules.ka", line 102, characters 45-268:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule TGFB1(state~latent)_LTBP1_ITGAVB3_Activate (File "09_rules.ka", line 111, characters 45-270:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule ADAMTS1_TGFB1(state~latent)_Activate (File "09_rules.ka", line 161, characters 39-184:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[.],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14])
+      TGFB1(state{latent},w[.],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[.],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[.],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[TB.LTBP1],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2])
+      TGFB1(state{latent},w[.],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[.],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[TB.LTBP1],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[TB.LTBP1],d[Cat.MMP9])
+      TGFB1(state{latent},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[.],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+
+  * rule BMP1_LTBP1-TGFB1(state~latent)-MMP2_Activate (File "09_rules.ka", line 172, characters 47-331:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[.],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule CD44_MMP9_TGFB1(state~latent)_LTBP1__FN1_FBN1_Activate (File "09_rules.ka", line 180, characters 57-309:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[.],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[.],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+
+  * rule MMP14 activation (File "09_rules.ka", line 194, characters 19-171:):
+      MMP14(state{latent},a[z.ITGAVB3]) -> MMP14(state{active},a[.])
+      MMP14(state{latent},Cat[.]) -> MMP14(state{active},Cat[.])
+      MMP14(state{latent},Cat[Nter.TIMP2]) -> MMP14(state{active},Cat[Nter.TIMP2])
+
+  * rule MMP2 Activation  (File "09_rules.ka", line 206, characters 19-169:):
+      MMP2(state{latent},CBD[c.COL1]) -> MMP2(state{active},CBD[.])
+      MMP2(state{latent},PEX[.],Nter[.]) -> MMP2(state{active},PEX[.],Nter[.])
+      MMP2(state{latent},PEX[Cter.TIMP2],Nter[.]) -> MMP2(state{active},PEX[Cter.TIMP2],Nter[.])
+      MMP2(state{latent},PEX[Cter.TIMP2],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[Cter.TIMP2],Nter[Cat.MMP14])
+      MMP2(state{latent},PEX[.],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[.],Nter[Cat.MMP14])
+      MMP2(state{latent},Cat[.],PEX[.]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{latent},Cat[.],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[Cter.TIMP2])
+      MMP2(state{latent},Cat[z.THBS1],PEX[.]) -> MMP2(state{active},Cat[z.THBS1],PEX[.])
+      MMP2(state{latent},Cat[z.THBS1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[z.THBS1],PEX[Cter.TIMP2])
+
+  * rule THBS1_TGFB1(state~latent)_Activate (File "09_rules.ka", line 256, characters 37-209:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[.],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14])
+      TGFB1(state{latent},w[.],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[.],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[TB.LTBP1],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[TB.LTBP1],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[.],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[.],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[TB.LTBP1],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[TB.LTBP1],z[Cat.MMP2])
+      TGFB1(state{latent},w[.],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[.],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[TB.LTBP1],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[TB.LTBP1],d[Cat.MMP9])
+      TGFB1(state{latent},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+
+  * rule THBS1_TGFB1(state~latent)_LTBP1_FN1_FBN1_Activate (File "09_rules.ka", line 259, characters 52-262:):
+      TGFB1(state{latent},a[.]) -> TGFB1(state{active},a[.])
+      TGFB1(state{latent},RGD[.],c[.]) -> TGFB1(state{active},RGD[.],c[.])
+      TGFB1(state{latent},RGD[.],c[Cat.MMP14]) -> TGFB1(state{active},RGD[.],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB8],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB8],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB6],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB6],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB5],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB5],c[Cat.MMP14])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[.]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[.])
+      TGFB1(state{latent},RGD[x.ITGAVB3],c[Cat.MMP14]) -> TGFB1(state{active},RGD[x.ITGAVB3],c[Cat.MMP14])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[.]) -> TGFB1(state{active},w[.],RGD[.])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB3]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB3])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB5]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB5])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB6]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB6])
+      TGFB1(state{latent},w[TB.LTBP1],RGD[x.ITGAVB8]) -> TGFB1(state{active},w[.],RGD[x.ITGAVB8])
+      TGFB1(state{latent},w[TB.LTBP1],z[.]) -> TGFB1(state{active},w[.],z[.])
+      TGFB1(state{latent},w[TB.LTBP1],z[Cat.MMP2]) -> TGFB1(state{active},w[.],z[Cat.MMP2])
+      TGFB1(state{latent},w[TB.LTBP1],d[.]) -> TGFB1(state{active},w[.],d[.])
+      TGFB1(state{latent},w[TB.LTBP1],d[Cat.MMP9]) -> TGFB1(state{active},w[.],d[Cat.MMP9])
+      TGFB1(state{latent},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+
+  * rule Degradation of THBS1 by ADAMTS1 (File "09_rules.ka", line 275, characters 34-109:):
+      MMP2(state{active},Cat[z.THBS1],PEX[.]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{active},Cat[z.THBS1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[Cter.TIMP2])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[.],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[.],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KTFR.ADAMTS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[WxxW.THBS1])
+      TGFB1(state{active},w[TB.LTBP1],LSKL[KRFK.THBS1],VLAL[.]) -> TGFB1(state{active},w[TB.LTBP1],LSKL[.],VLAL[.])
+
+  * rule Activation MMP2 (File "09_rules.ka", line 291, characters 18-272:):
+      MMP2(state{latent},CBD[.]) -> MMP2(state{active},CBD[.])
+      MMP2(state{latent},CBD[c.COL1]) -> MMP2(state{active},CBD[c.COL1])
+      MMP2(state{latent},PEX[Cter.TIMP2],Nter[Cat.MMP14]) -> MMP2(state{active},PEX[.],Nter[.])
+      MMP2(state{latent},Cat[.],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[.],PEX[.])
+      MMP2(state{latent},Cat[z.THBS1],PEX[Cter.TIMP2]) -> MMP2(state{active},Cat[z.THBS1],PEX[.])
+
+  * rule Degradation of COL1 by MMP14 (File "09_rules.ka", line 320, characters 31-133:):
+      MMP2(state{active},CBD[c.COL1]) -> MMP2(state{active},CBD[.])
+
+
+
+------------------------------------------------------------
+* Non relational properties:
+------------------------------------------------------------
+TGFB1() => [ TGFB1(RGD[.]) v TGFB1(RGD[x.ITGAVB3]) v TGFB1(RGD[x.ITGAVB5]) v TGFB1(RGD[x.ITGAVB6]) v TGFB1(RGD[x.ITGAVB8]) ]
+TGFB1() => [ TGFB1(c[.]) v TGFB1(c[Cat.MMP14]) ]
+TGFB1() => [ TGFB1(LSKL[.]) v TGFB1(LSKL[KTFR.ADAMTS1]) v TGFB1(LSKL[KRFK.THBS1]) ]
+TGFB1() => [ TGFB1(z[.]) v TGFB1(z[Cat.MMP2]) ]
+TGFB1() => [ TGFB1(w[.]) v TGFB1(w[TB.LTBP1]) ]
+TGFB1() => [ TGFB1(state{latent}[.]) v TGFB1(state{active}[.]) ]
+TGFB1() => [ TGFB1(VLAL[.]) v TGFB1(VLAL[WxxW.THBS1]) ]
+TGFB1() => [ TGFB1(d[.]) v TGFB1(d[Cat.MMP9]) ]
+TGFB1() => [ TGFB1(a[.]) v TGFB1(a[x.DCN]) v TGFB1(a[c.DCN]) ]
+LTBP1() => [ LTBP1(hinge[.]) v LTBP1(hinge[a.HS]) ]
+LTBP1() => [ LTBP1(Cter[.]) v LTBP1(Cter[Hyb1.FBN1]) ]
+LTBP1() => [ LTBP1(y[.]) v LTBP1(y[y.ADAMTSL2]) v LTBP1(y[y.ADAMTSL3]) ]
+LTBP1() => [ LTBP1(x[.]) v LTBP1(x[Cat.BMP1]) ]
+LTBP1() => [ LTBP1(Nter[.]) v LTBP1(Nter[y.FN1]) ]
+LTBP1() => [ LTBP1(TB[.]) v LTBP1(TB[w.TGFB1]) ]
+FN1() => [ FN1(Nter[.]) v FN1(Nter[III1.FN1]) ]
+FN1() => [ FN1(III1[.]) v FN1(III1[Nter.FN1]) ]
+FN1() => [ FN1(CBD[.]) v FN1(CBD[Cter.FBN1]) ]
+FN1() => [ FN1(NGR[.]) v FN1(NGR[y.ITGAVB3]) ]
+FN1() => [ FN1(RGD[.]) v FN1(RGD[x.ITGA5B1]) ]
+FN1() => [ FN1(y[.]) v FN1(y[Nter.LTBP1]) ]
+FN1() => [ FN1(a[.]) v FN1(a[core.DCN]) ]
+FN1() => [ FN1(Cter[.]) v FN1(Cter[z.FBLN1]) v FN1(Cter[spacer.ADAMTS4]) ]
+FN1() => [ FN1(c[.]) v FN1(c[y.COL1]) ]
+FN1() => [ FN1(e[.]) v FN1(e[Cat.MMP9]) v FN1(e[Cat.MMP2]) v FN1(e[Cat.MMP14]) ]
+FN1() => [ FN1(b[.]) v FN1(b[core.DCN]) ]
+FBN1() => [ FBN1(HSBS[.]) v FBN1(HSBS[x.HS]) ]
+FBN1() => [ FBN1(Cter[.]) v FBN1(Cter[CBD.FN1]) v FBN1(Cter[Cat.MMP2]) v FBN1(Cter[Cat.MMP14]) v FBN1(Cter[Cat.MMP9]) ]
+FBN1() => [ FBN1(RGD[.]) v FBN1(RGD[x.ITGAVB6]) v FBN1(RGD[x.ITGAVB3]) v FBN1(RGD[x.ITGA5B1]) ]
+FBN1() => [ FBN1(WMS[.]) v FBN1(WMS[x.ADAMTSL2]) v FBN1(WMS[x.ADAMTSL3]) v FBN1(WMS[x.ADAMTSL6]) ]
+FBN1() => [ FBN1(Nter[.]) v FBN1(Nter[Cter.MAGP1]) v FBN1(Nter[x.ADAMTS10]) v FBN1(Nter[a.DCN]) ]
+FBN1() => [ FBN1(Hyb1[.]) v FBN1(Hyb1[Cter.LTBP1]) v FBN1(Hyb1[y.FBLN4]) ]
+FBN1() => [ FBN1(PF2[.]) v FBN1(PF2[c.THBS1]) ]
+FBLN1() => [ FBLN1(Cter[.]) v FBLN1(Cter[x.ADAMTS1]) ]
+FBLN1() => [ FBLN1(z[.]) v FBLN1(z[Cter.FN1]) ]
+FBLN4() => [ FBLN4(y[.]) v FBLN4(y[Hyb1.FBN1]) ]
+ITGAVB3() => [ ITGAVB3(z[.]) v ITGAVB3(z[a.MMP14]) ]
+ITGAVB3() => [ ITGAVB3(w[.]) v ITGAVB3(w[x.ADAM12]) ]
+ITGAVB3() => [ ITGAVB3(x[.]) v ITGAVB3(x[RGD.TGFB1]) v ITGAVB3(x[RGD.FBN1]) ]
+ITGAVB3() => [ ITGAVB3(y[.]) v ITGAVB3(y[NGR.FN1]) ]
+ITGAVB5() => [ ITGAVB5(x[.]) v ITGAVB5(x[RGD.TGFB1]) ]
+ITGAVB6() => [ ITGAVB6(x[.]) v ITGAVB6(x[RGD.TGFB1]) v ITGAVB6(x[RGD.FBN1]) ]
+ITGAVB8() => [ ITGAVB8(x[.]) v ITGAVB8(x[RGD.TGFB1]) ]
+ITGA5B1() => [ ITGA5B1(x[.]) v ITGA5B1(x[RGD.FN1]) v ITGA5B1(x[RGD.FBN1]) ]
+ITGA2B1() => [ ITGA2B1(x[.]) v ITGA2B1(x[z.COL1]) ]
+ADAMTS1() => [ ADAMTS1(y[.]) v ADAMTS1(y[b.THBS1]) ]
+ADAMTS1() => [ ADAMTS1(KTFR[.]) v ADAMTS1(KTFR[LSKL.TGFB1]) ]
+ADAMTS1() => [ ADAMTS1(x[.]) v ADAMTS1(x[Cter.FBLN1]) ]
+ADAMTSL2() => [ ADAMTSL2(x[.]) v ADAMTSL2(x[WMS.FBN1]) ]
+ADAMTSL2() => [ ADAMTSL2(y[.]) v ADAMTSL2(y[y.LTBP1]) ]
+ADAMTSL3() => [ ADAMTSL3(y[.]) v ADAMTSL3(y[y.LTBP1]) ]
+ADAMTSL3() => [ ADAMTSL3(x[.]) v ADAMTSL3(x[WMS.FBN1]) ]
+ADAMTS4() => [ ADAMTS4(Cat[.]) v ADAMTS4(Cat[Nter.TIMP3]) ]
+ADAMTS4() => [ ADAMTS4(spacer[.]) v ADAMTS4(spacer[Cter.FN1]) ]
+ADAMTS10() => [ ADAMTS10(x[.]) v ADAMTS10(x[Nter.FBN1]) ]
+ADAMTSL6() => [ ADAMTSL6(x[.]) v ADAMTSL6(x[WMS.FBN1]) ]
+ADAM12() => [ ADAM12(x[.]) v ADAM12(x[w.ITGAVB3]) ]
+THBS1() => [ THBS1(KRFK[.]) v THBS1(KRFK[LSKL.TGFB1]) ]
+THBS1() => [ THBS1(x[.]) v THBS1(x[core.DCN]) ]
+THBS1() => [ THBS1(z[.]) v THBS1(z[Cat.MMP2]) v THBS1(z[Cat.MMP9]) ]
+THBS1() => [ THBS1(b[.]) v THBS1(b[y.ADAMTS1]) ]
+THBS1() => [ THBS1(WxxW[.]) v THBS1(WxxW[VLAL.TGFB1]) ]
+THBS1() => [ THBS1(a[.]) v THBS1(a[b.COL1]) ]
+THBS1() => [ THBS1(c[.]) v THBS1(c[PF2.FBN1]) ]
+COL1() => [ COL1(c[.]) v COL1(c[CBD.MMP2]) v COL1(c[Cat.MMP9]) ]
+COL1() => [ COL1(b[.]) v COL1(b[a.THBS1]) ]
+COL1() => [ COL1(a[.]) v COL1(a[core.DCN]) ]
+COL1() => [ COL1(d[.]) v COL1(d[Cat.MMP14]) ]
+COL1() => [ COL1(z[.]) v COL1(z[x.ITGA2B1]) ]
+COL1() => [ COL1(y[.]) v COL1(y[c.FN1]) ]
+DCN() => [ DCN(c[.]) v DCN(c[a.TGFB1]) ]
+DCN() => [ DCN(y[.]) v DCN(y[Cat.MMP2]) ]
+DCN() => [ DCN(a[.]) v DCN(a[Nter.FBN1]) ]
+DCN() => [ DCN(x[.]) v DCN(x[a.TGFB1]) ]
+DCN() => [ DCN(core[.]) v DCN(core[a.COL1]) v DCN(core[x.MAGP1]) v DCN(core[a.FN1]) v DCN(core[b.FN1]) v DCN(core[x.THBS1]) ]
+MAGP1() => [ MAGP1(x[.]) v MAGP1(x[core.DCN]) ]
+MAGP1() => [ MAGP1(Cter[.]) v MAGP1(Cter[Nter.FBN1]) ]
+MMP2() => [ MMP2(CBD[.]) v MMP2(CBD[c.COL1]) ]
+MMP2() => [ MMP2(PEX[.]) v MMP2(PEX[Cter.TIMP2]) ]
+MMP2() => [ MMP2(Nter[.]) v MMP2(Nter[Cat.MMP14]) ]
+MMP2() => [ MMP2(Cat[.]) v MMP2(Cat[z.TGFB1]) v MMP2(Cat[Cter.FBN1]) v MMP2(Cat[y.DCN]) v MMP2(Cat[z.THBS1]) v MMP2(Cat[Nter.TIMP2]) v MMP2(Cat[Nter.TIMP3]) v MMP2(Cat[Nter.TIMP1]) v MMP2(Cat[e.FN1]) ]
+MMP2() => [ MMP2(state{latent}[.]) v MMP2(state{active}[.]) ]
+MMP9() => [ MMP9(Cat[.]) v MMP9(Cat[d.TGFB1]) v MMP9(Cat[Cter.FBN1]) v MMP9(Cat[z.THBS1]) v MMP9(Cat[Nter.TIMP3]) v MMP9(Cat[Nter.TIMP1]) v MMP9(Cat[c.COL1]) v MMP9(Cat[e.FN1]) ]
+MMP9() => [ MMP9(a[.]) v MMP9(a[x.CD44]) ]
+MMP14() => [ MMP14(a[.]) v MMP14(a[z.ITGAVB3]) ]
+MMP14() => [ MMP14(Cat[.]) v MMP14(Cat[c.TGFB1]) v MMP14(Cat[y.CD44]) v MMP14(Cat[Cter.FBN1]) v MMP14(Cat[Nter.TIMP2]) v MMP14(Cat[Nter.MMP2]) v MMP14(Cat[Nter.TIMP3]) v MMP14(Cat[d.COL1]) v MMP14(Cat[e.FN1]) ]
+MMP14() => [ MMP14(state{latent}[.]) v MMP14(state{active}[.]) ]
+TIMP1() => [ TIMP1(Nter[.]) v TIMP1(Nter[Cat.MMP2]) v TIMP1(Nter[Cat.MMP9]) ]
+TIMP2() => [ TIMP2(Cter[.]) v TIMP2(Cter[PEX.MMP2]) ]
+TIMP2() => [ TIMP2(Nter[.]) v TIMP2(Nter[Cat.MMP14]) v TIMP2(Nter[Cat.MMP2]) ]
+TIMP3() => [ TIMP3(Nter[.]) v TIMP3(Nter[Cat.MMP14]) v TIMP3(Nter[Cat.MMP2]) v TIMP3(Nter[Cat.MMP9]) v TIMP3(Nter[Cat.ADAMTS4]) ]
+CD44() => [ CD44(y[.]) v CD44(y[Cat.MMP14]) ]
+CD44() => [ CD44(x[.]) v CD44(x[a.MMP9]) ]
+BMP1() => [ BMP1(Cat[.]) v BMP1(Cat[x.LTBP1]) ]
+HS() => [ HS(x[.]) v HS(x[HSBS.FBN1]) ]
+HS() => [ HS(a[.]) v HS(a[hinge.LTBP1]) ]
+GENE_COL1() => [ GENE_COL1(x{hidden}[.]) v GENE_COL1(x{visible}[.]) ]
+GENE_DCN() => [ GENE_DCN(x{hidden}[.]) v GENE_DCN(x{visible}[.]) ]
+GENE_MMP2() => [ GENE_MMP2(x{hidden}[.]) v GENE_MMP2(x{visible}[.]) ]
+
+------------------------------------------------------------
+* Relational properties:
+------------------------------------------------------------
+TGFB1(state{latent}[.]) => TGFB1(a[.],state{latent}[.])
+MMP2(Cat[e.FN1]) => MMP2(Cat[e.FN1],state{active}[.])
+MMP2(Cat[e.FN1]) => MMP2(Cat[e.FN1],PEX[.])
+MMP2(Cat[Nter.TIMP1]) => MMP2(Cat[Nter.TIMP1],state{active}[.])
+MMP2(Cat[Nter.TIMP3]) => MMP2(Cat[Nter.TIMP3],state{active}[.])
+MMP2(Cat[Nter.TIMP2]) => MMP2(Cat[Nter.TIMP2],state{active}[.])
+MMP2(Cat[y.DCN]) => MMP2(Cat[y.DCN],state{active}[.])
+MMP2(Cat[Cter.FBN1]) => MMP2(Cat[Cter.FBN1],state{active}[.])
+MMP2(Cat[z.TGFB1]) => MMP2(Cat[z.TGFB1],state{active}[.])
+MMP14(state{latent}[.]) => [ MMP14(Cat[.],state{latent}[.]) v MMP14(Cat[Nter.TIMP2],state{latent}[.]) ]
+MMP14(state{active}[.]) => MMP14(a[.],state{active}[.])
+------------------------------------------------------------
+* Properties in connected agents
+------------------------------------------------------------
+------------------------------------------------------------
+* Properties of pairs of bonds
+------------------------------------------------------------
+TGFB1(LSKL[KRFK.THBS1],VLAL[WxxW.THBS1]) => TGFB1(LSKL[1],VLAL[2]),THBS1(KRFK[1],WxxW[2])
+
+THBS1(KRFK[LSKL.TGFB1],WxxW[VLAL.TGFB1]) => THBS1(KRFK[2],WxxW[1]),TGFB1(LSKL[2],VLAL[1])
+------------------------------------------------------------
+* Properties of counters
+------------------------------------------------------------
+execution finished without any exception

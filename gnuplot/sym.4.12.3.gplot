@@ -1,0 +1,23 @@
+set xlabel '$t$ '
+set ylabel '$\text{Probabilités}$'
+set title 'Distrubution des états VS Temps'
+set term epslatex linewidth 5
+set autoscale
+set xrange [0.:1.]
+set yrange [0.:1.]
+set output 'generated_pictures/sym.4.12.3.tex'
+plot 'octave/sym.4.12.3/sym.data' using 1:25 title '$\petit{0\text{ dimère}}$' w l lt rgb "purple"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3.red/sym.data' using 1:2 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3/sym.data' using 1:26 title '$\petit{1\text{ dimère}}$' w l lt rgb "red"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3.red/sym.data' using 1:3 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3/sym.data' using 1:27 title '$\petit{2\text{ dimères}}$' w l lt rgb "blue"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3.red/sym.data' using 1:4 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3/sym.data' using 1:28 title '$\petit{3\text{ dimères}}$' w l lt rgb "green"
+set output 'generated_pictures/sym.4.12.3.tex'
+replot 'octave/sym.4.12.3.red/sym.data' using 1:5 title "" w l dt (30,30,30,30,30,30) lt rgb "black"

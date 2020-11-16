@@ -1,0 +1,367 @@
+\newcommand{\scalefactor}{0.29}
+
+\chapter{Graphes à sites}
+
+\label{S.graphes}
+La section présente décrit la notion de graphe à sites, qui permettra de représenter à la fois les différents états possibles pour les systèmes modélisés, mais aussi, les motifs qui seront utilisés dans la section \ref{S.règles} pour décrire, grâce à des règles de réécriture, l'évolution de l'état de ces systèmes.
+
+
+
+\section{Signature}
+
+
+\begin{figure}
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/contact_map.pdf}}
+\caption{Une carte de contacts. Elle définit la signature d'un modèle en donnant la liste de toutes les sortes de protéines, leurs différents sites d'interaction, les différents états internes que peuvent prendre ces sites et les différentes liaisons potentielles entre ces sites.}
+\label{F.contactmap}
+\end{figure}
+
+En Kappa, il faut tout d'abord définir la signature des modèles.
+La signature d'un modèle décrit tous les ingrédients qui peuvent intervenir dans celui-ci. Elle peut être représentée graphiquement par une \index{carte de contacts}{\emph{carte de contacts}}, comme celle dessinée en  Fig.~\ref{F.contactmap}. Une carte de contacts comprend des {{\noeud}s} pour représenter les différentes \index{sorte de protéines}{\emph{sortes de protéines}}. Ces {{\noeud}s} sont nommés et adoptent des formes et des couleurs variées pour les distinguer plus facilement. Chaque sorte de protéines est associée à un ensemble de \index{site d'{interaction}}{\emph{sites d'interaction}}. Ces sites sont représentés en périphérie de chaque sorte de protéines par des cercles colorés et nommés, eux-aussi. En Kappa, une sorte de protéines donnée ne peut avoir deux sites portant le même nom. Chaque site d'interaction est associé à un ensemble de pastilles colorées qui peuvent servir à représenter son \index{état d'activation}{\emph{état d'activation}}, comme par exemple le fait d'être -- ou non --
+phosphorylé ou comme le fait d'être méthylé -- ou non. Un état d'activation peut aussi éventuellement servir à représenter la localisation d'une occurrence d'une protéine au sein d'un ensemble fini et fixe de compartiments cellulaires. Les sites d'interaction peuvent également porter un \index{état de liaison}{\emph{état de liaison}}~: les sites qui portent le symbole {$\free$} peuvent potentiellement rester libre~; la carte de contacts contient aussi des arcs non-orientés entre les sites qui peuvent potentiellement être liés deux à deux. En particulier, un site peut être lié à plusieurs sites dans la carte de contacts (il sera expliqué plus tard que de telles liaisons sont en compétition). Par ailleurs, un site peut être lié à lui-même dans une carte de contacts (il sera expliqué plus tard que ceci signifie que deux sites de deux occurrences  différentes d'une même sorte de protéines peuvent être liés entre-eux).
+
+
+\begin{example}%
+En Fig.~\ref{F.contactmap} est donné un exemple de carte de contacts qui correspond  aux premières interactions qui interviennent dans l'activation du facteur de croissance de l'épiderme.
+Cet exemple est inspiré d'un modèle
+BNGL disponible dans la littérature \cite{DBLPjournals/bioinformatics/BlinovFGH04}. Ce modèle a été étendu pour décrire la liaison asymétrique entre les récepteurs \agentfont{EGFR} et traduit en Kappa.
+Cette carte introduit cinq sortes de protéines~: des ligands \agentfont{EGF}, des récepteurs membranaires \agentfont{EGFR}, des protéines d'échafaudage \agentfont{ShC}, des protéines de transport  \agentfont{Grb2} et des protéines cibles \agentfont{Sos} (cette dernière sera ensuite phosphorylée ce qui initiera les étapes suivantes de la cascade d'interactions).
+Chaque occurrence du ligand \agentfont{EGF} a un seul site qui est nommé \sitefont{r}~; chaque occurrence du récepteur membranaire \agentfont{EGFR} a six sites qui sont nommés respectivement \sitefont{l}, \sitefont{r}, \sitefont{c}, \sitefont{n}, \sitefont{Y48} et \sitefont{Y68}~; chaque occurrence de la protéine d'échafaudage \agentfont{ShC} dispose de deux sites qui sont nommés respectivement \sitefont{Y7} et \sitefont{pi}~; chaque occurrence de la protéine de transport \agentfont{Grb2} a deux sites qui sont respectivement nommés \sitefont{a} et \sitefont{b}~; enfin chaque occurrence de la protéine cible \agentfont{Sos} a un seul site qui est nommé \sitefont{d}.
+Seuls les sites \sitefont{Y48} et \sitefont{Y68} des occurrences de la protéine \agentfont{EGFR} et le site \sitefont{Y7} des occurrences de la protéine \agentfont{ShC} portent un état interne. Ces sites sont annotés par deux pastilles colorées, une blanche et une noire.
+La pastille blanche indique que ces sites peuvent être dans l'état non-phosphorylé, alors que la noire indique que ces sites peuvent être dans l'état phosphorylé.  De plus, chaque site peut être libre (symbole $\free$) ou lié. Les liaisons possibles entre sites sont entre
+le site \sitefont{r} d'une occurrence de la protéine \agentfont{EGF} et le site \sitefont{l} d'une occurrence de la protéine \agentfont{EGFR}~; entre
+les sites \sitefont{r} de deux occurrences  différentes de la protéine \agentfont{EGFR}~; entre le site \sitefont{c} et le \sitefont{n} des occurrences de la protéine \agentfont{EGFR} (il sera bientôt expliqué que la carte de contacts ne précise pas si ce doit être entre deux occurrences différentes de la protéine \agentfont{EGFR})~;
+entre le site \sitefont{Y48} d'une occurrence de la protéine \agentfont{EGFR} et le site \sitefont{pi} d'une occurrence de la protéine \agentfont{ShC}~; entre le site \sitefont{a} d'une occurrence de la protéine \agentfont{Grb2} et le site  \sitefont{Y68} d'une occurrence de la protéine \agentfont{EGFR}~; entre le site \sitefont{a} d'une occurrence de la protéine \agentfont{Grb2} et le site \sitefont{Y7} d'une occurrence de la protéine \agentfont{ShC} (il y a donc conflit entre ces deux liaisons potentielles)~;
+enfin entre le site \sitefont{b} d'une occurrence de la protéine \agentfont{Grb2} et le site \sitefont{d} d'une occurrence de la protéine \agentfont{Sos}.
+\end{example}
+
+\section{Complexes biochimiques}
+
+
+\begin{figure}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/species.pdf}}
+\caption{Un complexe biochimique. Il contient plusieurs occurrences de protéines. Chaque occurrence  documente l'ensemble de ses sites d'interaction. Les sites qui peuvent porter un état interne en ont un. Par ailleurs, les sites sont soit libres, soit liés deux à deux.}
+\label{F.complexe}
+\end{figure}
+
+Les modèles Kappa décrivent l'évolution d'une soupe de \index{complexe biochimique}{complexes biochimiques}.
+Un complexe biochimique est formé de plusieurs occurrences de protéines. Chaque occurrence d'une protéine est associée à un ensemble de sites d'interaction. Chaque site peut éventuellement porter un état d'activation, mais un seul.
+De ce fait, si un site peut être activé de deux manières différentes, avec un état de
+phosphorylation et un état de
+méthylation par exemple, ou si un site peut être doublement activé, doublement
+phosphorylé par exemple, il est important de définir une pastille différente pour toutes les combinaisons potentielles d'états  de ce site. Enfin, chaque site doit être soit libre, soit lié à exactement un autre site. Contrairement à la carte de contacts, un site ne peut pas être lié à lui-même dans un complexe biochimique. De plus, un site ne peut pas être lié simultanément à deux sites. Un complexe biochimique forme un graphe connexe, ce qui signifie qu'il est possible de passer de n'importe quelle occurrence de protéines  à n'importe quelle autre, en suivant zéro, un ou plusieurs liens.
+
+
+
+\begin{example}%
+En Fig.~\ref{F.complexe} est donné un exemple de complexe biochimique.
+Ce complexe est formé de deux occurrences du ligand \agentfont{EGF}, de deux occurrences du récepteur membranaire \agentfont{EGFR}, de deux occurrences de la protéine d'échafaudage \agentfont{ShC}, de deux occurrences de la protéine de transport \agentfont{Grb2} et d'une occurrence de la protéine \agentfont{Sos}.
+Chaque occurrence du récepteur membranaire est liée au site \sitefont{r} d'une occurrence du ligand par son site \sitefont{l}. Les occurrences de récepteur forment un
+dimer grâce à une double liaison, une liaison symétrique par leurs sites \sitefont{r} respectifs et une liaison asymétrique entre le site \sitefont{c} de l'un et le site \sitefont{n} de l'autre.
+L'occurrence du récepteur membranaire dont le site \sitefont{c} est lié a son site \sitefont{Y68} phosphorylé et libre, alors que son site \sitefont{Y48} est
+phosphorylé et lié au site \sitefont{pi} d'une occurrence de la  protéine d'échafaudage. Le site \sitefont{Y7} de cette occurrence de la protéine d'échafaudage est phosphorylé et lié au site \sitefont{a} d'une occurrence de la protéine de transport dont le site \sitefont{b} est lié au site \sitefont{d} d'une occurrence de  la protéine \agentfont{Sos}. L'autre occurrence du récepteur a son site \sitefont{Y48} phosphorylé et lié au site \sitefont{pi} de l'autre occurrence de la protéine d'échafaudage. Le site \sitefont{Y7} de cette occurrence de la protéine d'échafaudage n'est ni phosphorylé, ni lié à un autre site. Enfin, le site \sitefont{Y68} de cette seconde occurrence du récepteur membranaire est lié au site \sitefont{a} de l'autre occurrence de la protéine de transport. Celle-ci a son site \sitefont{b} libre.
+\end{example}
+
+
+
+La signature d'un modèle restreint l'ensemble des complexes biochimiques de ce modèle. Tous les complexes biochimiques qui sont corrects du point de vue de la syntaxe ne sont ainsi pas adéquats. Ce rôle est assuré par la carte de contacts, qui d'une part, donne la liste de tous les sites d'interaction de chaque sorte de protéines en indiquant lesquels peuvent porter un état de liaison et un état d'activation et d'autre part, résume l'ensemble des états potentiels de ces sites.   Plus précisément, toute occurrence de protéines dans un complexe biochimique doit mentionner les mêmes sites que le {\noeud} correspondant dans la carte de contacts. De plus, un site dont le site correspondant dans la carte de contacts admet au moins un état d'activation doit nécessairement avoir un état d'activation. Il en est de même pour l'état de liaison. Ces contraintes assurent que l'état de chaque occurrence de protéines d'un complexe biochimique est entièrement défini. Trois contraintes supplémentaires assurent que l'état des sites est conforme à la carte de contacts~: premièrement, un site ne peut porter un état d'activation que si le site correspondant dans la carte de contacts porte également cet état d'activation~;  deuxièmement, un site ne peut être libre que si le site correspondant dans la carte de contacts peut l'être lui-aussi~; troisièmement, deux sites ne peuvent être liés que si les deux sites correspondants le sont également dans la carte de contacts. Ces trois dernières contraintes peuvent se formaliser par le fait que chaque complexe biochimique se projette sur la carte de contacts : ainsi la fonction qui associe à chaque {\noeud} d'un complexe biochimique l'unique {\noeud} de la même sorte dans la carte de contacts doit être un \index{homomorphisme}{\emph{homomorphisme}}. En d'autres termes, la carte de contacts peut être vue comme un repliage de tous les complexes biochimiques du modèle et chaque {\noeud} de la carte de contacts résume toutes les configurations possibles des protéines du type correspondant.
+
+
+\begin{figure}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/egfr_embed.pdf}}
+\caption{L'unique projection entre le complexe biochimique de la  Fig.~{\ref{F.complexe}} et la carte de contacts de la Fig.~{\ref{F.contactmap}}. Cette projection est obtenue en associant chaque occurrence de protéines de l'espèce biochimique à l'unique sorte de protéines correspondante dans la carte de contacts.}
+\label{F.projection}
+\end{figure}
+
+
+
+\begin{example}En Fig.~\ref{F.projection} est représentée la projection entre le complexe biochimique dessiné dans la Fig.~\ref{F.complexe} et la carte de contacts donnée en Fig.~\ref{F.contactmap}. Cette projection montre que ce complexe biochimique est compatible avec cette carte de contacts.\end{example}
+
+
+
+\section{Motifs}
+
+
+L'évolution des complexes biochimiques est décrite par des règles de réécriture. Celles-ci définissent à la fois les conditions qui doivent être réalisées pour qu'une interaction donnée puisse avoir lieu et les effets potentiels de cette interaction. Avant d'expliquer ce que sont ces règles de réécriture, il est nécessaire d'expliquer la notion de motifs qui permet donc de spécifier sous quelles conditions une interaction peut avoir lieu.
+
+Nous nous concentrons sur les motifs connexes. Des motifs plus élaborés peuvent être obtenus en juxtaposant plusieurs motifs connexes. Un \index{motif}{motif connexe} est une portion contigüe de complexe biochimique. De ce fait, il peut comporter zéro, une ou plusieurs occurrences  de chaque sorte de protéines. Chaque occurrence de protéines est associée à un ensemble de sites d'interaction. Chaque site peut éventuellement porter un état d'activation. Enfin chaque site peut être libre, lié sans que le site auquel il est lié ne soit précisé ou lié exactement à un autre site (différent de lui-même donc). L'état de liaison d'un site peut également ne pas être spécifié.
+
+
+\begin{figure}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/pattern.pdf}}
+\caption{Un motif connexe. Il contient plusieurs occurrences de protéines. Chaque occurrence de protéines documente un sous ensemble de ses sites d'interaction. Chaque site peut éventuellement  porter un état interne et éventuellement un état de liaison (en conformité avec la signature du modèle, donnée en Fig.~\ref{F.contactmap}). Comme état de liaison, un site  peut être libre, lié sans que le site partenaire  ne soit précisé ou être lié à un autre site.}
+\label{F.pattern}
+\end{figure}
+
+\begin{example}%
+En Fig.~\ref{F.pattern} est donné un exemple de motif connexe.
+ Ce motif est formé de deux occurrences du récepteur membranaire \agentfont{EGFR} et d'une occurrence de la protéine d'échafaudage \agentfont{ShC}. L'occurrence de la protéine d'échafaudage mentionne uniquement son site \sitefont{pi}. Celui-ci est lié au site \sitefont{Y48} d'une des deux occurrences du récepteur membranaire.
+ L'état d'activation de ce dernier site n'est pas précisé.
+ Cette occurrence du récepteur membranaire mentionne également son site \sitefont{Y68}, sans en préciser ni l'état interne ni l'état de liaison, et son site \sitefont{r}, lui-même lié au site \sitefont{r} de l'autre occurrence du récepteur membranaire. Cet autre occurrence mentionne également son site  \sitefont{Y48} qui est phosphorylé mais dont l'état de liaison n'est pas spécifié et son site \sitefont{l} qui est lié à un site qui n'est pas précisé.
+ \end{example}
+
+
+Comme c'était le cas pour les complexes biochimiques, la carte de contacts contraint les motifs que l'on peut écrire dans un modèle. Ainsi, une occurrence de protéines dans un motif ne peut comporter que des sites d'interaction qui sont associés à cette sorte de protéines dans la carte de contacts. Un site ne peut porter un état d'activation que si le site correspondant dans la carte de contacts admet cet état d'activation. Un site ne peut être libre que si le site correspondant peut être libre dans la carte de contacts. Un site ne peut être lié sans préciser à quel site que si le site correspondant est lié à au moins un site dans la carte de contacts. Enfin, deux sites ne peuvent être liés ensemble que si les deux sites correspondants sont liés ensemble dans la carte de contact. En d'autres termes, comme c'était le cas pour les complexes biochimiques,
+il doit être possible de projeter le motif sur la carte de contacts. Cela veut dire que la fonction qui associe à chaque {\noeud} d'un motif  l'unique {\noeud} de la même sorte dans la carte de contacts est un homomorphisme.
+
+\section{Plongements entre motifs}
+
+
+
+
+Un motif peut contenir plus ou moins d'information. En effet, il est possible d'ajouter des sites dans une occurrence de protéines qui ne mentionne pas tous ses sites. Par ailleurs, il est possible d'ajouter un état de liaison et/ou un état interne à un site qui en manque. Il est possible de préciser à quel site un site est lié quand le partenaire de celui-ci n'est pas précisé. Il est même possible de lier un site au site d'une nouvelle occurrence de protéines. Nous dirons alors que le premier motif apparait dans le second ou encore que le second motif contient une occurrence du premier.  Dans ce cas, la relation entre les occurrences de protéines du motif initial et celle du motif ainsi obtenu est formalisée par un plongement. Un \index{plongement}{plongement} d'un motif vers un autre motif est une fonction qui envoie chaque occurrence de protéines du premier motif vers une occurrence de protéines du second tout en préservant la structure des graphes à sites, c'est à dire les sortes de protéines, les sites qui sont mentionnés, les états internes et les états de liaisons qui sont documentés.
+
+Il est intéressant de remarquer que les complexes biochimiques sont des motifs connexes particuliers. Dans ces derniers, chaque occurrence de protéines décrit tous ses sites, avec un état interne et un état de liaison quand ils en ont un. Il n'est donc pas possible d'ajouter d'information dans les complexes biochimiques. Un complexe biochimique ne peut se plonger dans aucun autre motif connexe.
+\begin{figure}
+  \subfigure[Premier plongement.]{\label{F.emb1}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/embed.pdf}}}
+\subfigure[Second  plongement.]{\label{F.emb2}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/embed2.pdf}}}
+\caption{Deux plongements entre le motif donné dans la Fig.~\ref{F.pattern} et le complexe biochimique donné dans la Fig.~\ref{F.complexe}. En~\ref{F.emb1}
+l'occurrence de la protéine d'échafaudage est associée à l'occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre. En~\ref{F.emb2} l'occurrence de la protéine d'échafaudage est associée à l'occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est lié.
+}
+\label{F.embedding}
+\end{figure}
+
+\begin{example}Deux exemples de plongements sont donnés en Fig.~\ref{F.embedding}.
+Ce sont les seuls plongements entre ce motif et ce complexe biochimique.
+Dans le premier (voir en Fig.~\ref{F.emb1}) l'unique occurrence de la protéine d'échafaudage du motif est associée à l'occurrence de la protéine d'échafaudage du complexe biochimique dont le site \sitefont{Y7} est libre. L'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage du motif est associée à l'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre. Enfin, l'autre occurrence du récepteur membranaire du motif est associé à l'autre occurrence du récepteur membranaire du complexe biochimique.
+Il est possible de remarquer que le site \sitefont{l} de cette dernière occurrence du récepteur est lié dans le motif, sans que le site partenaire ne soit précisé, alors qu'il est explicitement lié au site \sitefont{r} d'une occurrence du ligand dans le complexe biochimique.
+Dans le second plongement  (voir en Fig.~\ref{F.emb2}) l'occurrence de la protéine d'échafaudage du motif est associée à l'occurrence de la protéine d'échafaudage du complexe biochimique dont le site \sitefont{Y7} est lié. L'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage du motif est associée à l'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est lié. Enfin, l'autre occurrence du récepteur membranaire du motif est associée à l'autre occurrence du récepteur membranaire du complexe biochimique.
+\end{example}
+
+Il est important de remarquer qu'un plongement d'un motif connexe vers un autre motif est entièrement caractérisé par l'image d'une occurrence de protéines. Pour avoir les autres associations, il suffit de suivre les liens et d'utiliser le fait qu'ils sont nécessairement préservés par le plongement. Cette propriété facilite la recherche d'occurrences de motifs dans les autres. Les graphes Kappa sont dits \index{rigidité}{rigides} \cite{DBLPconf/lics/DanosFFHK10,DBLPconf/wsc/PetrovFK12}.
+
+\chapter{Réécriture de graphes à sites}
+
+\label{S.règles}
+
+Les motifs vont permettre de spécifier l'évolution potentielle de l'état
+des systèmes modélisés en Kappa, grâce à des règles de réécriture.
+C'est l'objet de cette section.
+
+Afin de simplifier la présentation, seul un fragment du langage Kappa est présenté. En particulier, les règles de réécriture qui sont introduites dans cette section n'engendrent pas d'effets de bord. Un effet de bord est une transformation à l'extérieur du membre gauche des règles. Les effets de bords peuvent être dus à des sites libérés sans préciser à quels sites ils sont liés ou à des occurrences de protéines dégradées. Ces constructions n'ont pas été considérées afin de simplifier la présentation. Cela a permis de présenter tous les différents concepts de la syntaxe et de la sémantique de Kappa sous forme graphique.
+
+\section{Règles d'interaction}
+
+Les complexes biochimiques peuvent se transformer en appliquant des règles d'interaction. Une \index{règle d'interaction}{règle d'interaction} est définie par une paire de motifs, qui contiennent exactement les mêmes sortes de protéines. Le premier motif spécifie quelles conditions locales doivent être réalisées pour permettre à l'interaction de se produire. La différence entre ces deux motifs décrit quelle transformation résulte de cette interaction. Aussi le second motif d'une règle doit pouvoir être obtenu à partir du premier en changeant uniquement l'état interne et/ou de liaison de certains sites d'interaction.
+
+
+
+\begin{figure}
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Activation d'une occurrence du récepteur.]{%
+\label{F.activation}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/e+r.pdf}}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Désactivation d'une occurrence du récepteur.]{%
+\label{F.desactivation}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/e++r.pdf}}}
+\end{minipage}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Liaison symétrique]{%
+\label{F.liaison-symetrique}%
+   \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/r+r_cr.pdf}}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Déliaison du lien symétrique.]{%
+\label{F.deliaison-symetrique}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/r++r_cr.pdf}}}
+\end{minipage}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Liaison asymétrique.]{%
+\label{F.liaison-asymetrique}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/r+r_cn.pdf}}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Déliaison du lien asymétrique.]{%
+\label{F.deliaison-asymetrique}%
+   \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/r++r_cn.pdf}}}
+\end{minipage}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Phosphorylation d'une occurrence du récepteur.]{%
+\label{F.phospho}%
+   \centering\hspace*{1.3cm}%
+   \scalebox{\scalefactor}{\includegraphics{generated_pictures/r68-p.pdf}}\hspace*{1.3cm}\mbox{}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Déphosphorylation d'une occurrence du  récepteur.]{%
+\label{F.dephospho}%
+   \centering\hspace*{1.3cm}%
+   \scalebox{\scalefactor}{\includegraphics{generated_pictures/r68-u.pdf}}\hspace*{1.3cm}\mbox{}}
+\end{minipage}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Recrutement d'une occurrence de la protéine  transporteur.]{%
+\label{F.recrutement-transporteur}%
+ \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/g+r.pdf}}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Déliaison d'une occurrence de la protéine  transporteur.]{%
+\label{F.deliaison-transporteur}%
+ \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/g++r.pdf}}\mbox{}}
+\end{minipage}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.48\linewidth}
+\subfigure[Liaison d'une occurrence de la protéine transporteur à une occurrence de la protéine cible]{%
+\label{F.transport}%
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/g+sos.pdf}}}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\subfigure[Déliaison d'une occurrence de la protéine transporteur d'une occurrence de la protéine cible]{%
+\label{F.liberation}%
+ \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/g++sos.pdf}}\mbox{}}
+\end{minipage}
+\end{minipage}
+
+\caption{Règles d'interaction impliquées dans le recrutement d'une occurrence de la protéine cible par la voie de signalisation courte (sans passer par la protéine d'échafaudage).} 
+\label{F.dimerisation}
+\end{figure}
+
+\begin{example}Des exemples de règles d'interaction sont données  en Fig.~\ref{F.dimerisation}.
+Celles-ci décrivent les interactions qui sont impliquées dans le recrutement des occurrences de la protéine cible par les occurrences du récepteur membranaire par leur site \sitefont{Y68}, dans le modèle des premières étapes de l'acquisition du facteur de croissance de l'épiderme. Le recrutement par le site \sitefont{Y48} implique des règles d'interaction similaires, qui  ne seront donc pas détaillées.
+La colonne de gauche décrit les interactions qui font progresser le recrutement d'une occurrence de la protéine cible.
+La première étape est l'activation d'une occurrence du récepteur membranaire par une occurrence du ligand
+(voir en Fig.~\ref{F.activation}). En se liant à une occurrence du  ligand, une occurrence du récepteur change de conformation et peut alors établir une liaison symétrique avec une autre occurrence du récepteur qui doit pour cela être elle-même activée (voir en Fig.~\ref{F.liaison-symetrique}).
+Comme seules les occurrences du ligand peuvent se lier aux sites \sitefont{l} des occurrences du récepteur, il n'est pas nécessaire de mentionner les occurrences du ligand dans la règle. Il suffit d'écrire que les sites \sitefont{l} des deux occurrences du récepteur doivent être liés sans préciser à quels sites.
+Après cette étape, les deux occurrences du récepteur tiennent le même rôle. Pour les distinguer, une liaison asymétrique peut alors s'établir (voir en  Fig.~\ref{F.liaison-asymetrique}) entre le site $\sitefont{c}$ d'une des deux occurrences et le site $\sitefont{n}$ de l'autre occurrence. Le site $\sitefont{Y68}$ de l'occurrence du récepteur qui est liée par son site $\sitefont{c}$ peut alors se faire phosphoryler par l'autre occurrence du récepteur membranaire (voir en Fig.~\ref{F.phospho}). Cela change la conformation de cette occurrence du récepteur membranaire et lui permet de se lier à une occurrence de la protéine de transport
+(voir en Fig.~\ref{F.recrutement-transporteur}).  Indépendamment, les occurrences de la protéine de transport peuvent se lier aux occurrences de la protéine cible (voir en Fig.~\ref{F.transport}).
+
+Chacune de ces interactions est réversible. Cependant les interactions inverses ne peuvent s'effectuer que sous certaines conditions. Ces interactions sont décrites dans la colonne de droite.
+Les liaisons symétriques entre les occurrences du récepteur membranaire capturent les occurrences du ligand qui ne peuvent alors pas se libérer (voir en Fig.~\ref{F.desactivation}).
+Les liaisons asymétriques empêchent les liaisons symétriques de se briser
+(voir en Fig.~\ref{F.deliaison-symetrique}).
+Les liaisons asymétriques peuvent se briser sans condition (voir en  Fig.~\ref{F.deliaison-asymetrique}).
+La phosphorylation du site \sitefont{Y68} d'une occurrence du récepteur est bloquée quand ce site est lié (voir en Fig.~\ref{F.dephospho}).
+Les liaisons entre les occurrences du récepteur et les occurrences de la  protéine de transport d'une part, et celles entre les occurrences de la protéine de transport et celles de la protéine cible d'autre part, peuvent se défaire  sans condition
+(voir en Figs.~\ref{F.deliaison-transporteur} et \ref{F.liberation}).
+\end{example}
+
+
+
+Dans le langage complet, il est possible de détruire un lien entre deux occurrences de protéines en ne spécifiant qu'un seul des deux sites de liaisons. De plus, une règle peut également détruire des occurrences de protéines. Ces constructions peuvent induire des effets de bord, puisqu'appliquer de telles interactions est susceptible de libérer des sites qui ne sont pas décrits dans les membres gauches des règles correspondantes.
+Par ailleurs, le langage complet permet aussi de synthétiser de nouvelles occurrences de protéines.
+
+\section{Réactions induites par une règle d'interaction}
+
+Comme signalé précédemment, le membre gauche d'une règle d'interaction spécifie dans quel contexte cette interaction peut avoir lieu. Il est alors possible d'ajouter des contraintes sur les conditions d'application d'une règle en raffinant les motifs qui apparaissent dans les membres gauches et droits des règles exactement de la même manière. Une règle d'interaction qui ne peut plus être raffinée (sans ajouter de nouvelles composantes connexes) est alors appelée une \index{règle-réaction}{règle-réaction} \cite{Harmer-et-al-chaos2010}.
+
+\begin{figure}
+
+\subfigure[Premier raffinement.]{%
+\label{F.regles-reactions-a}
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/reaction_1_highlighted_diagram.pdf}\mbox{}}}
+
+\subfigure[Second raffinement.]{%
+\label{F.regles-reactions-b}
+\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/reaction_2_highlighted_diagram.pdf}\mbox{}}}
+\caption{Deux exemples de raffinements d'une même règle d'interaction en deux règles-réactions. Les différences entre ces deux raffinements sont mises en valeur par des cercles rouges (les deux occurrences de la protéine \agentfont{ShC} ont été échangées). Dans les deux cas, la règle-réaction est obtenue en ajoutant dans le membre gauche et dans le membre droit de la règle d'interaction exactement la même information sur le contexte d'application de la règle.}
+\label{F.regles-reactions}
+\end{figure}
+
+\begin{example}En Fig.~\ref{F.regles-reactions} est montré un exemple de deux raffinements d'une même règle d'interaction en deux règles-réactions. La règle d'interaction est celle qui permet de casser, en l'absence de lien asymétrique, le lien symétrique entre deux occurrences du récepteur membranaire (voir en  Fig.~\ref{F.deliaison-symetrique}).
+\begin{enumerate}
+\item   Dans le premier raffinement (voir en Fig.~\ref{F.regles-reactions-a}), la règle est appliquée à un dimer dont la première occurrence du récepteur est liée par son site \sitefont{Y48} à une occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre et phosphorylé et par son site \sitefont{Y68} à une occurrence de la protéine de transport elle-même liée à une occurrence de la protéine cible. La deuxième occurence du recepteur de ce  dimer est liée par son site  \sitefont{Y48} à une occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre et non-phosphorylé et par son site \sitefont{Y68} à une occurrence de la protéine de transport dont le site \sitefont{b} est libre.
+\item Dans le second (voir en Fig.~\ref{F.regles-reactions-b}), les deux occurrences de la protéine d'échafaudage ont été interverties.
+Ainsi, la règle est appliquée à un dimer dont la première occurrence du récepteur est liée par son site \sitefont{Y48} à une occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre et non-phosphorylé et par son site \sitefont{Y68} à une occurrence de la protéine de transport elle-même liée à une occurrence de la protéine cible. La seconde occurrence du  récepteur de ce dimer est liée par son site  \sitefont{Y48} à une occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est libre et phosphorylé et par son site \sitefont{Y68} à une occurrence de la protéine de transport dont le site \sitefont{b} est libre.
+\end{enumerate}
+Bien que les deux complexes biochimiques qui apparaissent dans les membres gauches de ces deux règles-réactions soient formés exactement des mêmes occurrences de protéines et dans les mêmes configurations, puisque seul l'agencement entre ces occurrences change,  il apparait que les deux règles-réactions obtenues ne produisent pas les mêmes complexes biochimiques.  Ceci justifie pleinement le choix, dans Kappa, de représenter la topologie des liens entre les occurrences de protéines.
+Sans celle-ci il est impossible de décrire fidèlement la séparation des occurrences de récepteurs, tout en respectant la distribution des différentes occurrences de protéines et de leurs configurations dans chacun des complexes biochimiques résultant de cette séparation.
+Par exemple, dans le langage BCS \cite{DBLPjournals/entcs/DedSTKSB16},
+les complexes biochimiques sont représentés par l'ensemble des occurrences de protéines qui les constituent, ainsi que leurs configurations, mais sans préciser la topologie des liens entre ces occurrences de protéines. Aussi il est impossible de représenter fidèlement la règle de déliaison qui est déssinée en Fig.~\ref{F.deliaison-symetrique} dans ce langage.
+\end{example}
+
+
+
+
+
+\section{Réseaux de réactions  sous-jacents}
+
+\label{section:reseaux_sous_jacent}
+Un ensemble de règles peut alors être traduit en un ensemble -- éventuellement infini -- de règles-réactions en remplaçant chaque règle d'interaction par l'ensemble des règles-réactions qui peuvent être obtenues comme raffinement de ces règles.
+
+Ensuite, quitte à nommer les différents complexes biochimiques qui peuvent intervenir dans les règles-réactions ainsi obtenues, nous pouvons assimiler ces règles-réactions à un réseau de réactions (éventuellement infini), dans lequel chaque réaction est spécifiée par une liste de réactifs et une liste de produits parmi un ensemble d'espèces biochimiques représentées uniquement par des noms (en passant sous silence leurs structures biochimiques). Ce réseau de réactions est défini de manière unique modulo le choix des noms associés  aux espèces  biochimiques.
+
+\begin{figure}
+\subfigure[Carte de contacts.]%
+{\label{F.toy.signature}\begin{minipage}{\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/contact_map_toy.pdf}\mbox{}}\end{minipage}}
+
+\subfigure[Règles d'interaction.]%
+{\label{F.toy.rules}\begin{minipage}{\linewidth}%
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_p_w.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_u_w.pdf}} \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_p_w.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_u_w.pdf}}\end{minipage}\hfill\mbox{}\smallskip
+\end{minipage}}
+\subfigure[Règles-réactions.]{\label{F.toy.rules-reactions}%
+\begin{minipage}{\linewidth}%
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_p_u.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_u_u.pdf}} \end{minipage}\hfill\mbox{}\smallskip
+
+
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_p_u.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_u_u.pdf}}\end{minipage}\hfill\mbox{}\smallskip
+
+
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_p_p.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_g_u_p.pdf}} \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_p_p.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_rule_d_u_p.pdf}}\end{minipage}\hfill\mbox{}\smallskip
+\end{minipage}}
+
+\subfigure[Dictionnaire.]{\label{F.toy.dictionaire}
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.245\linewidth}\centering A\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_u_u.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering B\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_u_p.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering C\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_p_u.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering D\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactor}{\includegraphics{generated_pictures/toy_p_p.pdf}}}\end{minipage}
+\end{minipage}}
+\subfigure[Réactions.]{\label{F.toy.reactions}
+\begin{minipage}{\linewidth}
+\hfill\begin{minipage}{0.345\linewidth}\centering A $\rightarrow$ C \end{minipage}\hfill
+  \begin{minipage}{0.345\linewidth}\centering C $\rightarrow$ A \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering
+A $\rightarrow$ B \end{minipage} \hfill\begin{minipage}{0.345\linewidth}\centering B $\rightarrow$ A \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering B $\rightarrow$ D \end{minipage}
+\hfill\begin{minipage}{0.345\linewidth}\centering D $\rightarrow$ B \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering
+C $\rightarrow$ D \end{minipage} \hfill\begin{minipage}{0.345\linewidth}\centering D $\rightarrow$ C \end{minipage}\hfill\mbox{}\smallskip\end{minipage}}
+\caption{Un modèle formé d'une carte de contacts et de quatres règles d'interaction et sa traduction sous forme réseau réactionnel.}
+\label{F.toy}
+\end{figure}
+
+\begin{example}Pour conclure cette section, nous détaillons la génération d'un réseau de réactions à partir d'un ensemble jouet de règles Kappa. Nous considérons un modèle avec une seule sorte de protéines qui admet deux sites, \sitefont{g} et \sitefont{d}, chacun pouvant être phosphorylé ou non. La signature du modèle est donnée par la carte de contacts qui est dessinée en Fig.~\ref{F.toy.signature}. Le phosphorylation et la déphosphorylation de chaque site dans une occurrence de protéines peut se faire indépendamment de l'état de l'autre site, ce qui est formalisé dans les quatre règles données en Fig.~\ref{F.toy.rules}. Ainsi ni les règles de phosphorylation, ni celles de déphosphorylation d'un site, ne mentionnent l'état de phosphorylation de l'autre site.
+
+Pour obtenir les règles-réactions associées à ce modèle jouet, il suffit d'expliciter dans quel contexte local les interactions peuvent se produire. Ainsi chaque règle Kappa donne ici lieu à deux règles-réactions selon que le site qui n'est pas mentionné dans la règle initiale est phosphorylé ou non. Ces règles-réactions sont données en Fig.~\ref{F.toy.rules-reactions}.
+
+La prochaine étape est de nommer les différents complexes biochimiques qui interviennent dans les règles-réactions ainsi obtenues. Une occurrence de protéines dont aucun site n'est phosphorylé, est appelée $A$, une occurrence de protéines dont seul le site \sitefont{d} est phosphorylé, est appelée $B$, une occurrence de protéines dont seul le site \sitefont{g} est phosphorylé, est appelée $C$ et une occurrence de protéines dont les deux sites sont phosphorylés, est appelée $D$. Les réactions données en Fig.~\ref{F.toy.reactions} sont obtenues en remplaçant chaque occurrence de complexe biochimique par son nom dans les règles-réactions.
+\end{example}
+
+
+
+Le choix d'une sémantique en terme de réseaux de réactions a été fait pour simplifier la présentation. C'était ainsi que le langage BNGL avait été implanté initialement \cite{DBLPjournals/bioinformatics/BlinovFGH04}. Une telle sémantique est toutefois assez peu utile en pratique, car un modèle Kappa engendre en général un trop grand nombre de réactions. Par contre, la sémantique de Kappa peut être formalisée directement, soit sous forme d'une algèbre de processus \cite{DBLPconf/vmcai/DanosFFK08,DBLPjournals/ijsi/FeretKP13},
+soit dans un cadre catégorique \cite{DBLPconf/fsttcs/DanosFFHH12,DBLPjournals/entcs/Feret15}. La première méthode est plus opérationnelle alors que la seconde abstrait au contraire beaucoup de détails. Il faut cependant noter que les cadres catégoriques usuels de la réécriture de graphes, que ce soit par push-out simples \cite{DBLPjournals/tcs/Lowe93}, push-out doubles
+\cite{DBLPconf/gg/CorradiniMREHL97} ou sesqui-pushout
+\cite{DBLPconf/gg/CorradiniHHK06}) ne représentent pas fidèlement les effets de bord avec la définition usuelle des plongements entre graphes à sites. Deux approches connues permettent d'y remédier. Il est possible soit de changer la définition des plongements
+\cite{DBLPconf/fsttcs/DanosFFHH12,DBLPjournals/entcs/Feret15}, soit d'enrichir les objets de la catégorie par des contraintes \cite{DBLPjournals/corr/abs-1904-09322}.
+
+La simulation d'un modèle Kappa opère directement par réécriture du graphe qui représente l'état du système, sans avoir à considérer le réseau de réactions sous-jacent
+\cite{DBLPconf/aplas/DanosFFK07,DBLPconf/esop/BoutillierEK17}.

@@ -1,0 +1,332 @@
+\chapter{Introduction}
+
+
+\section{Contexte et motivations}
+
+Décrire et analyser les systèmes à grande échelle et fortement combinatoires qui sont issus de certains modèles mécanistiques de biologie des systèmes est encore hors de portée de l'état de l'art.
+Dans de tels modèles, le comportement individuel des occurrences de protéines, qui peuvent établir des liaisons et modifier leur capacité d'interaction, est influencé par des compétitions pour des ressources communes. De plus, les occurrences de protéines peuvent former une grande diversité de complexes biochimiques différents. La concurrence entre des interactions à différentes échelles de temps génère des boucles de rétro-actions non linéaires qui contrôlent l'abondance de ces complexes biochimiques. Enfin, ces systèmes font intervenir des interactions entre de très petites molécules, comme des ions ou des ligands et des complexes biochimiques gigantesques comme les brins d'acide désoxyribonucléique, le ribosome,
+ou le signalosome. Comprendre comment le comportement collectif des populations de protéines qui définit le phénotype, est engendré par le comportement individuel des occurrences de ces protéines reste un problème largement ouvert et un enjeu crucial.
+
+Alors que les progrès technologiques permettent d'obtenir rapidement une quantité toujours plus importante de détails  à propos des interactions mécanistiques potentielles entre les occurrences de protéines, et ce, à un prix très accessible, la communauté scientifique est encore bien loin de comprendre globalement comment le comportement macroscopique des systèmes dans leur ensemble émerge de ces interactions. C'est l'objectif annoncé de la biologie des systèmes. Mais ce but est sans espoir à moins que des méthodes spécifiques et innovantes pour décrire ces systèmes complexes et analyser leur propriété ne soient conçues. Bien entendu, ces méthodes devront passer à l'échelle de la très grande quantité d'informations qui est publiée dans la littérature à un rythme qui augmente de manière exponentielle.
+
+\section{Les langages de modélisation de systèmes d'interactions moléculaires}
+
+
+Les langages formels ont été beaucoup utilisés pour décrire des modèles d'interactions mécanistiques entre occurrences de protéines. Ils procurent des outils mathématiques  pour traduire  ces interactions et définir rigoureusement le comportement des systèmes ainsi représentés  grâce à un choix de sémantiques qualitatives, stochastiques ou différentielles.
+
+Les langages tels que les réseaux réactionnels  \cite{Feinberg} ou les réseaux de Petri classiques  \cite{Heiner2004}, se basent sur le paradigme de la réécriture multi-ensemble. Les interactions consistent à consommer des réactifs en échange de produits. Des constantes cinétiques permettent de préciser soit la vitesse, soit la fréquence moyenne -- selon le choix de la sémantique -- d'application des différentes réactions. Ceci les rend très utiles pour décrire et formaliser le comportement de systèmes d'interactions de petite ou moyenne taille. Cependant, ces langages peinent à représenter de grands modèles car ils ont besoin d'un nom (ou d'un emplacement dans le cas des réseaux de Petri) par type de complexes biomoléculaires.
+
+Des langages de plus haut niveau, inspirés des différents paradigmes de programmation, tels que les tableaux d'états à messages \cite{Damm2001}, les automates communicants \cite{Plateau1985SSP317786.317819}, les algèbres de processus \cite{regev01,Ciocchetta20093065}, les langages orientés objet \cite{Dematte2008}, les réseaux de Petri colorés
+\cite{Gao2011MAM2037509.2037538} et la réécriture de graphes à sites
+ \cite{Danos200469,CPLXCPLX20074,DBLPjournals/entcs/AndreiK08,DBLPconf/esop/JohnLNV11}, exploitent le fait que les interactions dépendent généralement de conditions locales sur les configurations des occurrences de protéines au sein des complexes biochimiques.  Ces langages permettent ainsi de traduire les systèmes d'interactions entre les occurrences de protéines de manière plus parcimonieuse~: seuls les détails qui importent pour une interaction donnée sont mentionnés pour décrire cette interaction. %Ainsi, chaque règle  peut donner lieu à un très grand nombre, voire une infinité, de réactions entre des complexes biochimiques. %Si cela résout le problème de la représentation des interactions, il reste cependant à calculer
+
+Il est important de distinguer les approches basées sur les agents de celles basées sur les règles de réécriture. Dans les approches basées sur les agents, chaque entité, que ce soit un processus \cite{Ciocchetta20093065} ou un objet \cite{Dematte2008}, doit contenir la description de tous ses comportements possibles. Les changements entre les configurations des différentes entités se synchronisent par le biais de règles de communication.
+Ces règles, généralement en très petit nombre, définissent la sémantique opérationnelle des langages. Il est possible de conditionner le comportement d'un agent à des propriétés de l'état d'un autre agent auquel cet agent serait lié, mais cela nécessite de recourir à des processus fictifs pour aller chercher cette information. Cette astuce  était en fait déjà utilisée dans les premiers modèles décrits en $\pi$-calcul \cite{regev01}. Cependant, en général, les approches basées sur les agents donnent lieu à des systèmes de processus à états finis  \cite{DBLPjournals/ijsi/Kahramanogullari13}. Ceci permet d'étudier leur comportement  à l'aide d'outils de vérification symbolique de modèles comme PRISM \cite{DBLPconf/cav/KwiatkowskaNP11}.
+
+Lorsque les occurrences des protéines admettent trop de configurations différentes ou lorsque leurs capacités d'interaction dépendent trop des occurrences des protéines  auxquelles elles sont liées, les approches fondées sur les agents ne passent pas à l'échelle, tant au niveau de la description des modèles que pour le calcul de leurs propriétés.
+
+Dans les approches fondées sur les règles, les modèles sont définis par des règles d'interaction. Chaque règle définit sous quelles conditions sur les configurations des agents une interaction peut avoir lieu et quels sont les effets de cette interaction. Ainsi l'état des agents ne définit pas une fois pour toute les capacités d'interaction de cet agent. Ce sont les règles du modèle qui le font.
+Il n'est pas non plus nécessaire de donner la liste exhaustive de toutes les configurations des agents. Les règles peuvent se contenter de ne mentionner que les parties importantes des agents pour l'interaction qu'elles décrivent. Les approches fondées sur les règles passent mieux à l'échelle et facilitent la mise à jour des modèles. De plus, comme il n'est pas nécessaire de spécifier explicitement toutes les capacités d'interaction des occurrences des protéines, elles encouragent à une modélisation sans \emph{a priori}  où les interactions émergent des règles lors de la conception du modèle.
+
+Le calcul des ambients
+\cite{DBLPconf/fossacs/CardelliG98,DBLPjournals/tcs/CardelliG00}, des bioambients  \cite{Regev2004BAB1041031.1041038}
+et celui des membranes \cite{DBLPconf/cmsb/Cardelli04} sont un peu particuliers. Ils permettent de décrire des boîtes  ou des  compartiments, qui peuvent être arbitrairement imbriqués au sein d'une arborescence, alors que des agents, contenus dans les boites dans le cas des ambients, ou dans leurs parois dans le cas des membranes, permettent à ces compartiments de se déplacer ou de se  fusionner. Les capacités d'interaction des agents peuvent alors dépendre de leur localisation dans la hiérarchie des compartiments.
+La calcul projectif des membranes \cite{DBLPconf/cmsb/DanosP04} représente plus fidèlement la disposition des compartiments au sein d'une cellule, en rendant  la description de l'état du système indépendante du choix de la racine de l'arborescence des compartiments.
+
+{
+\newcommand{\scalefactorintro}{0.3}
+
+
+\begin{figure}[tb]
+  \subfigure[Un graphe à sites.]{%
+  \label{fig:intro:compound}
+  \begin{minipage}{0.35\linewidth}\vspace*{-0.3cm}
+
+  \scalebox{\scalefactorintro}{\includegraphics{generated_pictures/species.pdf}}\smallskip
+\end{minipage}}\hspace*{1.2cm}
+\begin{minipage}{0.64\linewidth}%
+\subfigure[Une règle pour lier des occurrences de protéines.]{%
+    \label{fig:bindingrule}
+    \centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/er+er_cr.pdf}}}%
+
+\subfigure[Une règle pour faire glisser des occurrences de protéines.]{%
+\label{fig:glidingrule}
+\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/dna_rule.pdf}}
+}
+\end{minipage}
+\caption{En~\ref{fig:intro:compound} est dessiné un graphe à site.
+Il s'agit d'un complexe biochimique composé de deux occurrences du ligand (\agentfont{EGF}), de deux occurrences du récepteur membranaire (\agentfont{EGFR}), d'une occurrence de la protéine d'échafaudage (\agentfont{Shc}), de deux occurrences de la protéine de transport (\agentfont{Grb2}) et d'une occurrence de la protéine \agentfont{Sos}. En~\ref{fig:bindingrule} est donné un exemple de règle de liaison. Deux occurrences du récepteurs membranaires (\agentfont{EGFR}), lorsqu'ils sont tous deux activés par une liaison avec des occurrences du ligand (\agentfont{EGF}), peuvent se lier. Les autres sites sont omis car ils ne jouent aucun rôle dans cette interaction.  En~\ref{fig:glidingrule} est donnée une règle de déplacement.
+Une occurrence de l'enzyme Glycolase (\agentfont{DG}) peut glisser dans les deux directions (selon une marche aléatoire) le long d'un brin d'ADN.}
+\end{figure}
+
+
+\section{Le langage Kappa}
+
+Les langages de réécriture de graphes à sites \cite{Danos200469,CPLXCPLX20074,DBLPjournals/entcs/AndreiK08,DBLPconf/esop/JohnLNV11} permettent de représenter de manière transparente les réseaux d'interactions entre des occurrences de protéines grâce à leur syntaxe qui est fortement inspirée de la chimie.
+
+Dans Kappa, chaque complexe biochimique est représenté par un graphe à sites. Un exemple de graphe à sites est donné en Fig.~\ref{fig:intro:compound}. Dans un graphe à sites, des {\noeuds} qui représentent des occurrences de protéines, sont associés à une liste de sites d'interaction. Ces sites peuvent être libres ou liés deux à deux. En outre, certains sites portent une propriété, qui peut servir à représenter un niveau d'activation.
+Les interactions entre occurrences de protéines peuvent modifier leurs conformations en dépliant ou en repliant leurs chaînes de nucléotides, ce qui peut révéler ou cacher des sites d'interaction. Dans Kappa, la structure tri-dimensionnelle des occurrences de protéines n'est pas représentée explicitement. En revanche, les conditions pour qu'un site d'interaction soit visible sont
+spécifiées dans la description des interactions elles-mêmes.
+
+L'évolution d'un système Kappa se décrit grâce à des règles de réécriture hors-contexte.
+En Fig.~\ref{fig:bindingrule} est dessinée une règle pour la  formation de {dimers}. Deux récepteurs (\agentfont{EGFR}) qui sont tous deux liés à des ligands (\agentfont{EGF}) peuvent se lier entre eux pour former un dimer.
+En Fig.~\ref{fig:glidingrule} est donnée une autre règle issue d'un modèle de réparation de l'ADN, dans laquelle une enzyme, la Glycolase (\agentfont{DG}), peut glisser aléatoirement dans les deux sens, le long d'un brin d'ADN \cite{DBLPconf/cmsb/KohlerKV14}.
+
+Une règle peut être comprise de manière intentionnelle comme une transformation locale de l'état du système ou de manière extensionnelle comme l'ensemble, qu'il soit fini ou non, des réactions biochimiques qui peuvent être obtenues en spécifiant entièrement les différents contextes d'application de ces règles. De cet ensemble de réactions, diverses sémantiques peuvent être définies pour décrire le comportement des systèmes. Ces sémantiques peuvent être qualitatives, stochastiques ou différentielles comme pour le cas des réseaux réactionnels et des réseaux de Pétri (les sémantiques quantitatives --- stochastiques ou différentielles --- nécessitent d'associer une constante de temps à chaque règle). Il est toutefois possible de simuler un modèle Kappa directement, sans passer par le réseau réactionnel sous-jacent. La simulation consiste alors à itérer la boucle événementielle suivante (celle-ci  correspond à l'algorithme de Gillespie \cite{Gill77}). Étant donné l'état du système, représenté par un graphe à sites, l'ensemble de tous les événements possibles est calculé. Un événement consiste à appliquer une règle dans le graphe à une occurrence du motif qui constitue le membre gauche de cette règle. Chaque événement a une propension qui correspond à la constante de la règle correspondante.
+Le prochain événement est tiré au hasard selon une probabilité proportionnelle à sa propension, alors que le délai entre deux événements est tiré aléatoirement selon une loi exponentielle dont le paramètre est la somme des propensions de tous les événements potentiels du système. Il n'est pas raisonnable de recalculer la liste des événements potentiels à chaque fois après l'application d'une règle. Cet ensemble peut être mis à jour dynamiquement en tenant compte uniquement des nouveaux événements potentiels et des événements qui ne sont plus possibles du fait de l'application du dernier événement choisi \cite{DBLPconf/aplas/DanosFFK07}. Le simulateur actuel tire profit au maximum des sous-motifs communs dans  les motifs qui apparaissent dans le membre gauche des règles pour découvrir les nouveaux événements et retirer les événements devenus obsolètes plus rapidement \cite{DBLPconf/esop/BoutillierEK17}.
+
+Le langage Kappa souffre de plusieurs limites.
+Par exemple, dans Kappa, les sites d'interaction d'une même occurrence d'une  protéine doivent porter des noms différents~; par ailleurs, en ce qui concerne les propriétés géométriques, Kappa ne permet ni de représenter la structure tridimensionnelle des occurrences de protéines, ni leur répartition dans l'espace. Avoir des sites deux à deux différents dans chaque occurrence de protéines facilite grandement la recherche des occurrences des motifs dans les graphes, ce qui est non seulement crucial pour simuler les modèles de manière efficace, mais est aussi à la base de plusieurs constructions utilisées pour l'analyse statique et la réduction de modèles.  Certains langages lèvent cette contrainte soit directement comme dans les langages BNGL \cite{CPLXCPLX20074} et  m{\o}d \cite{DBLPconf/gg/AndersenFMS16},  soit indirectement en utilisant un codage sous forme d'hyperliens comme c'est possible dans le langage React(C) \cite{DBLPconf/esop/JohnLNV11}. Toutefois, l'efficacité des moteurs de simulation est fortement réduite quand de telles constructions sont utilisées. Pour ce qui est de la géométrie des protéines, les conditions liées aux conformations spatiales des protéines peuvent être encodées dans les règles de réécriture. Certaines extensions du langage permettent de représenter des contraintes sur la position relative des occurrences de protéines et des sites d'interaction dans les complexes biochimiques afin de restreindre l'ensemble des événements possibles à ceux qui satisfont ces contraintes \cite{geokappa}.
+Enfin, dans Kappa, la distribution des occurrences de protéines dans l'espace est passée sous silence. Il est fait l'hypothèse que les occurrences de protéines sont parfaitement mélangées. Il est donc impossible de retrouver les phénomènes d'encombrement qui peuvent être dus à des accumulations d'occurrences de protéines dans certaines régions de la cellule. De même, les gradients de concentration locaux qui pourrait être dus à la présence d'une occurrence d'une protéine d'échafaudage ne peuvent pas être représentés (en Kappa, chaque occurrence d'une protéine d'échafaudage n'agit qu'en maintenant des occurrences de protéines dans le même complexe biochimique, une fois libérée, ces occurrences de protéines ne sont pas supposées rester, même pour un court instant dans le même voisinage). Une solution partielle consiste à encoder en Kappa une grille pour représenter de manière discrète les positions potentielles des occurrences de protéines. Ensuite, celles-ci peuvent glisser le long de cette grille grâce à des règles implémentant la diffusion des occurrences de protéines.  Le langage SpatialKappa \cite{spatialkappa} permet d'utiliser ce procédé de manière transparente. Par ailleurs, le langage ML \cite{DBLPjournals/tomacs/HelmsWMU17} permet de représenter des modèles d'interactions entre occurrences de protéines qui peuvent se déplacer de manière continue dans un milieu. Il est possible de munir un modèle Kappa d'un ensemble de compartiments statiques. Toutefois, ceci ne permet pas de modéliser le transport d'occurrences de protéines par le biais de vésicules. La machine formelle cellulaire \cite{DBLPjournals/entcs/DamgaardHK12} répond à cet enjeu, sans toutefois fournir de moteurs de simulation efficaces.
+
+Les langages de réécriture de graphes à sites permettent de représenter les réseaux d'interactions entre occurrences de protéines, et ce, malgré leur forte combinatoire. Si le comportement de ces réseaux peut être formellement défini et simulé, des abstractions sont toutefois nécessaires pour calculer les propriétés du comportement collectif des populations de {protéines}.
+
+
+
+\section{Interprétation abstraite}
+
+\newcommand{\lfp}{\textit{lfp}}
+\newcommand{\concreteendo}{\mathbb{F}}
+\newcommand{\concretedomain}{D}
+\newcommand{\powerset}{\wp}
+\newcommand{\abstractdomain}{\concretedomain^{\sharp}}
+\newcommand{\abstractendo}{\concreteendo^{\sharp}}
+
+L'interprétation abstraite a été introduite il y a maintenant un peu plus de quarante ans comme un cadre mathématique pour établir des liens formels entre le comportement de programmes, vu à différents niveaux d'abstraction.
+Depuis, l'interprétation abstraite a été utilisée non seulement pour comparer différentes méthodes
+et algorithmes d'analyse statique \cite{DBLPjournals/entcs/Cousot97}, mais aussi pour développer des analyseurs statiques qui peuvent calculer automatiquement les propriétés sur le comportement des programmes
+\cite{DBLPconf/pldi/BlanchetCCFMMMR03,DBLPconf/foveoos/FahndrichL10}. L'interprétation abstraite s'est désormais développée dans l'industrie
+(entre autres, Amazon, Facebook, IBM, Google, MicroSoft et MathWorks ont chacune leurs propres analyseurs statiques basés sur l'interprétation abstraite).
+
+L'interprétation abstraite repose sur la démarche suivante.
+Le comportement d'un programme (ou d'un modèle) peut en général être décrit comme le plus petit point fixe  $\lfp\,\concreteendo$ d'un opérateur $\concreteendo$ agissant sur les éléments d'un ensemble appelé le domaine concret $\concretedomain$. Le domaine concret est habituellement l'ensemble des parties $\powerset(S)$ d'un ensemble d'éléments $S$, qui peuvent être des états, des traces de calcul, \emph{et cetera}. Une abstraction est alors vue comme un changement de granularité dans la description du comportement des programmes (ou des modèles) et ce changement de granularité peut être représenté en langage mathématique sous diverses formes telles qu'un opérateur de clôture supérieure, une famille d'idéaux, une famille de Moore ou une correspondance de Galois. Les correspondances de Galois se sont vite imposées comme l'outil le plus populaire pour décrire une interprétation abstraite. Un changement du niveau d'observation du comportement d'un programme (ou d'un modèle) peut ainsi être décrit en choisissant un ensemble $\abstractdomain$ de propriétés d'intérêt. C'est le domaine abstrait. Cet ensemble est ordonné par un ordre partiel $\sqsubseteq$. Chaque élément $a^{\sharp}$ de ce domaine abstrait représente intentionnellement l'ensemble des éléments concrets qui satisfont cette propriété. Cet ensemble est noté $\gamma(a^{\sharp})$. La fonction $\gamma$, ainsi définie, est croissante (si $a^{\sharp} \sqsubseteq b^{\sharp}$, alors
+$\gamma(a^{\sharp})\subseteq \gamma(b^{\sharp})$).
+Ainsi, l'ordre $\sqsubseteq$ représente le niveau d'information.
+
+Un élément abstrait $a^{\sharp}$ est dit être une abstraction d'un ensemble $a$ d'éléments concrets, si et seulement si $a$ est un sous-ensemble de l'ensemble $\gamma(a^{\sharp})$.
+Une correspondance de Galois est obtenue quand chaque sous-ensemble $a$ de l'ensemble $S$ admet une meilleure abstraction, c'est à dire, que pour chaque partie $a$ de l'ensemble $S$, il existe un élément abstrait, noté $\alpha(a)$ qui est d'une part une abstraction de l'ensemble $a$ et d'autre part, qui est plus petit (pour l'ordre $\sqsubseteq$) que n'importe quelle abstraction de l'ensemble $a$. Dans un tel cas, n'importe quelle fonction croissante $\abstractendo$ opérant sur le domaine abstrait $\abstractdomain$ et telle que $[\alpha\circ \concreteendo \circ \gamma](a^{\sharp}) \sqsubseteq \abstractendo(a^{\sharp})$
+ pour chaque élément abstrait $a^{\sharp}\in\abstractdomain$, admet un plus petit point fixe (pour l'ordre $\sqsubseteq$)
+ noté  $\lfp\,\abstractendo$. De plus, la concrétisation de ce plus petit point fixe est un sur-ensemble du plus petit point fixe de la fonction $\concreteendo$~; ainsi le comportement du programme ou du modèle peut être calculé dans le domaine abstrait au prix d'une perte potentielle d'information puisque le résultat final est un sur-ensemble de l'ensemble de tous les comportements possibles. Par construction, l'approche est correcte~: aucun comportement de la sémantique concrète n'est oublié. Par contre, quand le sur-ensemble ainsi calculé est un sur-ensemble strict, des comportements fictifs ont été introduits par l'analyse.
+
+ Le choix du domaine abstrait est crucial. Du point de vue de l'expressivité, le domaine abstrait doit permettre de décrire les propriétés d'intérêt des programmes (ou des modèles) ainsi que les propriétés intermédiaires qui sont nécessaires pour en établir la preuve de manière inductive. D'un point de vue algorithmique, ils doivent correspondre à des propriétés qui sont relativement simples à manipuler en machine. Enfin, la structure des chaînes croissantes d'éléments abstraits (pour l'ordre $\sqsubseteq$) est également importante pour que puissent être définis des opérateurs d'extrapolation précis, dans le cas où le domaine admettrait des chaînes croissantes infinies.
+
+ Plusieurs interprétations abstraites ont été proposées pour calculer automatiquement les propriétés des modèles en biologie des systèmes. Les premières ont naturellement été inspirées par les analyses de flot d'information \cite{DBLPconf/concur/BodeiDNN98,DBLPconf/sas/Feret00} et de dénombrement
+ \cite{DBLPconf/popl/NielsonN00,DBLPjournals/entcs/Feret02} dans le \!\mbox{ $\pi$-calcul} et le calcul des {ambients}. Ces analyses permettent de détecter avec précision dans quels compartiments des entités peuvent entrer dans des modèles-jouet de virus infectant des cellules. Elles trouvent également des exclusions mutuelles
+ \cite{DBLPconf/aplas/GoriL06,DBLPconf/lopstr/BodeiBGHL15}.
+ Les analyses de dénombrement permettent aussi souvent de retrouver les invariants correspondant à la conservation du nombre de chaque sorte de protéines dans les réseaux réactionnels lorsque la composition des complexes biochimiques n'est pas représentée explicitement \cite{DBLPconf/cmsb/Abou-JaoudeFT15,DBLPjournals/biosystems/Abou-JaoudeTF16}. Ces invariants sont aussi appelés invariants de places dans les réseaux de {Petri}.
+
+ Les modèles biologiques sont fortement concurrents et souffrent de l'explosion combinatoire dans le nombre d'entrelacements potentiels des différents événements possibles. L'interprétation abstraite a été utilisée pour oublier la séquentialité dans les traces d'exécution dans les processus de frappes \cite{DBLPjournals/entcs/PauleveMR11}, puis plus généralement pour les réseaux asynchrones discrets booléens ou multivalués \cite{DBLPjournals/entcs/FolschettePMR13}.
+ Dans les modèles réseaux booléens ou multivalués, l'interprétation abstraite a également été utilisée pour calculer une approximation des ensembles constituant des trappes \cite{DBLPconf/vmcai/CookFKP11,DBLPjournals/nc/KlarnerBS15}, dans lesquels les systèmes ne peuvent plus sortir une fois entrés. Ces ensembles  facilitent le calcul des trajectoires périodiques des modèles. Dans les modèles de réseaux métaboliques, l'interprétation abstraite a été utilisée pour décrire une analyse de dépendances, qui calcule l'impact potentiel de l'inhibition éventuelle d'une règle sur la concentration à l'équilibre des composants du système \cite{DBLPconf/vmcai/JohnNN13,DBLPconf/cmsb/AllartNV19}.
+
+L'interprétation abstraite peut servir à la calibration d'un modèle \cite{DBLPjournals/tcs/KolcakSHP19}, en réalisant une partition de l'espace
+des paramètres en trois régions~:
+une première région dans laquelle le modèle satisfait une propriété temporelle donnée par l'utilisateur, une seconde qui ne la satisfait pas et une troisième pour laquelle l'analyse n'a pu conclure si la propriété était satisfaite ou non.
+
+L'interprétation abstraite est également très utilisée pour le calcul des trajectoires des systèmes hybrides \cite{DBLPconf/cav/GrosuBFGGSB11}.
+
+
+
+\section{L'écosystème Kappa}
+
+Plusieurs outils pour analyser et manipuler des modèles Kappa sont présentés ici.
+
+\subsection{Analyses statiques}
+
+Un outil d'analyse statique \cite{DBLPconf/cmsb/BoutillierCCFLT18}, basé sur le cadre de l'interprétation abstraite, permet de calculer automatiquement certaines propriétés des modèles. Le but est d'améliorer la confiance dans les règles qui constituent le modèle.
+Il s'agit de retrouver des propriétés d'intérêt que le modélisateur pouvait, ou non, avoir en tête lors de la conception de son modèle ou bien de trouver des erreurs dans la modélisation.
+
+Cette analyse utilise un ensemble de motifs d'intérêt.
+Parmi ces motifs, l'analyse prouve que certains ne peuvent apparaître dans aucuns états potentiels du modèle. Les autres sont déclarés potentiellement accessibles : soit ils le sont effectivement, soit c'est une conséquence de la sur-approximation de l'analyse.
+
+Les motifs d'intérêt permettent de poser les questions intéressantes sur la structure biochimique des occurrences des complexes lors de l'exécution du modèle. Actuellement, l'analyse pose trois types de questions :
+Existe-t-il une relation entre l'état de plusieurs sites dans les occurrences d'une protéine ? Lorsque deux occurrences de protéines sont liées entre-elles, existe-t-il une relation entre l'état de leurs sites respectifs ? Est-ce qu'une occurrence d'une protéine peut être doublement liée à une autre occurrence d'une protéine, est-ce qu'une occurrence de protéines peut être liée à des occurrences différentes d'un même type de protéines ? La première catégorie est une analyse relationnelle classique. Elle permet, par exemple,  de détecter si un site ne peut être lié sans qu'un autre ne le soit ou de détecter si un site ne peut être lié sans être phosphorylé. La seconde est utile quand des sites fictifs permettent d'encoder la localisation des occurrences de protéines, il est alors possible de vérifier, chaque fois que deux occurrences de protéines sont liées, si elles se situent nécessairement  dans un même compartiment. Enfin, la troisième analyse la formation de  doubles  liaisons entre les occurrences de protéines. Le choix exact des questions posées par l'analyseur est fixé automatiquement suite à une inspection statique des règles du modèle.
+
+Le résultat final de l'analyse d'accessibilité est présenté à l'utilisateur sous deux formes.
+D'une part, les règles dont le membre gauche est en contradiction avec les motifs qui ont été prouvés inaccessibles par l'analyse sont mentionnées à l'utilisateur. D'autre part, les propriétés intéressantes sur la structure des complexes biochimiques sont listées sous la forme de lemmes de raffinement.
+
+Par exemple, les trois lemmes suivants~:
+\begin{itemize}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_c_bound.pdf}}\end{minipage} $\Longrightarrow$\begin{minipage}[c]{1.7cm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_cr_bound_c_bound.pdf}}\end{minipage}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_cr_bound.pdf}}\end{minipage} $\Longrightarrow$\begin{minipage}[c]{1.7cm}\hspace*{0mm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_egf_bound_cr_bound.pdf}}\end{minipage}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_cr_bound_c_bound.pdf}}\end{minipage} $\Longrightarrow$\begin{minipage}[c]{1.7cm}\hspace*{4mm}\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/r_cr_bound_c_bound_same.pdf}}\end{minipage}
+\end{itemize}
+informent l'utilisateur que (pour le premier) dans une occurrence du récepteur membranaire,
+le site \sitefont{c} ne peut être lié sans que le site \sitefont{r}  ne le soit également,
+que (pour le second) le site \sitefont{r} ne peut être lié sans que le site \sitefont{l} ne le soit aussi,
+et que (pour le troisième) quand une occurrence du récepteur membranaire a ses sites \sitefont{r} et \sitefont{c} tous deux liés, ils sont nécessairement liés tous deux à une même occurrence du récepteur membranaire.
+
+Un lemme de raffinement est ainsi présenté comme une implication entre un motif et une liste de motifs. Ici, les listes de motifs sont toutes réduites à un élément. Il faut interpréter une telle implication par le fait que toute occurrence du membre gauche de l'implication dans un état accessible peut se raffiner dans au moins un des motifs du membre droit.
+
+Lorsque l'utilisateur obtient des propriétés auxquelles il ne s'attend pas, il doit retourner à son modèle pour comprendre l'origine du problème. Les erreurs typographiques sont assez courantes. Il arrive aussi souvent que certaines parties du modèle manquent, il faut aller les compléter ou les remplacer par des règles fictives si l'information n'est pas disponible dans la littérature.
+Il se peut aussi que l'état initial du modèle ait été mal choisi.
+Enfin, les erreurs peuvent aussi être dues à des relations causales complexes. L'analyse statique peut alors être complétée par l'analyse causale pour comprendre comment les configurations inattendues se produisent.
+
+\subsection{Analyses causales}
+
+\newcommand{\au}{\incbox{0.56cm}{1.06cm}{generated_pictures/toy_u_w.pdf}}
+\newcommand{\ap}{\incbox{0.56cm}{1.06cm}{generated_pictures/toy_p_w.pdf}}
+\newcommand{\ua}{\incbox{0.56cm}{1.06cm}{generated_pictures/toy_w_u.pdf}}
+\newcommand{\pa}{\incbox{0.56cm}{1.06cm}{generated_pictures/toy_w_p.pdf}}
+
+\newcommand{\auu}{\incbox{0.56cm}{1.23cm}{generated_pictures/toy_u_u.pdf}}
+\newcommand{\app}{\incbox{0.56cm}{1.23cm}{generated_pictures/toy_p_p.pdf}}
+\newcommand{\aup}{\incbox{0.56cm}{1.23cm}{generated_pictures/toy_u_p.pdf}}
+\newcommand{\apu}{\incbox{0.56cm}{1.23cm}{generated_pictures/toy_p_u.pdf}}
+
+\newcommand{\scalefactorintrosquare}{0.2}
+
+
+La causalité est un outil très utile pour comprendre le comportement individuel des occurrences de protéines dans un modèle Kappa. Son  but est d'étudier en quoi certains événements ont été nécessaires pour que d'autres événements aient pu avoir lieu.
+
+Une trace causale est alors un ensemble d'événements dont certaines paires sont ordonnées par une relation de causalité. Celle-ci indique si l'application d'un événement a rendu possible l'application d'un autre. Un exemple de trace causale est donné en Fig.~\ref{F.story}.
+Il s'agit de l'ensemble des événements pour qu'une occurrence du  récepteur membranaire recrute une occurrence de la protéine \agentfont{Sos} par le biais de son site \sitefont{Y68}. Il faut tout d'abord activer deux occurrences du récepteur membranaire \agentfont{EGFR} en les liant à des occurrences du ligand \agentfont{EGF}. Les deux occurrences du récepteur peuvent alors établir une liaison symétrique, puis une liaison asymétrique ce qui permet de différencier  une des deux occurrences du récepteur membranaire. Le site \sitefont{Y68} de cette occurrence  peut alors être phosphorylé pour qu'il puisse se lier à une occurrence de la protéine de transport \agentfont{Grb2}. Indépendamment, cette occurrence de la protéine de transport peut s'être liée à une occurrence de la protéine \agentfont{Sos}.
+
+Dans cette trace, tous les événements sont nécessaires, mais d'autres \emph{scenarii} peuvent exister. Par exemple, les occurrences du récepteur membranaire peuvent recruter une occurrence de la protéine \agentfont{Sos} par le biais du site \sitefont{Y48}, ce qui donne lieu à une autre trace causale. Une trace causale décrit, en fait, un ensemble d'événements qui sont nécessaires dans un scénario potentiel.
+
+
+\begin{figure}%
+\begin{minipage}{\linewidth}  \hspace*{-5mm}\scalebox{0.35}{\includegraphics{flows/cflow0.pdf}}
+\end{minipage}
+  \caption{Une des deux traces causales pour le recrutement d'une occurrence de la protéine \agentfont{Sos} par une occurrence du  récepteur membranaire. Les {\noeuds} verts représentent l'introduction des occurrences de protéines, les {\noeuds} bleus représentent l'application des règles, le {\noeud} rouge représente le but à observer. Les arcs décrivent les relations causales entre les événements.}
+  \label{F.story}
+\end{figure}
+
+Les traces causales sont obtenues en partant des résultats de la simulation, en relevant toutes les occurrences d'un événement d'intérêt. Pour chaque occurrence, une trace est extraite en collectant les événements nécessaires à cette occurrence ou récursivement à tout autre événement lui-même nécessaire \cite{Dan_etal07a}.
+Les événements sont ensuite organisés sous la forme d'un graphe acyclique orienté grâce à la transformation de Mazurkiewicz \cite{DBLPconf/mfcs/Mazurkiewicz84}. Cette transformation exploite le fait que certains événements, causalement indépendants, commutent.
+Un moteur de recherche opérationnelle est ensuite utilisé pour retirer de cette  trace causale les événements qui peuvent l'être. Une description de cette approche dans un formalisme catégorique est décrit dans cette publication \cite{DBLPconf/fsttcs/DanosFFHH12}.
+
+Les traces causales donnent une vision des voies de signalisation
+qui privilégie l'acquisition du signal. Dans un modèle, toutes les interactions sont en général réversibles, ce qui est nécessaire pour que l'occurrence d'une kinase, par exemple, puisse agir sur plusieurs occurrences de sa protéine cible  à tour de rôle. Cet aspect, gestion de ressources, n'est pas du tout décrit dans les traces causales. Les traces causales ne peuvent dont pas remplacer les règles d'un modèle. Il s'agit juste d'un outil pour comprendre comment un objectif peut être atteint, mais qui ne permet pas à lui seul  de définir le comportement collectif du modèle.
+
+\begin{figure}
+\subfigure[Règles d'interaction.]%
+{\label{F.causal.rules}\begin{minipage}{\linewidth}%
+\hfill\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_rule_g_p_w.pdf}}\end{minipage}\hfill
+\begin{minipage}{0.345\linewidth}\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_rule_d_p_w.pdf}} \end{minipage}\hfill\mbox{}\smallskip
+\end{minipage}}
+
+\subfigure[Dictionnaire des complexes biochimiques.]{\label{F.causal.dictionaire}
+\begin{minipage}{\linewidth}
+\begin{minipage}{0.245\linewidth}\centering A\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_u_u.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering B\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_u_p.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering C\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_p_u.pdf}}}\end{minipage}
+\begin{minipage}{0.245\linewidth}\centering D\;:\; \raisebox{-0.3\height}{\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_p_p.pdf}}}\end{minipage}\smallskip\\
+\end{minipage}}
+\subfigure[Réactions.]{\label{F.causal.reactions}
+\begin{minipage}{\linewidth}
+\hfill\begin{minipage}{0.345\linewidth}\centering A $\rightarrow$ C \end{minipage}\hfill
+  \begin{minipage}{0.345\linewidth}\centering A $\rightarrow$ B \end{minipage}\hfill\mbox{}\smallskip
+
+\hfill\begin{minipage}{0.345\linewidth}\centering
+B $\rightarrow$ D \end{minipage} \hfill\begin{minipage}{0.345\linewidth}\centering C $\rightarrow$ D \end{minipage}\hfill\mbox{}\smallskip
+
+\end{minipage}}
+
+\subfigure[Les traces causales de ce réseau réactionnel.]{%
+\label{F.causal.traces.reaction}
+\begin{minipage}{\linewidth}\centering
+\begin{tabular}{c}
+  A $\rightarrow$ B $\rightarrow$ D \cr
+  A $\rightarrow$ C $\rightarrow$ D
+\end{tabular}
+\end{minipage}
+}
+
+\subfigure[L'unique trace causale de cet ensemble de règle.]{%
+\label{F.causal.traces.rules}
+{\begin{minipage}{\linewidth}
+  \begin{equation*}
+  {\xymatrix@C=30mm@R=3mm{%
+{\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_u_u.pdf}}}
+\ar@/^1.0cm/@{->}[r]^{\scalebox{\scalefactorintrosquare}{\includegraphics{generated_pictures/toy_rule_g_p_w.pdf}}}
+\ar@/_1.0cm/@{->}[r]_{\scalebox{\scalefactorintrosquare}{\includegraphics{generated_pictures/toy_rule_d_p_w.pdf}}}
+& {\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/toy_p_p.pdf}}} \\}}
+  \end{equation*}
+    \end{minipage}}
+}
+\caption{En~\ref{F.causal.rules}, un modèle formé de deux règles d'interaction. En~\ref{F.causal.dictionaire} l'ensemble des toutes les sortes de complexes biochimiques accessibles à partir d'une occurrence de la protéine entièrement non phosphorylée, un nom est donné à chaque sorte de complexe biochimique. En Fig.~\ref{F.causal.reactions}, le réseau réactionnel sous-jacent.
+Contrairement aux règles d'interaction, les réactions testent l'intégralité de l'état de l'occurrence de la protéine. Ainsi, les réactions qui phosphorylent les deux sites ne commutent pas. Il y a donc deux traces causales, selon que le site droit ou gauche ait été phosphorylé en premier avec les réactions (Fig.~\ref{F.causal.traces.reaction}). En Kappa, les règles de phosphorylation d'un site s'appliquent quelque soit l'état de l'autre site. Ainsi les traces causales ne distinguent pas quel site est phosphorylé en premier. Il n'y a alors qu'un seul type de trace causale (Fig.~\ref{F.causal.traces.rules})).}
+\label{F.causal}
+\end{figure}
+
+Les traces causales dépendent fortement de la syntaxe du langage.
+En effet, la syntaxe définie quelles préconditions peuvent être utilisées dans les règles, ce qui a une incidence sur le fait que deux événements puissent être vus ou non,  comme indépendants  causalement. Aussi, le fait que Kappa utilise de la réécriture hors contexte
+où seuls les sites qui ont une importance dans une interaction ont besoin d'être mentionnés, permet d'avoir plus d'événements qui commutent. Chaque trace causale peut alors résumer  un plus grand nombre de traces classiques.
+
+En Fig.~\ref{F.causal} est considéré l'exemple d'une sorte de protéines avec deux sites de phosphorylation. Chaque site peut être phosphorylé indépendamment de l'état de l'autre site, ce qui se traduit en Kappa par les deux règles données en Fig.~\ref{F.causal.rules}.
+Ces règles peuvent être appliquées dans n'importe quel ordre. Il y a donc une seule trace causale pour obtenir une occurrence de protéines doublement phosphorylée. Cette trace est dessinée en Fig.~\ref{F.causal.traces.rules}. Dans un réseau réactionnel, les complexes sont nommés et leur structure biochimique ne peut pas être utilisée. Il faut donc quatre réactions pour simuler ces deux règles Kappa. Or, chacune de ces réactions spécifie exactement quel réactif elle utilise, ce qui empêche les réactions de commuter. Il y alors deux traces causales différentes selon que le site de droit ou de gauche ait été phosphorylé en premier.
+
+Pour conclure sur la causalité, il est important de remarquer
+que les traces causales s'appuient sur une vision positive de la causalité. Ce n'est en général pas suffisant pour comprendre le comportement des voies de signalisation intracellulaires. En effet, il y a souvent dans ces voies des événements qui ne sont certes pas nécessaires mais qui rendent d'autres événements plus probables. C'est le cas
+d'une interaction qui stabiliserait une structure instable pour lui laisser le temps de réaliser une certaine interaction. D'un point de vue logique, la stabilisation de la structure n'est pas requise. Mais il est improbable que sans elle, l'autre interaction puisse avoir lieu. Ces effets cinétiques sont capturés par les notions de causalité contre-factuelles \cite{DBLPjournals/corr/abs-1301-2275}, dont l'adaptation à Kappa \cite{DBLPconf/ijcai/LaurentYF18} ouvre des pistes de recherches pleines de promesses.
+
+
+
+\subsection{Réduction de modèles}
+
+La réduction de modèles consiste à simplifier un modèle en ajustant le grain d'observation.
+Les réductions de modèles peuvent se formaliser comme des transformations de graphes  \cite{DBLPjournals/dam/GayFMSS14}, des transformations tropicales  \cite{Radulescu2015}, des bisimulations \cite{Feret-MFPSXXVI,Cardelli2015ForwardAB},
+ou, tout simplement, des changements de variables  \cite{Feret-et-al-pnas2009}. Elles peuvent être classées selon la classe de propriétés qu'elles préservent.
+
+Des outils de réduction exacte permettent de simplifier à la fois les systèmes d'équations différentielles
+\cite{Feret-et-al-pnas2009,DBLPconf/lics/DanosFFHK10} et les systèmes stochastiques  \cite{DBLPjournals/ijsi/FeretKP13} qui sont décrit en Kappa. Ces algorithmes trouvent automatiquement des changements de variables par inspection statique des règles initiales des modèles et dérivent des modèles réduits en conséquence.
+La preuve de correction de ces algorithmes est faite par interprétation abstraite~: le modèle réduit définit la projection exacte, par le changement de variables découvert par l'analyse, du comportement transitoire du modèle avant réduction. L'ensemble des complexes biochimiques, le changement de variables et la description extensionnelle du modèle avant réduction ne sont jamais représentés  explicitement, ce qui permet à la méthode de passer à l'échelle.
+
+Les outils de réduction de modèles pour Kappa combinent deux types d'abstraction~: le premier exploite les symétries potentielles au sein des sites d'interaction des occurrences des protéines du modèle, alors que le second identifie parmi les corrélations éventuelles entre les états des sites des occurrences des protéines, celles qui n'ont aucun impact sur leur comportement collectif.
+Les symétries sont décrites comme des actions de groupes qui préservent l'ensemble des règles de réécriture qui constituent un  modèle \cite{Feret-MFPSXXVI,DBLPjournals/entcs/Feret15}.
+Elles induisent une relation d'équivalence entre les complexes biochimiques qui, elle-même, défini une relation de bisimulation sur les différents états du modèle. Les états en relation seront regroupés en un seul dans le modèle réduit. Intuitivement, cette analyse détecte quels sites ont exactement les mêmes capacités d'interaction et ignore la différence entre ces sites~: dans le modèle réduit, la configuration d'une occurrence d'une protéine est définie par le nombre de sites dans un certain état en faisant abstraction de quels sites précis sont dans cet état.
+Ceci engendre une réduction d'un facteur exponentiel~:
+par exemple, pour un type de protéines avec $n$ sites symétriques pouvant chacun prendre deux états différents, la réduction permet de passer de $2^n$ configurations potentielles à seulement $(n+1)$.
+
+\begin{figure}[t]
+
+  \subfigure[La règle de formation de dimers annotée par le flot d'information qu'elle induit.]{%
+\label{fig:flow:rules}
+  \hfill\begin{minipage}{\linewidth}
+  \centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/er+er_cr_annotated.pdf}}\smallskip\\%
+\end{minipage}}
+
+
+\subfigure[Les quatre motifs d'intérêt qui apparaissent dans le complexe biochimique de la Fig.~\ref{fig:intro:compound}.]
+{ \label{fig:annotated:candidate}
+\begin{minipage}{0.5\linewidth}
+\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/pattern1.pdf}}\bigskip\\
+
+\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/pattern2.pdf}}\smallskip\\\end{minipage}
+
+\begin{minipage}{0.5\linewidth}
+\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/pattern3.pdf}}\bigskip\\
+
+\centering\scalebox{\scalefactorintro}{\includegraphics{generated_pictures/pattern4.pdf}}\smallskip\\
+\end{minipage}}
+\caption{En~\ref{fig:flow:rules}, chaque chemin entre un site dont l'état est testé et un site dont l'état est modifié dans une composante connexe du membre gauche d'une règle induit un flot d'information. Ici, la capacité de lier le site \sitefont{r} d'une occurrence du récepteur dépend du fait que cette occurrence soit liée à une occurrence du  ligand. En~\ref{fig:annotated:candidate} sont représentés les quatre motifs d'intérêt qui apparaissent dans le complexe biochimique dessiné en Fig.~\ref{fig:intro:compound}. Ils sont tous quatre annotés par une relation qui spécifie comment l'information se propage -- ou s'est propagée -- à travers leurs différents sites d'interaction (cette relation est obtenue en recopiant le flot d'information des règles compatibles avec ces motifs). Ils contiennent chacun un site accessible par tous les autres en suivant cette relation.}
+\end{figure}
+
+La deuxième approche se base sur l'analyse du flot d'information entre les différents sites d'interaction des complexes biochimiques. Cela permet de comprendre quelles corrélations entre l'état des différents sites peuvent avoir une influence sur le comportement global du système et de passer les autres sous silence. Une approximation qualitative du flot d'information est calculée en répertoriant, au sein des règles de réécriture, tous les chemins entre les sites dont l'état est testé (ceux qui apparaissent dans le membre gauche d'une  règle) et les sites dont l'état est modifié (ceux qui apparaissent dans le membre droit de cette règle avec un état différent de celui du membre gauche) (voir en Fig.~\ref{fig:flow:rules}). Chaque motif est alors annoté en regroupant le flot d'information présent dans chacune des règles qui peut s'y appliquer. Les motifs intéressants sont ceux pour lesquels il existe un site d'interaction qui est accessible par tous les autres en suivant cette annotation. Par exemple, le complexe biochimique dessiné en Fig.~\ref{fig:intro:compound} contient les quatre motifs d'intérêt donnés en Fig.~\ref{fig:annotated:candidate} avec leur annotation.
+Dans ce modèle, les motifs d'intérêt sont exactement ceux qui décrivent l'état d'un seul site \sitefont{Y48} ou \sitefont{Y68}. Ainsi la corrélation entre l'état des différents sites  \sitefont{Y48} et \sitefont{Y68} n'est plus représentée dans le modèle réduit. D'un point de vue combinatoire, ceci permet
+de passer de $m^2{\cdot}n^2$ complexes biochimiques à $m+n$ motifs d'intérêt (où $m$ et $n$ représentent respectivement le nombre de configurations différentes pour la partie du complexe liée aux sites  \sitefont{Y48} et \sitefont{Y68}).
+
+Sur un modèle plus complet \cite{bli06,schoeberl,fb,Dan_etal07a}, cet outil permet de passer de $10^{20}$ complexes biochimiques à $175,000$ motifs d'intérêt, en moins de $10$ minutes.
+
+Des méthodes approchées utilisent des formes tronquées de développement formels de la sémantique stochastique  \cite{gillespie2009moment}, alors que les méthodes de tropicalisation exploitent la séparation entre les échelles de temps et de concentration \cite{10.3389/fgene.2012.00131}.
+Ces méthodes ne procurent pas de bornes d'erreur explicites.
+Par ailleurs, elles nécessitent une description extensionnelle des réseaux réactionnels sous-jacents.
+
+Des méthodes exactes opèrent de manière analytique pour extraire des relations d'équivalence entre les complexes biochimiques de la description explicite des réseaux réactionnels \cite{Cardelli2015ForwardAB} ou même directement sur des systèmes d'équations différentielles \cite{DBLPjournals/tcs/CardelliTTV19a}. Elles permettent de calculer la meilleure bisimulation en avant, parmi celles qui sont basées sur un partitionnement des variables,   et quelles variables prennent toujours la même valeur.
+La notion de symétries développée pour Kappa est plus restrictive car elle se concentre sur les bisimulations qui correspondent à un certain groupe de transformations. En revanche, elle permet de détecter des relations de proportionnalité entre variables. Par ailleurs, elle ne nécessite de représenter, ni les réseaux réactionnels, ni les systèmes différentiels sous-jacents, évitant ainsi un calcul dont la durée est souvent prohibitive \cite{KaDe}.
+
+La réduction de modèles basée sur l'étude du flot d'information
+est à la fois une généralisation et une formalisation d'approches systématiques existantes \cite{borisov,conzelmann}.
+L'utilisation d'un langage formel et l'interprétation abstraite de sa sémantique a permis d'établir formellement la correction de ces approches.
+
+\section{Contributions}
+
+Le reste de ce document décrit le langage Kappa \cite{DBLPconf/cmsb/DanosL03,Danos200469} sous forme graphique, ainsi que l'analyse statique qui permet de détecter quels motifs peuvent se former lors de l'exécution des modèles
+\cite{DBLPconf/vmcai/DanosFFK08,DBLPjournals/entcs/FeretL18}.
+
+En particulier, la notion de graphe à sites, qui représente l'état des systèmes modélisés, est introduite {Chap}.~\ref{S.graphes}, alors que celle de règle de réécriture est décrite {Chap}.~\ref{S.règles}. Par soucis de simplicité, seul un fragment du langage est considéré. En effet, certaines constructions du langage complet font intervenir des effets de bord (qui peuvent provoquer des transformations  de l'état des occurrences de protéines, en dehors des occurrences des motifs de réécriture). S'il est possible d'adapter les différentes définitions pour traiter ces effets de bords, cela n'apporte pas grand chose conceptuellement. Par ailleurs, ce chapitre traite uniquement d'une analyse du comportement qualitatif des modèles, l'aspect quantitatif, les constantes cinétiques, ne sont pas abordées.
+
+L'analyse statique, qui est introduite {Chap}.~\ref{S.static} permet de détecter, au sein d'un ensemble de motifs d'intérêt paramètre de l'analyse, lesquels ne peuvent jamais se former quelle que soit l'exécution du système. C'est une analyse approchée. Les motifs déclarés inaccessibles sont bien inaccessibles. Par contre, l'analyse n'apporte aucune information à propos des autres motifs. Par soucis d'efficacité, les ensembles de motifs sont organisés ({Sect}.~\ref{S.ortho}) sous la forme d'une collection d'arbres de décision dans lesquels des motifs initiaux sont raffinés peu à peu en ajoutant de l'information contextuelle \cite{DBLPjournals/entcs/FeretL18}. Cette analyse est implantée dans l'analyseur statique {\kasa} \cite{DBLPconf/cmsb/BoutillierCCFLT18} et le choix des arbres de décisions, qui paramétrise l'analyse, est fait automatiquement par une pré-analyse. Le chapitre se conclut {Sect}.~\ref{S.conclu} et quelques perspectives sont données. La description du langage et de l'analyse reste volontairement assez haut niveau. Une formalisation complète et rigoureuse pour le langage complet est disponible dans les différents articles scientifiques qui sont cités dans le corps du texte.

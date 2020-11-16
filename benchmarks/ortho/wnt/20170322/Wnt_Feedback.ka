@@ -1,0 +1,29 @@
+# #####################################
+# ######## AGENT SIGNATURES
+# #####################################
+%agent: p-DKK1(CRD_2) # DKK1_HUMAN, O94907 
+%agent: p-NKD1(i_PP2, EF_hand) # NKD1_HUMAN, Q969G9 
+%agent: p-P2R3A(iRecog, sub-a, sub-c) # PP2A|PR72, P2R3A_HUMAN, Q06190
+
+# #####################################
+# ######## OTHER RULES
+# #####################################
+'/Nkd/' p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1) -> p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1), p-NKD1() @ 0.1
+'/Dkk/' p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1) -> p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1), p-DKK1() @ 0.1
+'/Axin2/' p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1) -> p-CTNB1(iARM!9), p-LEF1(CBD!9, HMGbox!1), Genome(i_BS!1), p-AXIN1() @ 0.1
+
+# Dkk is a secreted protein that binds LPR. Through the action of the Kremen receptor, Dkk induces the endocytosis of LPR <10.1038/sj.onc.1208303>. Since Kremen's presence appears to only play a role when LRP6 is over-expressed <10.1074/jbc.M802376200 >, this model will only consider the competitive binding of Dkk to LRP6. Likewise, since Kremen mediates internalization of LRP, and recently it was shown that sequestration of GSK3_BETA into multi-vesicular endosomes through the membrane-bound signalosome is required <10.1016/j.cell.2010.11.034>, this model deliberately ignores this.
+'Dkk.LPR+' p-DKK1(CRD_2), p-LRP6(iWnt) -> p-DKK1(CRD_2!1), p-LRP6(iWnt!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding'
+'Dkk.LPR-' p-DKK1(CRD_2!1), p-LRP6(iWnt!1) -> p-DKK1(CRD_2), p-LRP6(iWnt) @ 'GeneralUnbinding'
+
+# Through PR72, a regulatory subunit of PP2, Nkd is able to bind and recruit Dsh into an phosphatase-inactive complex <10.1101/gad.328905>. I'm assuming the mechanism is through direct occupation of the recognition site on PP2, while Nkd retains the ability to bind Dvl. It may also destabilize Dsh, possibly through CYLD mediated (de?)ubiquitination, though that is less clear...
+'PP2|P72.Nkd+' p-P2R3A(iRecog), p-NKD1(i_PP2) -> p-P2R3A(iRecog!1), p-NKD1(i_PP2!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding' { 'RingClosureRate' * 'GeneralBinding' }
+'PP2|P72.Nkd-' p-P2R3A(iRecog!1), p-NKD1(i_PP2!1) -> p-P2R3A(iRecog), p-NKD1(i_PP2) @ 'GeneralUnbinding'
+
+'PP2|PR72.PP2|Cata+/-' p-P2R3A(sub-c,sub-a), p-PP2AA(sub-r,sub-a) <-> p-P2R3A(sub-c!1,sub-a), p-PP2AA(sub-r!1,sub-a) @ (1/ 'RescaleFactor' ) * 'GeneralBinding', 'GeneralUnbinding'
+'PP2|PR72.PP2|Alfa+/-' p-P2R3A(sub-c,sub-a), p-2AAA(sub-c,sub-r) <-> p-P2R3A(sub-c,sub-a!1), p-2AAA(sub-c,sub-r!1) @ (1/ 'RescaleFactor' ) * 'GeneralBinding', 'GeneralUnbinding'
+'PP2|Cata,PP2|Alfa.PP2|PR72+/-' p-PP2AA(sub-r,sub-a!1), p-2AAA(sub-r,sub-c!1), p-P2R3A(sub-c,sub-a) <-> p-PP2AA(sub-r!2,sub-a!1), p-2AAA(sub-r!3,sub-c!1), p-P2R3A(sub-c!2,sub-a!3) @ (1/ 'RescaleFactor' ) * 'GeneralBinding', 'EntropyFactor' * 'GeneralUnbinding' * 'GeneralUnbinding'
+'PP2|PR72,PP2|Alfa.PP2|Cata+/-' p-P2R3A(sub-a!1,sub-c), p-2AAA(sub-r!1,sub-c), p-PP2AA(sub-r,sub-a) <-> p-P2R3A(sub-a!1,sub-c!2), p-2AAA(sub-r!1,sub-c!3), p-PP2AA(sub-r!2,sub-a!3) @ (1/ 'RescaleFactor' ) * 'GeneralBinding', 'EntropyFactor' * 'GeneralUnbinding' * 'GeneralUnbinding'
+'PP2|PR72,PP2|Cata.PP2|Alfa+/-' p-P2R3A(sub-c!1,sub-a), p-PP2AA(sub-r!1,sub-a), p-2AAA(sub-r,sub-c) <-> p-P2R3A(sub-c!1,sub-a!2), p-PP2AA(sub-r!1,sub-a!3), p-2AAA(sub-r!2,sub-c!3) @ (1/ 'RescaleFactor' ) * 'GeneralBinding', 'EntropyFactor' * 'GeneralUnbinding' * 'GeneralUnbinding'
+
+%obs: '[PP2|PR72]' |p-P2R3A(sub-c!1,sub-a!2), p-PP2AA(sub-r!1,sub-a!3), p-2AAA(sub-r!2,sub-c!3)|

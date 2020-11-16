@@ -1,0 +1,546 @@
+%\newcommand{\scalefactor}{0.29}
+\newcommand{\minipagesize}{1cm}
+\newcommand{\factor}{0.35}
+
+
+\newcommand{\node}[2][1.]{%
+\begin{minipage}{#1\minipagesize}%
+{\scalebox{\scalefactor}{\includegraphics{generated_pictures/#2.pdf}}}%
+\end{minipage}
+}
+
+
+
+\newcommand{\tree}[1][]{%
+\xymatrix@C=1.cm@R=0.cm{
+&&&\hspace*{1mm}\node{r_egf_free_cr_free_c_free}\cr
+&&\node{r_egf_free_cr_free}\ar[ur]\ar[r]&\hspace*{-1mm}\node{#1r_egf_free_cr_free_c_bound}\cr
+&&&\hspace*{2mm}\node{#1r_egf_free_cr_bound_c_free}\cr
+\node{r}\ar[r]\ar[dr]&\node{r_egf_free}\ar[uur]\ar[r]&\node{#1r_egf_free_cr_bound}\ar[ur]\ar[r]&\hspace*{-1mm}\node{#1r_egf_free_cr_bound_c_bound}\cr
+&\node{r_egf_bound}\ar[ddr]\ar[r]&\node{r_egf_bound_cr_free}\ar[dr]\ar[r]&\hspace*{2mm}\node{r_egf_bound_cr_free_c_free}\cr
+&&&\hspace*{-1mm}\node{#1r_egf_bound_cr_free_c_bound}\cr
+&&\node{r_egf_bound_cr_bound}\ar[dr]\ar[r]&\hspace*{2mm}\node{r_egf_bound_cr_bound_c_free}\cr
+&&&\hspace*{-1mm}\node{r_egf_bound_cr_bound_c_bound}\cr
+}}
+
+\newcommand{\treebis}[1][]{%
+\xymatrix@C=1.cm@R=0.cm{%
+&&\node[1.5]{r_cr_bound_c_bound}\ar@{->}[r]\ar@{->}[rd]&\node[3.]{r_cr_bound_c_bound_same}\cr
+& \node{r_cr_bound}\ar@{->}[ru]\ar@{->}[r]&\node{r_cr_bound_c_free}&\node[3.]{#1r_cr_bound_c_bound_distinct}\cr
+\node{r}\ar@{->}[ru]\ar@{->}[r]&\node{r_cr_free}\cr
+}}
+
+\newcommand{\mixtureset}{\mathcal{M}}
+\newcommand{\patternset}{\mathcal{P}}
+\newcommand{\rembedding}{}
+\newcommand{\abstraction}[1][\patternset]{\alpha_{#1}}
+\newcommand{\concretization}[1][\patternset]{\gamma_{#1}}
+\newcommand{\signaturesymb}{\mathcal{M}}
+\newcommand{\sat}{|\!=}
+\newcommand{\agentname}{}
+\newcommand{\agents}{}
+\newcommand{\type}{}
+\newcommand{\common}{}
+\newcommand{\mergegraph}{}
+\renewcommand{\concreteendo}{\mathbb{F}}
+\renewcommand{\abstractendo}{\mathbb{F}^{\sharp}}
+\newcommand{\bestabstractendo}[1][\patternset]{\abstraction[#1]\circ \concreteendo \circ \concretization[#1]}
+\newcommand{\lhs}{}
+\newcommand{\rhs}{}
+\newcommand{\rrefinement}{}
+\renewcommand{\lfp}[1]{\textit{lfp}\;#1}
+\newcommand{\collection}{\mathcal{C}}
+\newcommand{\bydef}{:=}
+
+\newcommand{\pushoutcorner}{}
+
+
+
+%\newcommand{\incbox}[3]{\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/#3.pdf}}}
+
+
+\chapter{Analyse des motifs accessibles}
+
+\label{S.static}
+
+Si la carte de contacts (e.g.~voir en Fig.~\ref{F.contactmap} à la page \pageref{F.contactmap}) donne un aperçu rapide de toutes les interactions potentielles entre les différents sites des occurrences des protéines dans un modèle,  elle n'est en générale pas suffisante pour décrire précisément la structure de ses complexes biochimiques. En effet, l'état des différents sites d'interaction d'un complexe biochimique est souvent contraint par des invariants structurels.
+Par exemple, dans le modèle des premières étapes de l'acquisition du facteur de croissance de l'épiderme, les sites \sitefont{Y48} et \sitefont{Y68} des occurrences du récepteur membranaire, ainsi que le site \sitefont{Y7} des occurrences de la protéine d'échafaudage,
+ne peuvent être liés à un autre site sans être phosphorylés (à moins que ce soit le cas  dans l'état initial). Par ailleurs, lorsque les deux sites \sitefont{r} et \sitefont{c} d'une occurrence du récepteur sont liés simultanément, ils sont nécessairement liés respectivement au site \sitefont{r} et au site \sitefont{n} d'une même occurrence du récepteur (ce qui forme une double liaison). Un autre exemple concerne les modèles avec des compartiments, comme, par exemple, une cellule dont on distingue le noyau du cytoplasme. La localisation de chaque occurrence de protéines peut alors être spécifiée comme l'état d'activation d'un site fictif. Dans de tels modèles, toutes les occurrences de protéines d'un même complexe biochimique sont en général localisées dans un même compartiment, ce qui se traduit par la contrainte que le site fictif de deux occurrences de protéines liées entre elles doit toujours être dans le même état.
+Dans certains cas, il est toutefois possible d'avoir des complexes transmembranaires avec des portions localisées dans des compartiments voisins, c'est à dire de part et d'autre d'une membrane.
+
+Dans cette section est décrite une analyse statique qui permet de détecter automatiquement ces contraintes, afin de vérifier que les propriétés auxquelles peut s'attendre le modélisateur sont bien vérifiées ou bien de détecter certaines erreurs de modélisation.
+En particulier, cette analyse permet de trouver des \index{règle morte}{\emph{règles mortes}}. Ce sont des règles qui ne peuvent jamais s'appliquer dans un modèle, car les contraintes qui sont exprimées dans leurs membres gauches ne sont pas réalisables.
+C'est souvent la conséquence d'erreurs typographiques (par exemple, quand une même sorte de protéines est désignée par deux noms différents dans l'encodage d'un modèle), d'un état initial incomplet, d'interactions manquantes dans le modèle (par exemple, quand l'activation d'un site n'est pas décrite, alors qu'elle est nécessaire pour la suite de la cascade d'interactions)  ou de conditions causales plus complexes qu'il faut alors élucider.
+
+Cette analyse est implantée dans l'analyseur statique {\kasa}  \cite{DBLPconf/cmsb/BoutillierCCFLT18} et intégrée dans la plate-forme de modélisation en ligne dédiée au langage Kappa \cite{DBLPjournals/bioinformatics/BoutillierMLMKF18}. Ceci permet d'assister le modélisateur pendant l'écriture du modèle en lui fournissant les contraintes structurelles qui sont vérifiées par les complexes biochimiques et en l'avertissant de la présence de règles mortes, après chaque ajout ou modification d'une règle d'interaction.
+
+
+\section{Accessibilité dans un réseau réactionnel}
+
+La première étape consiste à définir l'ensemble des états accessibles dans un modèle Kappa. Comme nous l'avons vu dans la section \ref{section:reseaux_sous_jacent} page \pageref{section:reseaux_sous_jacent}, un modèle Kappa induit un réseau réactionnel, ce qui permet de définir directement l'ensemble des états accessibles d'un modèle Kappa sans recourir à des constructions compliquées.
+
+Soit un réseau réactionnel, c'est à dire un ensemble d'espèces biochimiques $\mathcal{S}$ et un ensemble de réactions $\mathcal{R}$. Chaque réaction est donnée par deux listes d'espèces biochimiques~: ses réactifs et ses produits.
+Ce réseau induit un système de transitions dans lequel l'\index{état (réseau réactionnel)}{\emph{état}} du réseau est défini comme un certain nombre (éventuellement nul) d'occurrences de chacune des espèces biochimiques -- c'est à dire une fonction de l'ensemble $\mathcal{S}$ vers l'ensemble $\mathbb{N}$ des entiers naturels --- et les \index{transition (réseau réactionnel)}{\emph{transitions}} permettent de sauter d'un état à un autre en consommant les réactifs d'une réaction et en ajoutant les produits de cette même réaction (en tenant compte de leur multiplicité).
+Une transition n'est possible  que si l'état courant du système contient tous les réactifs qui sont nécessaires à la réaction (en tenant compte, une nouvelle fois,  de leur multiplicité). Une transition d'un état $q$ vers un autre état $q'$ est alors notée $q \rightarrow q'$.
+
+\begin{figure}
+  \subfigure[Un réseau réactionnel.]{%
+  \label{F.network}
+  \begin{minipage}{\linewidth}\begin{equation*}
+    \begin{cases}
+      A \rightarrow B \cr
+      2B \rightarrow C \smallskip\cr
+    \end{cases}
+  \end{equation*}\end{minipage}}
+
+  \subfigure[Système de transitions sous-jacent.]{%
+  \label{F.transition_system}\begin{minipage}{\linewidth}%
+  \begin{equation*}\hspace*{-2mm}\xymatrix@C=0mm@R=5mm{%
+  6A\ar@{->}[dr] &        & 4A + C\ar@{->}[dr]  &          & 2A+2C\ar@{->}[dr] && 3C \cr
+     & 5A + B\ar@{->}[dr] &         & \hspace*{-1mm}3A + B + C\hspace*{-1mm}\mbox{}\ar@{->}[dr] & & \hspace*{1mm}A + B + 2C\hspace*{-1mm}\mbox{}\ar@{->}[dr] & \cr
+     &        & 4A +2B\ar@{->}[dr]\ar@{->}[uu] && \hspace*{-1mm}2A +2B + C\hspace*{-1mm}\mbox{}\ar@{->}[dr]\ar@{->}[uu] && 2B + 2C\ar@{->}[uu] &&\cr
+    &         &         & 3A + 3B\ar@{->}[dr]\ar@{->}[uu] && \hspace*{-1mm}A + 3B + C\hspace*{-1mm}\mbox{}\ar@{->}[dr]\ar@{->}[uu] \cr
+    &         &         & & 2A + 4B\ar@{->}[dr]\ar@{->}[uu] && 4B + C\ar@{->}[uu] \cr
+    & & & & & A + 5B\ar@{->}[dr]\ar@{->}[uu] \cr
+    & & & & & & 6B\ar@{->}[uu] \cr }\end{equation*}\end{minipage}}
+\caption{Un réseau réactionnel et sa sémantique. En~\ref{F.network} un réseau réactionnel formé de deux réactions. La première permet de transformer une occurrence de l'espèce biochimique $A$ en une occurrence de l'espèce biochimique $B$, la seconde permet de transformer deux occurrences de l'espèce biochimique $B$ en une occurrence de l'espèce biochimique $C$. La restriction de l'ensemble de toutes les transitions possibles aux états qui sont atteignables à partir d'un état initial formé de six occurrences de la protéine $A$ est dessinée en~\ref{F.transition_system} sous la forme d'un système de transitions.}
+\label{F.network.semantics}
+\end{figure}
+
+\begin{example}Un système de transitions est donné comme exemple en Fig.~\ref{F.transition_system}. Il correspond à la restriction du système de transitions associé aux réactions qui sont données en Fig.~\ref{F.network} aux états accessibles à partir d'un état initial formé de six occurrences de l'espèce biochimique $A$. Dans ce réseau, la somme entre le nombre  d'occurrences de $A$, de $B$ et deux fois celui de $C$ est toujours égal à la quantité initiale de $A$. En effet, cette quantité n'est modifiée par l'application d'aucune des réactions du réseau.
+\end{example}
+
+
+Étant donné un ensemble d'états initiaux potentiels, $\mathcal{I}\subseteq \mathcal{S}^{\mathbb{N}}$, nous définissons l'ensemble des états accessibles comme étant ceux susceptibles d'être atteints à partir d'un état initial (de l'ensemble $\mathcal{I}$) en appliquant un nombre arbitraire (éventuellement nul) de transitions. Cet ensemble peut se définir comme le plus petit point-fixe de la fonction suivante~:
+\begin{equation*}
+  \concreteendo\,:\,\begin{cases}
+  \wp(\mathcal{S}^\mathbb{N})\!\!\!\! & \rightarrow \wp(\mathcal{S}^\mathbb{N}) \cr
+  X & \rightarrow \mathcal{I} \cup \left\{q' \;\left|\;
+  \exists q\in X,\;q \rightarrow q'\right.\right\}.
+  \end{cases}
+\end{equation*}
+Il faut noter que la fonction $\concreteendo$ est croissante, ce qui signifie que si $X_1$ et $X_2$ sont deux ensembles d'états tels que l'ensemble $X_1$ soit un sous-ensemble de l'ensemble $X_2$, alors l'ensemble $\concreteendo(X_1)$ est nécessairement un sous-ensemble de l'ensemble $\concreteendo(X_2)$ lui-aussi.
+Comme, de plus, cette fonction est définie sur l'ensemble des parties d'un ensemble, le \index{théorème de Tarski}{\emph{théorème de Tarski}}  \cite{Tarski} assure que la fonction $\concreteendo$ admet un point fixe, plus petit que tout autre point fixe de $\concreteendo$.
+Ce plus-petit point fixe, que l'on note $\lfp{\concreteendo}$, est en fait l'ensemble des états accessibles.
+
+Malheureusement, le calcul de ce plus petit point fixe peut être coûteux, voire ne pas terminer. Ceci motive la construction d'abstractions pour calculer un sur-ensemble des états accessibles en un temps de calcul acceptable.
+
+\section{Abstraction d'un ensemble d'états}
+
+Lorsqu'un réseau est induit par un modèle Kappa,  la structure biochimique associée aux espèces de ce réseau peut être utilisée pour construire une abstraction. Une possibilité consiste à choisir un ensemble de motifs connexes afin d'abstraire les ensembles d'états par le sous-ensemble parmi ces motifs de ceux qui apparaissent au moins une fois dans au moins un état de cet ensemble. Le choix des motifs connexes considérés est important~: il définit le compromis entre l'expressivité de l'abstraction, c'est à dire son niveau d'approximation,  et sa complexité, c'est à dire le coût pour
+effectuer des calculs à ce niveau d'abstraction.
+
+\newcommand{\patternsetex}[1][]{\begin{minipage}{\linewidth}%
+  \hfill\xymatrix@C=10mm@R=0mm{%
+\node{r_egf_free_cr_free_c_free} &
+\node{#1r_egf_free_cr_free_c_bound} &
+\node{#1r_egf_free_cr_bound_c_free} &
+\node{#1r_egf_free_cr_bound_c_bound} \cr
+\node{r_egf_bound_cr_free_c_free} &
+\node{#1r_egf_bound_cr_free_c_bound} &
+\node{r_egf_bound_cr_bound_c_free} &
+\node{#1r_egf_bound_cr_bound_c_bound}%\bigskip\cr
+}\hfill\mbox{}%\bigskip\\
+
+\hfill\hspace*{1.5cm}
+\xymatrix@C=15mm@R=0mm{\node[2.5]{#1r_cr_bound_c_bound_same} & \node[3.]{#1r_cr_bound_c_bound_distinct}
+%\end{minipage}
+  }\hfill\mbox{}
+\end{minipage}}
+
+\begin{figure}
+  \patternsetex
+  \caption{Un ensemble de motifs d'intérêt pour l'analyse des complexes biochimiques accessibles dans le modèle des premières interactions qui interviennent dans l'acquisition du facteur de croissance de l'épiderme. Les huit premiers motifs  permettent de s'intéresser aux relations potentielles entre l'état de liaison des sites \sitefont{l}, \sitefont{r} et \sitefont{c} dans les occurrences du récepteur membranaire.
+   Ces $8$ motifs correspondent exactement à chaque combinaison possible pour l'état de ces $3$ sites, chacun de ces sites pouvant être libre ou lié. Les deux derniers motifs permettent de distinguer deux occurrences du récepteur liées par une double liaison d'une chaîne d'au moins trois occurrences du récepteur. }
+\label{F.patternsets}
+\end{figure}
+
+\begin{example}Un exemple de motifs d'intérêt pour le modèle des premières interactions de l'acquisition du facteur de croissance de l'épiderme est donné en Fig.~\ref{F.patternsets}. Les huit premiers motifs se concentrent
+sur l'analyse des  relations potentielles entre l'état des sites \sitefont{l}, \sitefont{r} et \sitefont{c} dans les occurrences du récepteur membranaire. Ils correspondent à toutes les combinaisons syntaxiquement possibles pour l'état de liaison de ces $3$ sites. Ce sont des \index{vue locale}{\emph{vues locales}} (ou plus précisément des sous-vues locales) \cite{DBLPconf/vmcai/DanosFFK08}. Elles permettent d'abstraire un ensemble de complexes biochimiques par l'ensemble de toutes les configurations potentielles de toutes ses occurrences de protéines, vues  indépendamment les unes des autres. Ceci revient à garder uniquement l'information à propos de l'état de liaison et l'état d'activation de chaque site dans chaque occurrence de protéines tout en passant sous silence à quel site chaque site lié l'est.
+
+La formation de dimers dans ce modèle  fait intervenir des doubles liaisons. Il est légitime de se demander s'il est possible de former des chaines comportant successivement au moins trois occurrences du récepteur membranaire. C'est le but des deux derniers motifs de l'ensemble. Ils permettent de distinguer le cas d'une double liaison entre deux occurrences du récepteur de celui de trois occurrences du récepteur liées consécutivement, en s'interrogeant pour chaque occurrence du récepteur membranaire dont les sites $\sitefont{r}$ et $\sitefont{c}$ sont liés, si elle peut être liée à une même occurrence du récepteur ou si elle  peut être liée à deux occurrences différentes.
+En toute rigueur, pour s'assurer qu'une chaine d'au moins trois occurrences du récepteur ne peut pas se former, il faut également considérer des motifs d'intérêt similaires pour la paire de sites
+$\sitefont{r}$ et $\sitefont{n}$ et la paire de sites $\sitefont{c}$ et $\sitefont{n}$.
+\end{example}
+
+Plus précisément, l'abstraction est paramétrée par le choix d'un ensemble $\patternset$ de motifs connexes. L'ensemble $\patternset$ regroupe  des motifs d'intérêt, ainsi que des motifs qui seront utilisés de manière intermédiaire dans la preuve que certains de ces motifs d'intérêt sont inaccessibles. Une sous-partie de l'ensemble $\patternset$ est appelée une propriété abstraite.
+Chaque propriété abstraite représente un ensemble d'états concrets~: un état concret $q$ sera dît compatible avec une propriété abstraite $X^{\sharp}$ si et seulement si aucun motif qui est dans l'ensemble $\patternset$ sans être dans l'ensemble $X^\sharp$ n'apparait  dans un complexe biochimique présent dans l'état $q$. L'ensemble de tous les états concrets compatibles avec la propriété abstraite $X^\sharp$ est alors noté $\concretization(X^\sharp)$.
+Qui peut le plus, peut le moins~: plus nombreux sont les motifs autorisés, plus nombreux sont les complexes biochimiques compatibles. La fonction $\concretization$ est donc croissante.
+Elle permet de définir formellement la notion d'abstraction d'un ensemble d'état~: une propriété abstraite $X^\sharp$ sera dite être une abstraction d'un ensemble d'état $X$ si et seulement si l'ensemble $X$ est inclus dans l'ensemble $\concretization(X^{\sharp})$. La fonction $\concretization$ est couramment appelée la \index{concrétisation (fonction de)}{\emph{fonction de concrétisation}}. De plus l'image d'une propriété abstraite par cette fonction, est appelée sa \index{concrétisation}{\emph{concrétisation}}.
+
+Réciproquement, étant donné un ensemble d'états $X$, l'ensemble des éléments de l'ensemble $\patternset$ qui apparaissent dans au moins un complexe biochimique d'un état élément de l'ensemble $X$ sera noté  $\abstraction(X)$. La fonction $\abstraction(X)$ est croissante également. La propriété abstraite $\abstraction(X)$ est en fait la
+\index{meilleure approximation}{\emph{meilleure approximation}} de l'ensemble d'états $X$, ce qui signifie que d'une part c'est une abstraction de
+l'ensemble $X$ (i.e.~$X\subseteq \concretization(\abstraction(X))$) et que d'autre part c'est un sous-ensemble de toute autre abstraction de $X$ (i.e.~pour tout sous-ensemble $Y$ de l'ensemble $\patternset$ tel que $X\subseteq \concretization(Y)$, l'inclusion $\abstraction(X)\subseteq Y$ est vérifiée). La paire de fonctions $(\abstraction,\concretization)$ est alors appelée une \index{correspondance de Galois}{\emph{correspondance de Galois}} \cite{Cousot1977,Cousot98-5}.
+
+
+\begin{figure}
+  \hfill\begin{minipage}{0.3\linewidth}\subfigure[Carte de contacts.]{%
+  \label{F.poly.contact}
+  \begin{minipage}{\linewidth}
+  \hfill
+  \xymatrix@C=5mm@R=0.mm{%
+  \node{contact_map_poly}\hfill\mbox{}%\cr\hfill\mbox{}
+  }
+  \hfill\mbox{}
+  \end{minipage}}\end{minipage}\hfill\hfill
+  \begin{minipage}{0.6\linewidth}\subfigure[Motifs d'intérêt.]{\label{F.poly.views}%
+\xymatrix@C=5mm@R=0.mm{%
+\node{poly_free_free} &
+\node{poly_free_bound} &
+\node{poly_bound_free} &
+\node{poly_bound_bound}%\cr\mbox{}
+}}
+\end{minipage}\hfill\mbox{}
+
+\subfigure[Exemples de meilleures approximations.]{\label{F.poly.alpha}%
+\begin{minipage}{\linewidth}
+\begin{itemize}
+\item[$\bullet$]
+$\abstraction\left(\left\{\scalebox{0.8}{\node[0.85]{closed_chain_1}}\right\}\right) = \left\{\scalebox{0.8}{\node[0.85]{poly_free_free}}\right\}$
+
+\item[$\bullet$]
+$\abstraction\left(\left\{\scalebox{0.8}{\node[1.95]{closed_chain_2}}\right\}\right) = \left\{\scalebox{0.8}{\node[0.95]{poly_free_bound}},\scalebox{0.8}{\node[0.95]{poly_bound_free}}\right\}$
+
+\item[$\bullet$]
+$\abstraction\left(\left\{\scalebox{0.8}{\node[3.05]{closed_chain_3}}\right\}\right)= \left\{\scalebox{0.8}{\node[0.95]{poly_free_bound}},\scalebox{0.8}{\node{poly_bound_bound}},\scalebox{0.8}{\node[0.95]{poly_bound_free}}\right\}$
+
+\item[$\bullet$]
+$\abstraction\left(\left\{\scalebox{0.8}{\node[0.80]{ring1}}\right\}\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}$
+
+\item[$\bullet$]
+$\abstraction\left(\left\{\scalebox{0.8}{\node[1.85]{ring2}}\right\}\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}$
+
+%\item[$\bullet$]$\abstraction\left(\left\{\scalebox{0.8}{\node[1.85]{ring3}}\right\}\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}$\smallskip\\
+\end{itemize}
+\end{minipage}
+}
+\subfigure[Exemples de concrétisations]{\label{F.poly.gamma}%
+\begin{minipage}{\linewidth}
+\begin{itemize}
+\item[$\bullet$]
+$\concretization\left(\left\{\scalebox{0.8}{\node[0.85]{poly_free_free}}\right\}\right) = \left\{\left.n\cdot\scalebox{0.8}{\node[0.85]{closed_chain_1}} \right| n\in \mathbb{N}\right\}$
+
+\item[$\bullet$]
+$\concretization\left(\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}\right) = \left\{\left.n_1\cdot\scalebox{0.8}{\node[0.8]{ring1}}+n_2\cdot\scalebox{0.8}{\node[1.85]{ring2}}%+n_3\scalebox{0.8}{\node[1.85]{ring3}}
++\ldots\;\right| n_1,n_2,%n_3,
+\ldots\in\mathbb{N}\right\}$
+
+\item[$\bullet$]
+$\concretization\left(\left\{\scalebox{0.8}{\node[0.90]{poly_free_bound}}\right\}\right)=\{\emptyset\}$.
+
+\item[$\bullet$]
+$\concretization\left(\left\{\scalebox{0.8}{\node[0.90]{poly_bound_free}}\right\}\right)=\{\emptyset\}$.
+
+\item[$\bullet$]
+$\concretization\left(\left\{\scalebox{0.8}{\node[0.90]{poly_free_bound}},\scalebox{0.8}{\node[0.90]{poly_bound_free}}\right\}\right)=\left\{\left.n\cdot \scalebox{0.8}{\node[1.95]{closed_chain_2}}\right| n\in\mathbb{N}\right\}$.
+
+\item[$\bullet$]
+$\concretization\!\left(\!\left\{\begin{array}{l}\scalebox{0.8}{\node[0.90]{poly_free_bound}},\cr\scalebox{0.8}{\node[0.95]{poly_bound_bound}},\cr\scalebox{0.8}{\node[0.90]{poly_bound_free}}\end{array}\right\}\!\right)\!=\!\left\{\left.
+\begin{array}{l}
+n_2\cdot \scalebox{0.8}{\node[1.95]{closed_chain_2}}\cr
++n_3\cdot \scalebox{0.8}{\node[3.05]{closed_chain_3}}+ \ldots \cr
++n'_1\cdot \scalebox{0.8}{\node[0.85]{ring1}}+ n'_2\cdot \scalebox{0.8}{\node[1.95]{ring2}}\!\!+\ldots
+\end{array}
+\right|
+\begin{array}{l}
+  n_2,n_3,\ldots \in \mathbb{N}\cr
+  n'_1, n'_2, \ldots \in \mathbb{N}
+\end{array}\right\}$.
+\end{itemize}
+\end{minipage}}
+\caption{Un exemple jouet pour mieux comprendre le comportement des fonctions  d'abstraction et de concrétisation. En~\ref{F.poly.contact}, la signature du modèle~: une seule sorte de protéines, \agentfont{A}, avec deux sites pouvant être libres ou liés à l'autre site de la même ou d'une autre occurrence de la protéine \agentfont{A}.  En~\ref{F.poly.views}, le domaine abstrait est formé des vues locales de l'unique sorte de protéines~: toutes les configurations pour les occurrences de la protéine \agentfont{A} sont considérées selon que chaque site soit libre ou lié. En~\ref{F.poly.alpha} sont donnés des exemples de meilleure approximation d'ensemble d'états. Cela consiste à collecter les vues locales qui peuvent apparaître dans ces états.
+Réciproquement, En~\ref{F.poly.gamma} sont donnés des exemples de concrétisations d'ensembles de vues locales. Ceci consiste à recomposer l'ensemble des états qui ne contiennent aucune occurrence des vues locales manquantes. Dans le cas particulier des vues locales, cela revient à prendre en compte tous les états composés uniquement des vues locales mises à disposition, sachant que chaque vue peut être utilisée zéro, une ou plusieurs fois.}
+\label{F.poly}
+\end{figure}
+
+
+\begin{example}%
+En Fig.~\ref{F.poly} est introduit un exemple jouet pour mieux comprendre le comportement des fonctions d'abstraction et de concrétisation. La signature de ce modèle peut être consultée en Fig.~\ref{F.poly.contact}. Il existe une seule sorte de protéines, qui est appelée~{$\agentfont{A}$}. Cette protéine est munie de deux sites $\sitefont{g}$ et $\sitefont{d}$ (pour gauche et droite). La carte de contacts spécifie que chaque site peut être libre et qu'un site $\sitefont{g}$ peut être lié à un site $\sitefont{d}$ d'une même ou d'une autre occurrence de la protéine $\agentfont{A}$. L'abstraction induite par l'ensemble des motifs d'intérêt donné en Fig.~\ref{F.poly.views} repose sur les vues locales des occurrences de cette protéine. Elle permet de se poser la question de l'existence ou non, d'une relation entre l'état de liaison des sites \sitefont{g} et \sitefont{d} dans chaque occurrence de la protéine
+\agentfont{A}.
+\end{example}
+
+\begin{example}%
+Des exemples de meilleures approximations sont donnés en Fig.~\ref{F.poly.alpha}.
+Par abus de langage, nous appelons la meilleure approximation d'un complexe biochimique, la meilleure approximation de l'ensemble formé d'un seul état lui même formé de ce seul complexe. Le modèle admet deux types de complexes biochimiques. Les occurrences de la protéine \agentfont{A} peuvent former des chaines d'occurrences de protéines liées successivement par leur site \sitefont{d} et \sitefont{g}, laissant le site \sitefont{g} de la première occurrence de la protéine \agentfont{A} et le site \sitefont{d} de la dernière occurrence de la protéine \agentfont{A} libres. Les occurrences de la protéine \agentfont{A} peuvent aussi former des anneaux en reliant le premier et le dernier sites d'une chaine d'occurrences de protéines.
+La meilleure approximation d'une chaine d'occurrences de la protéine \agentfont{A} dépend de la taille de cette chaine. Ainsi, la meilleure approximation d'une chaine réduite à une occurrence de la protéine \agentfont{A} est l'ensemble qui contient uniquement la vue locale dont les deux sites sont libres~; la meilleure approximation d'une chaine formée d'exactement deux occurrences de la protéine \agentfont{A} est l'ensemble qui contient deux vues locales~:
+l'une avec le site \sitefont{g} libre et le site \sitefont{d} lié, l'autre avec le site \sitefont{g} lié et le site \sitefont{d} libre~; enfin la meilleure approximation des chaines d'occurrences de la protéine \agentfont{A} de longueur au moins égale à $3$ contient également la vue locale dont  les deux sites \sitefont{g} et \sitefont{d} sont liés. Par contre, la meilleure approximation d'un anneau d'occurrences de la protéine \agentfont{A} est toujours l'ensemble  formé uniquement de la vue locale dont les deux sites \sitefont{g} et \sitefont{d} sont liées, et ce, quelle que soit la longueur de cette anneau.
+La fonction qui associe à chaque ensemble de complexe biochimique sa meilleure approximation est distributive. Cela signifie que la meilleure approximation d'un ensemble de complexes biochimiques est l'union de la meilleure approximation des singletons correspondants.
+\end{example}
+
+\begin{example}%
+Des exemples de concrétisations sont donnés en Fig.~\ref{F.poly.gamma}.
+Par définition, la concrétisation de l'ensemble formé uniquement de la vue locale dans laquelle les deux sites sont libres, est l'ensemble de tous les états qui ne contiennent pas d'autres vues locales. Il s'agit donc des états qui ne contiennent que le complexe biochimique composé d'exactement une occurrence de la protéine \agentfont{A}. Par la même démarche, la concrétisation de l'ensemble formé uniquement de la vue locale dont les deux sites sont liés est l'ensemble de tous les états qui ne contiennent que des anneaux d'occurrences de le protéine \agentfont{A} (quitte à utiliser cette vue locale plusieurs fois). Par contre, tout complexe contenant une vue locale avec exactement un site libre, doit contenir également une vue locale avec l'autre site, libre. De ce fait, la concrétisation d'un ensemble composé d'une seule vue locale avec un site libre et l'autre lié, est l'ensemble ne contenant que l'état vide (qui est noté $\emptyset$). Si seules les deux vues locales où un site est lié et l'autre libre sont autorisées, seules des chaines de deux occurrences de la protéine \agentfont{A}  peuvent être construites. Enfin, si seule la vue locale avec les deux sites libres est interdite, il est possible de former n'importe quelle chaine d'occurrences de la protéine \agentfont{A} de taille au moins égale à $2$ et n'importe quel anneau d'occurrences de protéines (sans restriction de taille). La fonction de concrétisation n'est pas distributive (l'image de l'union de deux ensembles de vues locales peut être un sur-ensemble strict de l'union de leurs images).
+\end{example}
+
+Les fonctions $\abstraction$ et $\concretization$ se composent dans les deux sens. Ces compositions sont révélatrices des traits principaux du choix de l'abstraction.  La composée $\concretization \circ \abstraction$ caractérise le niveau d'approximation. En effet, pour tout ensemble d'états $X$, $\concretization(\abstraction(X))$ est le plus grand ensemble d'état qui a la même meilleure approximation que $X$. Il est impossible ainsi de distinguer ces deux ensembles en terme de propriétés abstraites. En revanche, la composée $\abstraction\circ\concretization$ témoigne d'une certaine combinatoire dans le domaine abstrait. Elle associe à chaque propriété abstraite, la plus petite propriété abstraite qui est satisfaite par le même ensemble d'états concrets. Appliquer cette composée permet donc de raffiner une propriété abstraite, par déduction, et ce sans perdre le moindre état concret.
+
+\begin{figure}
+  \subfigure[Exemple d'application de la fonction $\concretization\circ\abstraction$.]{\label{F.poly.gamma.alpha}
+  \begin{minipage}{\linewidth}
+    \begin{equation*}\concretization\left(\abstraction\left(\scalebox{0.8}{\node[0.8]{ring1}}\right)\right)=\left\{\left.n_1\cdot\scalebox{0.8}{\node[0.8]{ring1}}+n_2\cdot\scalebox{0.8}{\node[1.85]{ring2}}%+n_3\scalebox{0.8}{\node[1.85]{ring3}}
+  +\ldots\;\right| n_1,n_2,%n_3,
+  \ldots\in\mathbb{N}\right\}\smallskip\end{equation*}\end{minipage}}
+
+  \subfigure[Exemple d'application de la fonction
+  $\abstraction\circ\concretization$.]{\label{F.poly.alpha.gamma}%
+  \begin{minipage}{\linewidth}
+    \begin{equation*}\abstraction\left(\concretization\left(\scalebox{0.8}{\node[0.8]{poly_free_bound}},\scalebox{0.8}{\node[0.95]{poly_bound_bound}}
+      \right)\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}\smallskip\end{equation*}\end{minipage}}
+  \caption{Suite de l'exemple donné en Fig.~\ref{F.poly}.
+   Un exemple d'application de la composée de fonctions $\concretization\circ\abstraction$ est montré en~\ref{F.poly.gamma.alpha}. Celui-ci montre que l'abstraction ne permet pas de distinguer des ensembles d'anneaux d'occurrences de la protéine \agentfont{A} et ce quels que soient leurs tailles et leurs nombres.
+  En~\ref{F.poly.alpha.gamma} donne un exemple d'application de la composée de fonctions $\abstraction\circ\concretization$. Cette fonction calcule que la vue locale avec le site \sitefont{g} libre et le site \sitefont{d} lié ne peut pas apparaître dans une espèce biochimique qui ne contiendrait pas la vue avec le site \sitefont{g} lié et le site \sitefont{d} libre.}
+\end{figure}
+\begin{example}Appliquée à l'ensemble formé d'un seul état composé uniquement d'un anneau de taille $1$, la composée de fonctions $\concretization \circ \abstraction$ donne l'ensemble des états formés uniquement d'anneaux d'occurrences  de la protéine \agentfont{A}. En effet, la meilleure approximation d'un anneau de taille $1$, est l'ensemble de vues locales composé uniquement de la vue dont les deux sites sont liés. Or, voir également en Fig.~\ref{F.poly.gamma}, la concrétisation de cet ensemble de vues locales est l'ensemble de tous les états formés uniquement d'anneaux. Ainsi le niveau d'abstraction ne permet de distinguer, ni le nombre d'occurrences, ni la taille des anneaux d'occurrences de la protéine \agentfont{A}.
+\end{example}
+
+
+
+\begin{example}Appliquée à l'ensemble formé exactement des deux vues locales, la première  avec le site \sitefont{g} libre et le site \sitefont{d} lié, la seconde avec les deux sites liés, la composée de fonctions $\abstraction\circ\concretization$
+retourne l'ensemble formé d'une seule vue locale, celle avec les deux sites liés. En effet, la première vue ne peut apparaître dans un état sans que celui-ci ne contienne une occurrence de la vue locale avec le site \sitefont{d} libre et le site \sitefont{g} lié. De ce fait, elle ne peut apparaître dans aucun état de la concrétisation de l'ensemble formé par ces deux vues locales et n'est donc pas un élément de la meilleure approximation de l'ensemble de ces états. Ainsi, un état abstrait peut contenir des motifs d'intérêt, qui ne peuvent  apparaître dans des complexes biochimiques sans contenir des occurrences de motifs d'intérêt interdits. Retirer ces motifs ne change pas l'ensemble des états concrets qui satisfont la propriété abstraite, mais cette étape peut requérir un temps de calcul substantiel.
+\end{example}
+
+
+\section{Transferts de point-fixes}
+
+\label{sec:analysis}
+
+Le plus petit point fixe qui définit l'ensemble des espèces biochimiques accessibles dans un réseau réactionnel, pour un état initial donné, peut se calculer au niveau des propriétés abstraites grâce à la correspondance de Galois ($\abstraction$,$\concretization$).
+
+Pour cela, il faut tout d'abord construire la \index{contre-partie abstraite}{\emph{contre-partie abstraite}} de la fonction $\concreteendo$, qui agira, non pas sur des ensembles d'états concrets, mais directement sur les propriétés abstraites.
+Cette contre-partie abstraite se définit de manière systématique~: il suffit, pour chaque propriété abstraite $X^{\sharp}$,  de considérer l'ensemble des états concrets $\concretization(X^{\sharp})$ qui vérifient la propriété $X^{\sharp}$, puis d'appliquer la fonction $\concreteendo$ à cet ensemble et enfin d'appliquer à ce résultat la fonction $\abstraction$ pour en calculer la meilleure approximation. C'est même la manière correcte la plus précise de procéder~: la fonction $\bestabstractendo$ est, en effet,  la meilleure contre-partie abstraite de la fonction $\concreteendo$ \cite{Cousot1979}. Elle permet de déléguer le calcul des états accessibles au domaine abstrait en contre-partie d'une perte éventuelle de précision. Pour ce faire, il suffit de remarquer que  la fonction $\bestabstractendo$ est croissante (comme composée de fonctions croissantes) et définie sur l'ensemble des parties d'un ensemble.  Elle admet donc un plus petit point fixe qui sera noté $\lfp{(\bestabstractendo)}$. L'inclusion suivante : $\lfp{\concreteendo} \subseteq \concretization(\lfp{(\bestabstractendo)})$ se prouve alors par induction \cite{Cousot1979}. Autrement dit le plus petit point fixe de la fonction $\bestabstractendo$ est une abstraction de l'ensemble des états accessibles du modèle considéré. C'est à dire que la propriété abstraite $\lfp{(\bestabstractendo)}$ est satisfaite par chaque état accessible du modèle.
+
+Le calcul des itérations de la fonction $[\bestabstractendo]$ peut prendre beaucoup de temps. Il est possible d'ajuster le compromis entre précision et temps de calcul en remplaçant celle-ci par une fonction moins précise. En effet, pour toute fonction $\abstractendo$ telle que
+$[\bestabstractendo](Y) \subseteq \abstractendo(Y)$ pour tout ensemble de motifs $Y\subseteq \patternset$, l'inclusion
+$\lfp{\concreteendo} \subseteq \concretization(\lfp{(\abstractendo)})$ est également satisfaite \cite{Cousot1979}.
+
+Une telle fonction $\abstractendo$ peut être dérivée à la main. Pour cela, il faut d'abord donner une définition plus explicite de la fonction $[\bestabstractendo]$. Appliquée à un sous-ensemble $Y\subseteq \patternset$ de motifs d'intérêt, cette fonction
+ajoute l'ensemble des nouveaux motifs d'intérêt qui peuvent apparaître dans un état accessible en une étape de réécriture à partir d'un état qui ne contient aucun motif de l'ensemble $\patternset$ qui ne serait pas dans l'ensemble de motifs $Y$.
+Or, une telle étape de réécriture est nécessairement induite par une règle-réaction, elle-même induite par une règle du modèle. Chaque nouveau motif $P$ doit donc apparaître dans le membre droit d'une règle-réaction et l'ensemble d'états singleton formé du  membre gauche de cette règle-réaction ne doit contenir aucune occurrence de motifs de l'ensemble $\patternset\setminus Y$.  Dans cette règle-réaction, l'occurrence du motif $P$ dont il est question et l'image du membre droit de la règle sous-jacente ont nécessairement au moins une occurrence de protéines en commun (sinon le motif $P$ apparaitrait également dans le membre gauche de la règle-réaction et ne serait dont pas un nouveau motif). Il est alors possible de fixer le motif $P$ au membre droit de cette règle, en unifiant les occurrences de protéines du motif $P$ et de la règle du modèle qui sont communes dans la règle-réaction. Ceci forme alors un raffinement du membre droit de la règle. Un raffinement de la règle peut alors être construit en ajoutant toute information présente dans le motif $P$ qui n'est pas déjà présente dans le membre droit initial de la règle, dans le membre gauche de la règle. Le résultat est une spécialisation de la règle à la production du motif $P$ à cette position particulière. Par construction,
+le membre gauche de la règle raffinée apparait dans un état dans la concrétisation de $Y$.
+
+Ainsi, pour calculer les nouveaux motifs d'intérêt de l'ensemble
+$[\bestabstractendo](Y)$, il suffit de calculer tous les \index{chevauchements (de motifs)}{\emph{chevauchements}} possibles entre un nouveau motif d'intérêt potentiel (dans $\patternset\setminus Y$) et un membre droit d'une règle du modèle.
+Chaque chevauchement induit un raffinement de la règle correspondante.
+Si le membre gauche de la règle raffinée apparait dans un état
+de l'ensemble $\concretization(Y)$, alors ce motif appartient bien à  l'ensemble $[\bestabstractendo]Y$.
+
+\begin{figure}
+  \subfigure[Un état abstrait.]%
+  {\label{F.ai.step.abstract.state}%
+  \patternsetex[crossed_]}
+\subfigure[La construction de la vue locale dans laquelle les trois sites sont liés peut être construite en une étape à partir de cet état abstrait.]{\label{F.ai.step.deduction}\begin{minipage}{\linewidth}%
+\centering\scalebox{\scalefactor}{\scalebox{1.}{\includegraphics{generated_pictures/ai_step.pdf}}}
+\end{minipage}}
+\caption{Découverte d'un nouveau motif d'intérêt accessible dans le modèle
+des premières étapes de la voie de l'acquisition du facteur de croissance de d'épiderme (voir en Fig.~\ref{F.dimerisation} page \pageref{F.dimerisation}).
+En~\ref{F.ai.step.abstract.state}, il est supposé qu'à ce moment de l'analyse, seules trois vues locales %suivantes
+sont autorisées. %~: celle dans laquelle aucun des sites \sitefont{l}, \sitefont{r} et \sitefont{r} ne sont liés, celle dans laquelle seul le site \sitefont{l} est lié et celle dans laquelle seuls les sites \sitefont{l} et \sitefont{r} sont liés.
+ Par ailleurs, il n'est permis de former ni des doubles liaisons entre récepteurs membranaires, ni des chaînes de trois récepteurs ou plus.  En~\ref{F.ai.step.deduction}, la preuve que la vue locale doit  être déclarée accessible à ce niveau d'abstraction est représentée sous forme de diagramme.
+Elle consiste à appliquer la règle de liaison asymétrique  en identifiant la vue locale au récepteur de gauche dans le membre droit de la règle et en raffinant la règle en conséquence.
+ Le membre gauche de la règle obtenue apparaît dans une espèce biochimique ne contenant aucun motif d'intérêt non encore découvert, ce qui conclut la preuve.}
+ \label{F.ai.step}
+\end{figure}
+
+\begin{example}Un exemple de cette construction est dessiné en Fig.~\ref{F.ai.step}.
+L'état abstrait actuel est donné en Fig.~\ref{F.ai.step.abstract.state}.
+Seules trois vues locales sont pour l'instant autorisées, celle  avec aucun des sites
+\sitefont{l}, \sitefont{r}, \sitefont{c} lié, celle avec seul le site \sitefont{l} lié et celle avec seuls les sites \sitefont{l} et \sitefont{r} liés. Par ailleurs, ni les doubles liaisons, ni les chaînes d'au moins trois récepteurs ne sont autorisées à cet instant de l'analyse.
+La preuve que l'on peut construire une occurrence de protéines avec les trois sites  \sitefont{l}, \sitefont{r} et \sitefont{c} liés, est donnée en Fig.~\ref{F.ai.step.deduction}. Il suffit d'identifier cette vue locale à l'occurrence gauche du récepteur dans le membre droit de la règle (les plongements en pointillés bleus et marrons envoient ces deux occurrences de protéines sur une même occurrence de protéines) qui permet d'établir une liaison asymétrique entre deux récepteurs membranaires (voir en Fig.~\ref{F.liaison-asymetrique}). Ceci est possible car les sites en commun dans ces deux occurrences de protéines sont dans un état compatible~: en effet, la vue locale demande que ces sites soient liés, alors que le membre droit de la règle précise à quels sites ils le sont. La règle est alors spécialisée à la production de la nouvelle vue locale pour ce chevauchement particulier entre la vue locale et le membre droit de la règle. Cela consiste à ajouter dans les membres gauche et droit de la règle l'information que le site \sitefont{l} est lié. Pour conclure, il suffit alors d'exhiber un plongement (ici dessiné en pointillés rouges) en le membre gauche de la règle ainsi raffinée et une espèce biochimique, en vérifiant que cette espèce biochimique ne contient aucune occurrence des motifs d'intérêt non encore autorisés. Le dimer avec uniquement une liaison symétrique et dans lequel les deux occurrences du récepteur membranaire sont toutes deux liées à des occurrences du ligand et les sites \sitefont{Y48} et \sitefont{Y68} non phosphorylés et libres rempli parfaitement ces conditions. Ainsi la vue locale dans laquelle les trois sites \sitefont{l}, \sitefont{r} et \sitefont{c} sont liés simultanément sera utilisable dès la prochaine itération de l'analyse.
+\end{example}
+
+
+Lors du calcul de l'ensemble $[\bestabstractendo](Y)$,  l'étape la plus coûteuse en temps de calcul est de vérifier que les membres gauches des règles raffinées peuvent apparaître dans un état de l'ensemble $\concretization(Y)$. La section suivante a pour but de réduire ce coût moyennant une approximation supplémentaire.
+
+
+\section{Analyse par ensembles de motifs orthogonaux}
+
+\label{S.ortho}
+
+Ajouter des hypothèses sur l'ensemble des motifs d'intérêt et simplifier le test de réalisabilité du membre gauche des raffinements de règles en le remplaçant par une condition nécessaire, mais pas toujours suffisante, permet de rendre ce calcul plus efficace au prix d'une perte de précision de l'analyse. Ceci permet de définir une approximation correcte de la fonction $\bestabstractendo$.
+
+
+\subsection{Ensembles de motifs orthogonaux}
+
+\label{S.ortho}
+
+
+Pour ce faire, l'ensemble des motifs d'intérêt peut être organisé sous la forme d'un ensemble fini d'ensembles finis de motifs orthogonaux \cite{DBLPjournals/entcs/FeretL18}. Chaque \index{ensemble de motifs orthogonaux}{\emph{ensemble de motifs orthogonaux}}
+est un arbre de décision raffinant progressivement un motif initial, dans le  but de répondre à une question spécifique. Un ensemble de motifs orthogonaux est construit de manière à ce que toute occurrence du motif initial dans une espèce biochimique, puisse être complétée en exactement une occurrence d'un de ces raffinements. En conséquence, les raffinements du motif initial sont deux à deux incompatibles et ils recouvrent, en quelque sorte, tous les cas possibles pour le motif initial.
+
+Le choix exact des ensembles de motifs orthogonaux repose sur une analyse préliminaire qui calcule, par inspection des règles du modèle, quelles questions intéressantes se posent.
+Trois catégories de questions sont considérées par défaut dans l'analyseur {\kasa} (mais il est possible de paramétrer l'analyse pour en désactiver une ou deux). La première infère des relations entre les états des différents sites de chaque type de protéines, cela correspond à l'analyse des vues locales  \cite{DBLPconf/vmcai/DanosFFK08}. La seconde permet de détecter des relations entre l'état des sites dans des occurrences de protéines qui partagent un lien \cite{DBLPjournals/entcs/FeretL18} dans le but d'analyser les déplacements de complexes biochimiques lorsque ceux-ci sont codés par des transformations de l'état d'activation de sites fictifs.  L'analyse permet alors de vérifier si oui ou non deux occurrences de protéines sont toujours localisées dans le même compartiment quand elles sont liées entre elles. La troisième permet de détecter si une même occurrence de protéines peut être liée simultanément à deux occurrences différentes de  protéines  ou si une même occurrence de protéines peut être liée au moins doublement à une autre occurrence de protéines \cite{DBLPjournals/entcs/FeretL18}. Une quatrième sorte d'ensembles de motifs orthogonaux est en cours d'implantation. Elle se concentre sur la formation de complexes biochimiques cycliques~: son but est de prouver l'absence de complexes biochimiques de taille non bornée
+\cite{feretSASB2018}.
+
+
+Les ensembles finis de motifs orthogonaux peuvent être construits récursivement, en remplaçant un des motifs par plusieurs motifs le raffinant. Il suffit de choisir une information non spécifiée dans ce motif et de considérer tous les cas possibles pour cette information, d'où la représentation sous forme d'arbre de décision. L'ensemble de motifs orthogonaux est alors formé par les feuilles de cet arbre, alors que les {\noeuds} de cet arbre représentent les motifs intermédiaires qui ont été remplacés par des motifs plus précis.
+
+
+
+\begin{figure}%
+
+\subfigure[Ensemble de motifs orthogonaux pour les vues locales.]{%
+\label{F.ortho.views}\begin{minipage}{\linewidth}
+\hfill\tree\hfill\mbox{}
+\end{minipage}}
+
+\subfigure[Ensemble de motifs orthogonaux pour discuter des doubles liaisons.]{%
+\label{F.ortho.double}\begin{minipage}{\linewidth}
+\hfill\treebis\hfill\mbox{}
+\end{minipage}}
+
+\caption{Deux exemples d'ensemble de motifs orthogonaux.
+En~\ref{F.ortho.views}, l'ensemble des vues locales (voir les huit premiers motifs en Fig.~\ref{F.patternsets} page \pageref{F.patternsets}) sous forme d'arbre de décision. En~\ref{F.ortho.double}, celui pour discuter de la présence potentielle de doubles liaisons entre des récepteurs et de la présence potentielle de trimers (voir les deux derniers motifs en Fig.~\ref{F.patternsets}).} 
+\label{F.ortho}
+\end{figure}
+
+\begin{example}%
+L'ensemble des motifs d'intérêt introduit en Fig.~\ref{F.patternsets} est inclus dans la réunion de deux ensembles de motifs orthogonaux. En effet, l'ensemble des vues locales peut être obtenu, en partant d'une occurrence de la protéine \agentfont{EGFR} sans aucun site, en se demandant successivement si le site \sitefont{l} est libre ou non, si le site \sitefont{r} est libre ou non et si le site \sitefont{c} est libre ou non.
+L'arbre de décision correspondant se trouve en Fig.~\ref{F.ortho.views}.
+Les deux derniers motifs d'intérêt sont obtenus en se demandant si un récepteur peut établir des liaisons doubles.
+Partant d'une occurrence de la protéine \agentfont{EGFR} sans aucun site, il faut se demander si le site \sitefont{r} est libre ou non, puis dans le cas où le site \sitefont{r} est lié, si le site \sitefont{c} est lié ou non, et enfin, dans le cas où le site \sitefont{c} est également lié, si ces deux sites sont liés à une même occurrence de récepteur membranaire ou à deux occurrences  différentes. L'arbre de décision ainsi obtenu est donné en Fig.~\ref{F.ortho.double}.
+\end{example}
+
+\subsection{Pas de calcul abstraits}
+
+Les différents ensembles de motifs orthogonaux collaborent au sein de l'analyse, qui effectue ainsi une induction mutuelle sur ces derniers. Ceci présente deux avantages par rapport à des analyses séparées ou en cascades (où chacune utiliserait le résultat des analyses précédentes). D'une part, il n'est pas nécessaire de définir quel ensemble de motifs orthogonaux doit être analysé avant quel autre. D'autre part, une induction mutuelle est strictement plus expressive.
+La collaboration entre les différents ensembles de motifs orthogonaux se produit lors du test de la nouvelle condition utilisée pour prouver que le membre gauche des règles raffinées n'est pas réalisable étant donné les motifs qui sont autorisés à un moment donné de l'analyse (voir en Fig.~\ref{F.ai.step}). Pour faire cette preuve, le raffinement d'une règle est construit de la manière habituelle. Il suffit ensuite de trouver une occurrence de protéines dans le membre gauche de la règle raffinée qui soit incompatible
+avec l'état actuel de l'analyse sur au moins un des ensembles de motifs orthogonaux pris en paramètre de l'analyse. Pour cela, la racine de l'ensemble de motifs orthogonaux doit être de la même sorte que l'occurrence de la protéine en question et l'information contextuelle de cette occurrence de protéines dans ce membre gauche de la règle raffinée ne doit être compatible avec aucun des motifs de cet ensemble de motifs orthogonaux déjà déjà déclarés potentiellement accessibles par l'analyse.
+%Il suffit ensuite de prouver qu'il existe une occurrence de protéines dans le membre gauche de la règle raffinée et un ensemble de motifs orthogonaux parmi ceux pris en paramètre de l'analyse et dont la racine est de la même sorte que l'occurrence de protéines en question tels qu'aucun des motifs de cet ensemble de motifs orthogonaux déjà déclarés potentiellement accessibles par l'analyse n'est compatible avec l'information contextuelle de cette occurrence de protéines (dans ce membre gauche de la règle raffinée).
+Dans le cas contraire, l'analyseur ne peut pas prouver que le motif est inaccessible. Le motif est alors considéré comme potentiellement accessible pour la suite de l'analyse. Il s'agit bien entendu d'une approximation.
+
+%chercher un plongement entre chaque motif connexe de la règle raffinée et un complexe biochimique  qui serait compatible avec l'état abstrait actuel, il suffit de vérifier,  pour chaque occurrence de protéines du membre gauche de cette règle raffinée et pour chaque ensemble de motifs orthogonaux portant sur les protéines de cette sorte, qu'il existe un motif qui a déjà été déclaré potentiellement accessible et qui est compatible avec l'information contextuelle de l'occurrence de cette protéine au sein de ce membre gauche. Si c'est le cas pour toutes les occurrences de protéines du membre gauche de la règle raffinée et pour tous les ensembles de motifs orthogonaux correspondants, le nouveau motif est considéré comme potentiellement accessible (il s'agit d'une approximation). Dans le cas contraire, cela prouve que le membre gauche de la règle n'est pas réalisable avec les motifs qui sont toujours  interdits à ce stade de l'analyse et le nouveau motif n'est pas considéré pour le moment.
+
+
+
+
+\begin{example}%
+En Fig.~\ref{F.ortho.step}, l'étape de calcul qui avait été décrite en Fig.~\ref{F.ai.step} est rejouée en remplaçant le test de réalisabilité par cette procédure approchée. Au lieu de construire un plongement du membre gauche de la règle raffinée vers un complexe biochimique afin de vérifier qu'il ne contient pas de motif non encore autorisé, la nouvelle procédure se contente de vérifier pour chaque occurrence de protéines dans le membre gauche de la règle raffinée et pour chaque ensemble de motifs orthogonaux portant sur cette sorte de protéines si celui-ci contient un motif autorisé compatible avec cette occurrence. Dans ce cas, cela revient à vérifier qu'il existe bien une vue locale déjà autorisée dans laquelle les deux sites \sitefont{l} et \sitefont{r} sont liés, alors que le site \sitefont{c} est libre et que le motif dans lequel le site \sitefont{r} est lié et le site \sitefont{c} est libre est autorisé dans le deuxième ensemble de motifs orthogonaux.
+\end{example}
+
+Outre le fait de ne pas vérifier l'existence d'un complexe biochimique qui pourrait compléter le collage obtenu entre les motifs connexes du membre gauche de la règle raffinée et les motifs déjà déclarés potentiellement accessibles par l'analyse, il est intéressant de remarquer que la procédure de décision approchée évite le calcul de tous les chevauchements entre les motifs d'intérêt non encore découverts par l'analyse, en se focalisant sur la racine de chaque ensemble de motifs orthogonaux. Ce sont les deux sources de pertes d'information dues à l'affaiblissement de la procédure de décision.% pour détecter qu'un motif apparait bien dans un complexe biochimique dans la concrétisation de l'état abstrait courant.
+
+
+\begin{example}%
+Le résultat de l'itération pour le modèle formé des règles qui avaient été décrites en Fig.~\ref{F.dimerisation} pour les ensembles de motifs orthogonaux qui avaient été introduits en Fig.~\ref{F.ortho}, est donné en Fig.~\ref{F.ortho.result}. Cette itération a été initialisée avec une quantité arbitraire d'occurrences de protéines de chaque sorte, mais avec tous leurs sites libres. Pour ce qui est des vues locales  (voir en Fig.~\ref{F.ortho.result.views}), seules $4$ configurations sont possibles pour l'état des sites \sitefont{l}, \sitefont{r},
+et \sitefont{c} des récepteurs membranaires.
+Ainsi, le site \sitefont{c} ne peut être lié sans que le site \sitefont{r} ne le soit et le site \sitefont{r} ne peut être lié sans que le site \sitefont{l} ne le soit. %De plus, les sites \sitefont{l}, \sitefont{r} et \sitefont{c} ne peuvent se lier que selon cet ordre et ne se délier que selon l'ordre inverse.
+De son côté, l'analyse des doubles liaisons (voir en Fig.~\ref{F.ortho.result.double}) montre qu'il est impossible de former des chaînes d'au moins trois récepteurs membranaires.
+\end{example}
+
+\begin{figure}%
+%  \subfigure[]{%
+  \begin{minipage}{\linewidth}%
+  \centering\scalebox{\scalefactor}{\scalebox{1.}{\includegraphics{generated_pictures/ai_step_OK.pdf}}}
+  \end{minipage}%
+  %}
+  \caption{L'étape abstraite de la Fig.~\ref{F.ai.step} revisitée avec la procédure de décision approchée. Au lieu de vérifier que chaque motif connexe du  membre gauche de la règle raffinée se plonge dans un complexe biochimique dans la concrétisation de l'état abstrait, il suffit de s'assurer, pour chaque occurrence de protéines dans ce motif et chaque ensemble de motifs orthogonaux portant sur ce type de protéines  si il contient un motif compatible déjà découvert par l'analyse. }
+  \label{F.ortho.step}
+\end{figure}
+
+\begin{figure}%
+
+\subfigure[Analyse d'accessibilité pour l'ensemble des vues locales (voir en Fig.~\ref{F.ortho.views}).]{%
+\label{F.ortho.result.views}
+\begin{minipage}{\linewidth}
+  \centering\tree[crossed_]
+\end{minipage}}
+
+\subfigure[Analyse d'accessibilité pour discuter de la présence éventuelle de trimers et de double liaisons.]{%
+\label{F.ortho.result.double}
+\begin{minipage}{\linewidth}
+  \centering\treebis[crossed_]
+\end{minipage}}
+\caption{Résultat de l'analyse pour les deux ensembles de motifs orthogonaux donnés en Fig.~\ref{F.ortho}. Les motifs orthogonaux sont aux feuilles des arbres de décision. Ceux qui sont barrés en rouge n'apparaissent dans aucune exécution du modèle (pour n'importe quel état initial sans lien). Par construction de l'arbre de décision, les {\noeuds} dont tous les enfants sont inaccessibles sont également inaccessibles et donc barrés eux-aussi.}
+\label{F.ortho.result}
+\end{figure}
+
+Il est important de rappeler que l'analyse ne donne qu'une sur-approximation des états accessibles. Ainsi, tout motif prouvé comme non accessible est bien inaccessible. Par contre, il n'y a aucune garantie qu'un motif non prouvé inaccessible puisse apparaître dans un état accessible depuis un des états initiaux.
+
+
+
+\subsection{Post-traitement et visualisation des résultats}
+
+  L'itération de point-fixe est suivie d'une phase de traitement du résultat. Le but est essentiellement de rendre le résultat de l'analyse plus compréhensible pour l'utilisateur.
+  Dans un premier temps, un parcours de chaque arbre de décision est effectué  et chaque {\noeud} dont tous les fils sont déclarés inaccessibles est déclaré inaccessible lui-aussi. Ensuite, tous les {\noeuds} des arbres de décision sont explorés en répertoriant ceux dont les enfants n'ont pas tous le même statut.
+  Ceci témoigne d'une propriété intéressante puisque dans ce cas, un des raffinements d'un motif accessible n'est pas accessible. Cette information est alors présentée sous la forme d'une implication, appelée \index{lemme de raffinement}{\emph{lemme de raffinement}},  entre un motif (le {\noeud} en question) et une liste de motifs (ses fils qui n'ont pas été prouvés inaccessibles). Une telle implication s'interprète de la manière suivante~: chaque occurrence du motif de la précondition dans un complexe biochimique accessible  peut toujours se raffiner en l'un des motifs de la postcondition.
+
+
+\begin{example}%
+Le résultat de l'analyse décrit en Fig.~\ref{F.ortho.result} donne lieu aux  implications suivantes~:
+
+\begin{itemize}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_c_bound.pdf}}\end{minipage} $\Longrightarrow$\hspace*{0mm}\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_cr_bound_c_bound.pdf}}\end{minipage}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_cr_bound.pdf}}\end{minipage} $\Longrightarrow$\hspace*{0mm}\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_bound_cr_bound.pdf}}\end{minipage}
+\item
+\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_cr_bound_c_bound.pdf}}\end{minipage} $\Longrightarrow$\hspace*{4mm}\begin{minipage}[c]{1.7cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_cr_bound_c_bound_same.pdf}}\end{minipage}
+\end{itemize}
+
+Cela prouve que dans une occurrence du récepteur membranaire,
+le site \sitefont{c} ne peut être lié sans que le site \sitefont{r}  ne le soit également, et que le site \sitefont{r} ne peut être lié sans que le site \sitefont{l} ne le soit aussi. De plus, une occurrence du récepteur dont les sites \sitefont{r} et \sitefont{c} sont tous deux liés, est nécessairement liée doublement à une même occurrence du récepteur.
+\end{example}
+
+  Par ailleurs, l'analyseur vérifie pour chaque règle si son membre gauche
+  est compatible avec le résultat de l'analyse (avec la procédure de décision simplifiée présentée Sec.~\ref{S.ortho}). Les règles pour lesquelles ce n'est pas le cas sont reportées à l'utilisateur.
+
+  \section{Étude de performance et utilisation concrète}
+
+
+  \begin{figure}[t]
+  \centering{\begin{tabular}{||c||c|c|c||c||}
+  %\hline
+  \input{benchmarks/ortho/benchmarks}
+  %\hline
+\end{tabular}}
+  \caption{Résultats expérimentaux
+  (calculés sur un MacBook Pro avec une puce Intel Core i7-6567U (cadencée 3.3 GHz)). Pour chaque modèle et chaque version, le nombre de règles est donné, ainsi que le nombre de contraintes découvertes par l'analyse et le nombre de règles mortes trouvées (qui ne sont donc jamais utilisées dans le modèle). Le temps total de l'analyse est également fourni.}
+  \label{fig:bench}
+  \end{figure}
+
+\newcommand{\guillemets}[1]{`#1'}
+
+
+  Nous avons utilisé l'analyseur statique {\kasa} sur plusieurs modèles. Les résultats de ces analyses sont décrites en Fig.~\ref{fig:bench}. Les onze premiers modèles sont des traductions directes des modèles qui sont fournis avec la distribution du logiciel BNGL \cite{DBLPjournals/bioinformatics/BlinovFGH04}. Le modèle {\guillemets{sos}} décrit les premiers événements de l'acquisition du facteur de croissance de l'épiderme (il comprend entre autres les règles données en Fig.~\ref{F.dimerisation}). Les modèles {\guillemets{machine}} et  {\guillemets{ensemble}} sont deux versions de la voie de signalisation MAPK, publiées par  Eric Deeds et Ryan Suderman \cite{ensemble}. Les versions du modèle {\guillemets{korkut}} concernent la voie de signalisation de la protéine Ras. Ce modèle a été conçu par John Bachman et Benjamin Gyori (Sorger lab) dans le cadre du projet DARPA Big Mechanism
+  \cite{DARPA} en utilisant des outils de traitement automatique du langage naturel pour extraire des faits de la littérature, en assemblant ces faits en Kappa, puis en corrigeant manuellement le modèle obtenu
+  \cite{Gyori119834}.
+Le modèle {\guillemets{tgf}} s'intéresse lui à la matrice extra-cellulaire de la protéine tgf-$\beta$. Cinq versions de ce modèle ont été analysées. Elles ont été assemblées à la main d'après la littérature par Nathalie Théret et Jean Coquet, puis corrigées avec l'aide de l'analyseur {\kasa}.
+Enfin, plusieurs versions du modèle de la voie de signalisation de la protéine Wnt, écrites par Héctor F.~Medina Abarca (Fontana Lab) dans le cadre du projet DARPA Big Mechanism \cite{DARPA} ont été analysées. Ce modèle a également été assemblé manuellement après lecture humaine de la littérature. Dans ce dernier modèle, le grand nombre de règles vient du fait que des scripts ont été utilisés pour raffiner des règles d'interaction génériques afin d'ajuster leur cinétique en fonction d'information contextuelle sur l'état des occurrences de protéines qui interagissent et de leurs voisines.
+
+Pour chaque modèle et chaque version de ce modèle, nous avons reporté le nombre total de règles dans le modèle, ainsi que nombre d'implications  découvertes par l'analyse portant sur des relations soit entre au moins deux sites, soit entre les états de liaison et d'activation d'un même site. Nous avons également donné le nombre de règles qui ont été trouvées mortes par l'analyseur statique (du fait de l'approximation, l'analyseur peut manquer des règles mortes, par contre, toute règle détectée morte l'est).  Nous donnons également le temps de calcul total de l'analyse, ce qui montre que {\kasa} passe à l'échelle même sur des modèles comportant un grand nombre de règles d'interaction.
+
+Les informations trouvées par l'analyse statique sont utiles. Une même démarche a été suivie pour améliorer la qualité de ces modèles, qu'ils soient écrits à la main ou assemblés automatiquement par fouille automatique de la littérature.
+La première étape est la vérification  des règles mortes. Ces règles sont souvent la conséquence, soit d'erreurs typographiques, soit d'états initiaux incomplets, soit de règles manquantes, soit de relations de causalité qui ne peuvent pas être satisfaites. La lecture des contraintes trouvées par l'analyseur permet de mieux comprendre leur origine. Elle permet également de vérifier que les invariants structurels auquel le modélisateur peut s'attendre sont bien vérifiés. L'étape suivante est d'étudier comment une occurrence de protéines peut passer d'une configuration à une autre. L'analyse des \index{trace locale}{\emph{traces locales}} \cite{localtraces,8306662} calcule des systèmes de transitions à partir des vues locales.  Ceci permet d'avoir une cartographie des changements de configuration de chaque occurrence de protéines en faisant abstraction de l'état des occurrences de protéines auxquelles cette occurrence est liée. En particulier, une étude de ces systèmes de transitions permet de calculer efficacement des transitions qui sont définitives~: c'est à dire celles qui transforment la configuration d'une occurrence de protéines, sans retour possible, quel que soit le nombre de transitions ultérieures.
+
+\begin{example}Le système de transitions qui représente les traces locales
+des occurrences du récepteur membranaire dans le modèles des premières interactions qui interviennent dans l'activation du facteur de croissance de l'épiderme, est dessiné en Fig.~\ref{fig:dimer:localtrans}. La succession entre les différentes configurations possibles y est clairement décrite. Ainsi, partant d'un récepteur avec les sites
+\sitefont{l}, \sitefont{r}, \sitefont{c} et \sitefont{n} libres (le site \sitefont{n} a été ajouté pour rendre l'exemple plus intéressant),
+le site \sitefont{l} peut devenir lié en premier, ensuite le site \sitefont{r} peut devenir lié, ensuite soit le site \sitefont{c}, soit le site \sitefont{n} peut devenir lié. Par contre, ces deux liaisons sont exclusives~: les sites \sitefont{c} et \sitefont{n} d'une occurrence de protéines ne peuvent pas être liés tous les deux simultanément.
+Par ailleurs, toutes les liaisons peuvent se défaire dans l'ordre inverse de leur création.
+\end{example}
+
+
+
+\begin{figure}
+  {\begin{minipage}{\linewidth}
+  \begin{equation*}
+  \hspace*{-1cm}\xymatrix@C=1cm@R=0.9cm{%
+&&&&
+\begin{minipage}[c]{1cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_bound_cr_bound_c_bound_n_free.pdf}}\end{minipage}
+  \ar@{->}[dl]\cr
+ & \begin{minipage}[c]{1.5cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_free_cr_free_c_free_n_free.pdf}}\end{minipage}
+  \ar@/_{0.5pc}/@{->}[r] &
+  \begin{minipage}[c]{1.5cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_bound_cr_free_c_free_n_free.pdf}}\end{minipage}
+  \ar@/_{0.5pc}/@{->}[r]
+  \ar@/_{0.5pc}/@{->}[l] &
+  \begin{minipage}[c]{1.5cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_bound_cr_bound_c_free_n_free.pdf}}\end{minipage}
+  \ar@/_{0.5pc}/@{->}[ru]
+  \ar@/_{0.5pc}/@{->}[rd]
+  \ar@/_{0.5pc}/@{->}[l] & \cr
+  &&&&\begin{minipage}[c]{1.5cm}\scalebox{\scalefactor}{\includegraphics{generated_pictures/r_egf_bound_cr_bound_c_free_n_bound.pdf}}\end{minipage}\ar@{->}[ul]
+  }
+\end{equation*}
+\end{minipage}}
+  \caption{Le système de transitions pour les vues locales des occurrences du récepteur membranaire. L'état du site \sitefont{n} a été ajouté pour rendre l'exemple plus intéressant. Ce système de transitions explique les étapes que traverse ces occurrences lorsque leurs sites deviennent liés. Les transitions en sens inverse, qui correspondent aux règles de libération des sites sont aussi représentées.}
+  \label{fig:dimer:localtrans}
+\end{figure}

@@ -1,0 +1,17 @@
+set xlabel '$t$ '
+set ylabel '$\text{Probability ratios}$'
+set title 'Probability ratios VS Time '
+set term epslatex linewidth 5
+set autoscale 
+set xrange [0.:6.]
+set yrange [0.:5]
+set output 'generated_pictures/sym_OK_ratio.tex' 
+plot 'octave/sym_OK/sym.data' using 1:22 title '$\petit{\probstate{\qthree}/\probstate{\qtwo}}$' w l 
+set output 'generated_pictures/sym_OK_ratio.tex' 
+replot 'octave/sym_OK/sym.data' using 1:23 title '$\petit{\probstate{\qfour}/\prob{\qtwo}}$' w l  lt rgb "red"
+set output 'generated_pictures/sym_OK_ratio.tex' 
+replot 'octave/sym_OK/sym.data' using 1:24 title '$\petit{\prob{\qseven}/\prob{\qfive}}$' w l lt rgb "blue"
+
+
+
+

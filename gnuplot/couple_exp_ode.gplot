@@ -1,0 +1,8 @@
+set xlabel '$t$'
+set ylabel '$\conc{\ABpp}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/couple_exp_ode.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/couple.data' using 1:8 title '' w l 

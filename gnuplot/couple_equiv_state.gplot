@@ -1,0 +1,11 @@
+set xlabel '$t$'
+set ylabel '$P_t(\sigma)$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/couple_equiv_state.tex'
+set title ''
+set xrange [0.:3.]
+set yrange [0.:0.1]
+plot 'maple/couple.data' using 1:2 title '$\sigma= \ABuu + \ABpp$' w l 
+set output 'generated_pictures/couple_equiv_state.tex'
+replot 'maple/couple.data' using 1:3 title '$\sigma=\ABpu + \ABup$' w l 

@@ -1,0 +1,20 @@
+set xlabel '$t$ '
+set ylabel '$\begin{array}{c}\text{Probabilities}\cr\textcolor{white}{`}\cr\end{array}$'
+set title 'State distribution VS Time '
+set term epslatex linewidth 5
+set autoscale 
+set xrange [0.:1.5]
+set yrange [0.:0.3]
+set output 'generated_pictures/sym_limit_few.tex' 
+plot 'sym.data' using 1:2 title '$\petit{\prob{q_0}}$' w l
+set output 'generated_pictures/sym_limit_few.tex' 
+replot 'sym.data' using 1:3 title '$\petit{\prob{q_1}}$' w l  lt rgb "red"
+set output 'generated_pictures/sym_limit_few.tex' 
+replot 'sym.data' using 1:4 title '$\petit{\prob{q_2}}$' w l lt rgb "blue"
+set output 'generated_pictures/sym_limit_few.tex' 
+replot 'sym.data' using 1:6 title '$\petit{\prob{q_3}}$' w l lt rgb "green" 
+set output 'generated_pictures/sym_limit_few.tex' 
+replot 'sym.data' using 1:8 title '$\petit{\prob{q_4}}$' w l lt rgb "brown" 
+
+
+

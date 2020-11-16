@@ -1,0 +1,8 @@
+set xlabel '$t$'
+set ylabel '$[\App]-\myfrac{([\Apu]+[\App])([\Apu]+[\App])}{2}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/distant_exp_ode_delta.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/distant.data' using 1:10 title '' w l 

@@ -1,0 +1,10 @@
+set xlabel '$t$'
+set ylabel '$\expec{n_{\App}}{\Aua+\Apa+\Aau+\Aap}$'
+set term epslatex
+set autoscale
+set output 'generated_pictures/distant_exp_delta.tex'
+set title ''
+set xrange [0.:3.]
+plot 'maple/distant.data' using 1:7 title '' w l 
+
+
