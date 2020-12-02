@@ -1,8 +1,22 @@
 set xlabel '$t$'
-set ylabel '$\conc{\ABpp}$'
-set term epslatex
+set ylabel 'Concentration'
+set term epslatex linewidth 5
 set autoscale
-set output 'generated_pictures/couple_exp_ode.tex'
 set title ''
 set xrange [0.:3.]
-plot 'maple/couple.data' using 1:8 title '' w l 
+set output 'generated_pictures/couple_exp_ode.tex'
+plot 'data/couple.data' using 1:2 title '$\conc{\Auf}$' w l lt rgb "blue"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:3 title '$\conc{\Aub}$' w l lt rgb "red"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:4 title '$\conc{\Apf}$' w l lt rgb "green"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:5 title '$\conc{\Apb}$' w l lt rgb "brown"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:6 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:7 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:8 title "" w l dt (30,30,30,30,30,30) lt rgb "black"
+set output 'generated_pictures/couple_exp_ode.tex'
+replot 'data/couple.data' using 1:9 title "" w l dt (30,30,30,30,30,30) lt rgb "black"

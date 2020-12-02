@@ -1,8 +1,11 @@
 set xlabel '$t$'
-set ylabel '$\conc{\ABpp}-\myfrac{(\conc{\ABpu}+\conc{\ABpp})\product(\conc{\ABup}+\conc{\ABpp})}{\conc{\ABuu}+\conc{\ABup}+\conc{\ABpu}+\conc{\ABpp}}$'
-set term epslatex
+set ylabel 'Error rate in the estimation of $\conc{\ABpp}$'
+set term epslatex linewidth 5
 set autoscale
 set output 'generated_pictures/couple_exp_ode_delta.tex'
 set title ''
 set xrange [0.:3.]
-plot 'maple/couple.data' using 1:10 title '' w l 
+set yrange [0.:0.005]
+max(x,y) = (x > y) ? x : y
+set output 'generated_pictures/couple_exp_ode_delta.tex'
+plot 'data/couple.data' using 1:($10-$11)/(max($10,$11)) title "" w l

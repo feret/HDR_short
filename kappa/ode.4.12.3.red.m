@@ -1,11 +1,11 @@
 function main=main()
-% command line:
-%      'KaDE' '--count' 'Occurrences' 'ode.4.12.3.red.ka' '--output''ode.4.12.3.red' '--output-plot''../data/ode.4.12.3.red.data'
+% command line: 
+%      'KaDE' '-l' '6' '--count' 'Occurrences' 'ode.4.12.3.red.ka' '--output''ode.4.12.3.red' '--output-plot''../data/ode.4.12.3.red.data'
 %% THINGS THAT ARE KNOWN FROM KAPPA FILE AND KaSim OPTIONS:
-%%
+%% 
 %% init - the initial abundances of each species and token
 %% tinit - the initial simulation time (likely 0)
-%% tend - the final simulation time
+%% tend - the final simulation time 
 %% initialstep - initial time step at the beginning of numerical integration
 %% maxstep - maximal time step for numerical integration
 %% reltol - relative error tolerance;
@@ -17,7 +17,7 @@ function main=main()
 
 
 tinit=0;
-tend=1;
+tend=6;
 initialstep=1e-05;
 maxstep=0.02;
 reltol=0.001;
@@ -89,7 +89,7 @@ for elem = 1:numel(LIC)
 end
 
 
-if nonnegative
+if nonnegative 
    options = odeset('RelTol', reltol, ...
                     'AbsTol', abstol, ...
                     'InitialStep', initialstep, ...
@@ -154,15 +154,15 @@ end
 
 filename = '../data/ode.4.12.3.red.data';
 fid = fopen (filename,'w');
-fprintf(fid,'# KaDE --count Occurrences ode.4.12.3.red.ka --output ode.4.12.3.red --output-plot ../data/ode.4.12.3.red.data\n')
+fprintf(fid,'# KaDE -l 6 --count Occurrences ode.4.12.3.red.ka --output ode.4.12.3.red --output-plot ../data/ode.4.12.3.red.data\n')
 fprintf(fid,'# ')
-fprintf(fid,' [T]')
-fprintf(fid,' A')
-fprintf(fid,' |A.x-x|')
+fprintf(fid,'[T],')
+fprintf(fid,'A,')
+fprintf(fid,'|A.x-x|,')
 fprintf(fid,'\n')
 for j=1:n_points
     for i=1:nobs
-        fprintf(fid,'%f ',y(j,i));
+        fprintf(fid,'%f,',y(j,i));
     end
     fprintf(fid,'\n');
 end
@@ -298,3 +298,4 @@ end
 
 
 main();
+

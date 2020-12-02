@@ -1,11 +1,11 @@
 function main=main()
-% command line:
+% command line: 
 %      'KaDE' '-l' '6' '--count' 'Occurrences' 'ode.4.12.2.ka' '--output''ode.4.12.2' '--output-plot''../data/ode.4.12.2.data'
 %% THINGS THAT ARE KNOWN FROM KAPPA FILE AND KaSim OPTIONS:
-%%
+%% 
 %% init - the initial abundances of each species and token
 %% tinit - the initial simulation time (likely 0)
-%% tend - the final simulation time
+%% tend - the final simulation time 
 %% initialstep - initial time step at the beginning of numerical integration
 %% maxstep - maximal time step for numerical integration
 %% reltol - relative error tolerance;
@@ -64,7 +64,7 @@ jackund=zeros(nrules,nodevar);
 t = 0.000000;
 
 init(5)=t;
-init(1)=2; % A(x[1],y[.]), A(x[1],y[.])
+init(1)=4; % A(x[1],y[.]), A(x[1],y[.])
 var(4)=init(4)/init(1); % q2
 var(3)=init(3)/init(1); % q1
 var(2)=init(1)+init(3)+init(4); % dimer
@@ -96,7 +96,7 @@ for elem = 1:numel(LIC)
 end
 
 
-if nonnegative
+if nonnegative 
    options = odeset('RelTol', reltol, ...
                     'AbsTol', abstol, ...
                     'InitialStep', initialstep, ...
@@ -163,15 +163,15 @@ filename = '../data/ode.4.12.2.data';
 fid = fopen (filename,'w');
 fprintf(fid,'# KaDE -l 6 --count Occurrences ode.4.12.2.ka --output ode.4.12.2 --output-plot ../data/ode.4.12.2.data\n')
 fprintf(fid,'# ')
-fprintf(fid,'[T] ')
-fprintf(fid,'mono ')
-fprintf(fid,'dimer ')
-fprintf(fid,'q1 ')
-fprintf(fid,'q2 ')
+fprintf(fid,'[T],')
+fprintf(fid,'mono,')
+fprintf(fid,'dimer,')
+fprintf(fid,'q1,')
+fprintf(fid,'q2,')
 fprintf(fid,'\n')
 for j=1:n_points
     for i=1:nobs
-        fprintf(fid,'%f ',y(j,i));
+        fprintf(fid,'%f,',y(j,i));
     end
     fprintf(fid,'\n');
 end
@@ -324,34 +324,6 @@ jac(1,1)=jac(1,1)-1/2*k(2);
 jac(2,1)=jac(2,1)+1/2*k(2);
 jac(2,1)=jac(2,1)+1/2*k(2);
 
-% rule    : A(x[1],y[.]), A(x[1],y[.]) -> A(x[.],y[.]), A(x[.],y[.])
-% reaction: A(x[1],y[.]).A(x[1],y[.]) -> A(x[.],y[.]) + A(x[.],y[.])
-
-jac(1,1)=jac(1,1)-1/2*k(2);
-jac(2,1)=jac(2,1)+1/2*k(2);
-jac(2,1)=jac(2,1)+1/2*k(2);
-
-% rule    : A(x[1],y[.]), A(x[1],y[.]) -> A(x[.],y[.]), A(x[.],y[.])
-% reaction: A(x[1],y[.]).A(x[1],y[.]) -> A(x[.],y[.]) + A(x[.],y[.])
-
-jac(1,1)=jac(1,1)-1/2*k(2);
-jac(2,1)=jac(2,1)+1/2*k(2);
-jac(2,1)=jac(2,1)+1/2*k(2);
-
-% rule    : A(x[.],y[1]), A(x[.],y[1]) -> A(x[.],y[.]), A(x[.],y[.])
-% reaction: A(x[.],y[1]).A(x[.],y[1]) -> A(x[.],y[.]) + A(x[.],y[.])
-
-jac(3,3)=jac(3,3)-1/2*k(4);
-jac(2,3)=jac(2,3)+1/2*k(4);
-jac(2,3)=jac(2,3)+1/2*k(4);
-
-% rule    : A(x[.],y[1]), A(x[.],y[1]) -> A(x[.],y[.]), A(x[.],y[.])
-% reaction: A(x[.],y[1]).A(x[.],y[1]) -> A(x[.],y[.]) + A(x[.],y[.])
-
-jac(3,3)=jac(3,3)-1/2*k(4);
-jac(2,3)=jac(2,3)+1/2*k(4);
-jac(2,3)=jac(2,3)+1/2*k(4);
-
 % rule    : A(x[.],y[1]), A(x[.],y[1]) -> A(x[.],y[.]), A(x[.],y[.])
 % reaction: A(x[.],y[1]).A(x[.],y[1]) -> A(x[.],y[.]) + A(x[.],y[.])
 
@@ -427,3 +399,4 @@ end
 
 
 main();
+
