@@ -68,7 +68,7 @@ IMAGES= $(IMAGEPATH) $(PDF) $(TEX) $(PREIMAGES:%=$(IMAGEPATH)%)
 OCAMLOPT=ocamlopt.opt -I $(BUILD) -I $(GKAPPAREP) data_structures.cmx geometry.cmx gkappa.cmx config.cmx
 
 BENCHMARKREP=benchmarks/
-MODELREPS=$(wildcard $(BENCHMARKREP)*/)
+MODELREPS=$(dir $(wildcard $(BENCHMARKREP)*/))
 
 WITNESS=$(MODELREPS:%=%.witness) $(GNUPLOT:%.gplot=%.witness) figure.witness
 
