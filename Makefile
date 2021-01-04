@@ -208,7 +208,9 @@ clean_figure:
 	rm -fr $(IMAGEPATH) $(BUILD) $(BIN)
 
 clean_benchmarks:
-	cd benchmarks && $(MAKE) clean
+	for i in $(MODELREPS) ; do \
+		cd $$i && $(MAKE) clean ; \
+	done 
 
 clean_kappa:
 	cd kappa && $(MAKE) clean
