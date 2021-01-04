@@ -73,8 +73,7 @@ MODELREPS=$(dir $(wildcard $(BENCHMARKREP)*/))
 WITNESS=$(MODELREPS:%=%.witness) $(GNUPLOT:%.gplot=%.witness) figure.witness
 
 all: $(DATA) $(WITNESS) $(PDF) $(OUTPUT)
-	echo $(MODELREPS)
-
+	
 figure.witness: $(OCAMLWITNESS)
 	touch $@
 	$(MAKE)
@@ -210,7 +209,7 @@ clean_figure:
 clean_benchmarks:
 	for i in $(MODELREPS) ; do \
 		cd $$i && $(MAKE) clean ; \
-	done 
+	done
 
 clean_kappa:
 	cd kappa && $(MAKE) clean
