@@ -15,6 +15,7 @@ all:
 
 clean:
 	rm -rf output
+	rm -f benchmarks.tex  
 
 hline:
 	echo '\\hline' >> $(OUTPUT)

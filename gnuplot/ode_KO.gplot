@@ -1,15 +1,15 @@
-set xlabel '$t$ '
+set xlabel '$t$'
 set ylabel '$\text{Concentrations}$'
 set title 'Concentration VS Temps'
 set term epslatex linewidth 5
 set autoscale
 set xrange [0.:1.]
 set yrange [0.:6.5]
-set output 'generated_pictures/ODE_KO.tex'
-plot 'octave/ode_KO/output.data' using 1:2 title '$\petit{\conc{\pone}}$' w l
-set output 'generated_pictures/ODE_KO.tex'
-replot 'octave/ode_KO/output.data' using 1:3 title '$\petit{\conc{\pxx}}$' w l lt rgb "red"
-set output 'generated_pictures/ODE_KO.tex'
-replot 'octave/ode_KO/output.data' using 1:4 title '$\petit{\conc{\pyy}}$' w l lt rgb "blue"
-set output 'generated_pictures/ODE_KO.tex'
-replot 'octave/ode_KO/output.data' using 1:5 title '$\petit{\conc{\pxy}}$' w l lt rgb "green"
+set output 'generated_pictures/ode_KO.tex'
+plot 'data/ode_KO.data' using 1:2 title '$\petit{\conc{\pone}}$' w l
+set output 'generated_pictures/ode_KO.tex'
+replot 'data/ode_KO.data' using 1:3 title '$\petit{\conc{\pxx}}$' w l lt rgb "red"
+set output 'generated_pictures/ode_KO.tex'
+replot 'data/ode_KO.data' using 1:4 title '$\petit{\conc{\pyy}}$' w l lt rgb "blue"
+set output 'generated_pictures/ode_KO.tex'
+replot 'data/ode_KO.data' using 1:5 title '$\petit{\conc{\pxy}}$' w l lt rgb "green"

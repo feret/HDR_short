@@ -1,2 +1,0 @@
-../gnuplot/%.data: %.ka
-  KaDe --count Occurrences $< --output $(basename $<) --output-plot $@

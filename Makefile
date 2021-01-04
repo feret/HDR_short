@@ -5,16 +5,21 @@ BINPATH=$(BIN)/
 BUILD=_build
 BUILDPATH=$(BUILD)/
 FIGPATH=figures/
-IMAGEPATH=generated_pictures/
+IMAGE=generated_pictures
+IMAGEPATH=$(IMAGE)/
 GNUPLOTPATH=gnuplot/
 OCTAVEPATH=octave/
+KAPPAREP=kappa/
+DATAREP=data/
 GKAPPAREP=$(HOME)/GKappa/_build/sources
 
 shortINPUT=$(basename $(INPUT))
 OUTPUT=$(INPUT:%.tex=%.pdf)
 
 OCTAVE=$(wildcard $(OCTAVEPATH)*/sym_system.m)
-DATA=$(OCTAVE:%_system.m=%.data)
+KAPPA=$(wildcard $(KAPPAREP)*.ka)
+DATA1=$(patsubst $(KAPPAREP)%,$(DATAREP)%,$(KAPPA))
+DATA=$(OCTAVE:%_system.m=%.data) $(DATA1:%.ka=%.data)
 GNUPLOT=$(wildcard $(GNUPLOTPATH)*.gplot)
 
 
@@ -39,6 +44,8 @@ OCAMLSIG2=$(OCAMLSIG:%.sig.ml=%.ml)
 SIGML=$(patsubst $(FIGPATH)%,$(BUILDPATH)%,$(OCAMLSIG2))
 SIGCMX=$(SIGML:%.ml=%.cmx)
 
+OCAMLWITNESS=$(OCAMLBIN:%=%.witness)
+
 MACRO=$(wildcard *.sty)
 
 HTML=
@@ -60,47 +67,68 @@ IMAGES= $(IMAGEPATH) $(PDF) $(TEX) $(PREIMAGES:%=$(IMAGEPATH)%)
 
 OCAMLOPT=ocamlopt.opt -I $(BUILD) -I $(GKAPPAREP) data_structures.cmx geometry.cmx gkappa.cmx config.cmx
 
+BENCHMARKREP=benchmarks/
+MODELREPS=$(wildcard $(BENCHMARKREP)*/)
 
-all: $(OUTPUT)
+WITNESS=$(MODELREPS:%=%.witness) $(GNUPLOT:%.gplot=%.witness) figure.witness
+
+all: $(DATA) $(WITNESS) $(PDF) $(OUTPUT)
+	echo $(MODELREPS)
+
+figure.witness: $(OCAMLWITNESS)
+	touch $@
+	$(MAKE)
+
+witness:
+	echo $(WITNESS)
+
+$(BENCHMARKREP)%.witness:
+	cd $(basename $@) && ./script
+	touch $@
+
+$(GNUPLOTPATH)%.witness: $(GNUPLOTPATH)%.gplot $(DATA)
+	mkdir -p $(IMAGE)
+	gnuplot $(basename $@).gplot && touch $@
+
+$(IMAGEPATH)%.tex: $(GNUPLOTPATH)%.witness
+$(IMAGEPATH)%.pdf: $(GNUPLOTPATH)%.witness
 
 short:
 	pdflatex $(NONSTOP) $(shortINPUT)
-	
-$(OUTPUT): $(INPUTTEX) $(TEX) $(CHAPTERS) $(BBL) $(INDEX) $(INPUT)
+
+$(OUTPUT): $(INPUTTEX) $(TEX) $(CHAPTERS) $(BBL) $(INDEX) $(PDF) $(INPUT)
 	pdflatex $(NONSTOP) $(shortINPUT)
 	pdflatex $(NONSTOP) $(shortINPUT)
 
-figures: $(BUILD) $(BIN) $(SIGCMX) $(IMAGEPATH) $(OCAMLBIN) $(DATA) $(PREFIG) $(PDF)
-
-%.done: %.tex
+%.witness: %.tex
 	pdflatex $<
 	pdflatex $<
 	touch $@
 
-%.bbl: %.tex %.done $(TEX) $(CHAPTERS) $(BIB)
+%.bbl: %.tex %.witness $(TEX) $(CHAPTERS) $(BIB)
 	bibtex $(basename $<)
 
-%.toc: %.tex %.done $(CHAPTERS) $(TEX)
+%.toc: %.tex %.witness $(CHAPTERS) $(TEX)
 	makeindex $(basename $<)
 
-%.ilg: %.tex %.done $(CHAPTERS) $(TEX)
+%.ilg: %.tex %.witness $(CHAPTERS) $(TEX)
 	makeindex $(basename $<)
 
-
-$(BIN)/%: $(BUILD)/%.ml $(COMMONCMX) $(SIGCMX) Makefile
-	$(OCAMLOPT) $(COMMONCMX) $(SIGCMX) $< -o $@
-	cd $(BUILD) ; $(CURDIR)/$@
-	$(MAKE) build_tmp figures
-	$(shell exit 2)
+$(BIN)/%.witness: $(BUILD)/%.ml  $(COMMONCMX) $(SIGCMX)
+	mkdir -p $(BIN)
+	mkdir -p $(BUILD)
+	$(OCAMLOPT) $(COMMONCMX) $(SIGCMX) $< -o $(basename $@)
+	cd $(BUILD) && $(CURDIR)/$(basename $@)
+	touch $@
 
 build_tmp: $(TMPTEX) $(TMPPDF)
 
-$(IMAGEPATH)%.pdf: $(BUILDPATH)%.ladot.tex $(BUILDPATH)%.ladot.eps
+$(IMAGEPATH)%.pdf: $(BUILDPATH)%.ladot.tex $(IMAGEPATH) $(BUILDPATH)%.ladot.eps
 	rm -rf tmp
 	mkdir tmp
 	cat fm_header $(BUILDPATH)$(notdir $(basename $@)).ladot.tex > tmp/$(notdir $(basename $@))_fm
 	cp $(BUILDPATH)$(notdir $(basename $@)).ladot.eps tmp/$(notdir $(basename $@))_fm.eps
-	cd tmp ; fragmaster
+	cd tmp  && fragmaster
 	cp tmp/$(notdir $(basename $@)).pdf $@
 	rm -rf tmp
 
@@ -109,61 +137,47 @@ $(IMAGEPATH)%.pdf: $(BUILDPATH)%.ladotdot.ladot.tex $(BUILDPATH)%.ladotdot.ladot
 		mkdir tmp
 		cat fm_header $(BUILDPATH)$(notdir $(basename $@)).ladotdot.ladot.tex > tmp/$(notdir $(basename $@))_fm
 		cp $(BUILDPATH)$(notdir $(basename $@)).ladotdot.ladot.eps tmp/$(notdir $(basename $@))_fm.eps
-		cd tmp ; fragmaster
+		cd tmp && fragmaster
 		cp tmp/$(notdir $(basename $@)).pdf $@
 		rm -rf tmp
 
 $(BUILDPATH)%.ladot.tex: $(BUILDPATH)%.ladot
-	cd $(BUILD) ; ladot $(notdir $<)
+	cd $(BUILD) && ladot $(notdir $<)
 
 $(BUILDPATH)%.ladot.eps: $(BUILDPATH)%.ladot
-	cd $(BUILD) ; ladot $(notdir $<)
+	cd $(BUILD) && ladot $(notdir $<)
 
 $(BUILDPATH)%.ladotdot.ladot.tex: $(BUILDPATH)%.ladotdot
-		cd $(BUILD) ; ladotdot $(notdir $<)
+		cd $(BUILD) && ladotdot $(notdir $<)
 
 $(BUILDPATH)%.ladotdot.ladot.eps: $(BUILDPATH)%.ladotdot
-		cd $(BUILD) ; ladotdot $(notdir $<)
+		cd $(BUILD) && ladotdot $(notdir $<)
 
 $(BUILDPATH)%.ladotdot: $(FIGPATH)%.dot
 	cp $< $@
 
-
-$(BIN):
-	mkdir $(BIN)
-$(BUILD):
-	mkdir $(BUILD)
-
-$(IMAGEPATH)%.eps: $(GNUPLOTPATH)%.gplot
-	gnuplot $<
-
-$(IMAGEPATH)%.tex: $(GNUPLOTPATH)%.gplot
-	gnuplot $<
-
-$(IMAGEPATH)%.eps: $(GNUPLOTPATH)%.gplot $(wildcard $(OCTAVEPATH)/*/*.data)
-	gnuplot $<
-
-$(IMAGEPATH)%.tex: $(GNUPLOTPATH)%.gplot $(wildcard $(OCTAVEPATH)*/%.gplot) $(wildcard  $(OCTAVEPATH)*/*.data)
-	gnuplot $<
-
-$(IMAGEPATH)%.eps: $(GNUPLOTPATH)%.gplot $(wildcard $(OCTAVEPATH)*/%.gplot) $(wildcard  $(OCTAVEPATH)*/*.data)
-	gnuplot $<
-
 %.data: %_system.m %_system_aux.m %_system_init.m
 	cd $(dir $<) && octave $(notdir $<)
 
-$(BUILD)/%.cmx: $(BUILD)/%.ml Makefile
-	cd $(BUILD) ; $(OCAMLOPT) -c $(notdir $<)
+data/%.data: kappa/%.m
+	cd $(dir $<) && octave $(notdir $<)
+
+kappa/%.m: kappa/%.ka
+	KaDe -l 6 --count Occurrences $< --output $(basename $<) --output-plot ../data/$(basename $(notdir $<)).data
+
+$(BUILD)/%.cmx: $(BUILD)/%.ml
+	cd $(BUILD) && $(OCAMLOPT) -c $(notdir $<)
 
 $(BUILD)/%.ml: $(FIGPATH)%.sig.ml
-	cp $< $@
-$(BUILD)/%.ml: $(FIGPATH)%.figs.ml
+	mkdir -p $(BUILD)
 	cp $< $@
 
-$(IMAGEPATH):
-	mkdir $@
+$(BUILD)/%.ml: $(FIGPATH)%.figs.ml
+	mkdir -p $(BUILD)
+	cp $< $@
 
 $(IMAGEPATH)%.fig: $(FIGPATH)%.fig
+	mkdir -p $(IMAGE)
 	cp $< $@
 
 
@@ -187,23 +201,35 @@ sessions:
 
 
 clean:
-	rm -f *.blg *.out *.toc *.todo *.idx *.bbl *~ \#* *.dvi *.aux *.log  *.bak *.html $(PREIMAGES) $(BBL) $(TEX) $(DATA)
+	rm -f *.blg *.out *.toc *.todo *.idx *.bbl *~ \#* *.dvi *.aux *.log  *.bak *.html $(PREIMAGES) $(BBL) $(TEX) $(DATA) $(WITNESS)
 	rm -fr sessions $(BIN) $(BUILD)
 
 clean_figure:
 	rm -fr $(IMAGEPATH) $(BUILD) $(BIN)
 
+clean_benchmarks:
+	cd benchmarks && $(MAKE) clean
+
+clean_kappa:
+	cd kappa && $(MAKE) clean
+
+clean_octave:
+	cd octave && $(MAKE) clean_data
+
 clean_all:
-	@make clean
-	@make clean_figure
+	$(MAKE) clean
+	$(MAKE) clean_figure
+	$(MAKE) clean_benchmarks
+	$(MAKE) clean_kappa
+	$(MAKE) clean_octave
 	rm -fr $(IMAGEPATH) $(BUILD) $(BIN)
 
 force:
 	rm -f $(OUTPUT)
-	@make
+	$(MAKE)
 
 nonstop:
-	@make NONSTOP=-halt-on-error
+	$(MAKE) NONSTOP=-halt-on-error
 
 help:
 	@echo make figure -> to generate all the figures (GKappa is required)
