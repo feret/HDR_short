@@ -26,15 +26,15 @@ GNUPLOT=$(wildcard $(GNUPLOTPATH)*.gplot)
 BBL=$(INPUT:%.tex=%.bbl)
 INDEX=$(INPUT:%.tex=%.toc) $(INPUT:%.tex=%.ilg)
 DOT=$(wildcard $(FIGPATH)*.dot)
-DOT2 = $(wildcard $(BUILD)/*.dot)
-DOT3 = $(patsubst $(BUILD)%,$(IMAGEPATH)%,$(DOT2))
+DOT2 = $(wildcard $(BUILDPATH)*.dot)
+DOT3 = $(patsubst $(BUILDPATH)%,$(IMAGEPATH)%,$(DOT2))
 
 BIB = $(wildcard *.bib)
 INPUTTEX = $(wildcard *.tex)
 
 LADOT1 = $(wildcard $(FIGPATH)*.dot)
-LADOT2 = $(wildcard $(BUILD)/*.ladot)
-LADOT3 = $(patsubst $(BUILD)%,$(IMAGEPATH)%,$(LADOT2))
+LADOT2 = $(wildcard $(BUILDPATH)*.ladot)
+LADOT3 = $(patsubst $(BUILDPATH)%,$(IMAGEPATH)%,$(LADOT2))
 
 OCAMLFIG=$(wildcard $(FIGPATH)*.figs.ml)
 OCAMLFIG2=$(patsubst $(FIGPATH)%,$(BINPATH)%,$(OCAMLFIG))
@@ -73,7 +73,7 @@ MODELREPS=$(dir $(wildcard $(BENCHMARKREP)*/))
 WITNESS=$(MODELREPS:%=%.witness) $(GNUPLOT:%.gplot=%.witness) figure.witness
 
 all: $(DATA) $(WITNESS) $(PDF) $(OUTPUT)
-	
+
 figure.witness: $(OCAMLWITNESS)
 	touch $@
 	$(MAKE)
@@ -164,14 +164,14 @@ data/%.data: kappa/%.m
 kappa/%.m: kappa/%.ka
 	KaDe -l 6 --count Occurrences $< --output $(basename $<) --output-plot ../data/$(basename $(notdir $<)).data
 
-$(BUILD)/%.cmx: $(BUILD)/%.ml
+$(BUILDPATH)%.cmx: $(BUILDPATH)%.ml
 	cd $(BUILD) && $(OCAMLOPT) -c $(notdir $<)
 
-$(BUILD)/%.ml: $(FIGPATH)%.sig.ml
+$(BUILDPATH)%.ml: $(FIGPATH)%.sig.ml
 	mkdir -p $(BUILD)
 	cp $< $@
 
-$(BUILD)/%.ml: $(FIGPATH)%.figs.ml
+$(BUILDPATH)%.ml: $(FIGPATH)%.figs.ml
 	mkdir -p $(BUILD)
 	cp $< $@
 

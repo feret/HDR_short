@@ -49,13 +49,13 @@ Dans le second exemple, qui est donné en Sect.~\ref{sec:coupled}, il est montré 
 des corrélations supplémentaires sont souvent nécessaires pour simuler fidèlement les systèmes stochastiques. Dans cette exemple, une règle de déliaison ne peut être simplifiée sans  connaître précisément la distribution des différents états des deux protéines qu'elles séparent pour préserver la dynamique du système sous-jacent dans le cadre stochastique. Dans le cadre différentiel,  cette information peut être oubliée tout en obtenant une réduction exacte du système engendré.
 Enfin, le troisième exemple, qui est expliqué en Sect.~\ref{sec:distant}, montre l'existence de flot d'information entre différentes composantes connexes du membre gauche d'une règle, ce qui une fois encore interdit certaines réductions qui sont pourtant correctes dans le cadre différentiel.
 
-\subsection{Un example d'indépendance entre deux liaisons}
+\subsection{Un exemple d'indépendance entre deux liaisons}
 \label{sec:independent}
 
 {
 %adapter
 \newcommand{\equskip}{}
-\newcommand{\species}{}
+%\newcommand{\species}{}
 \newcommand{\concentration}[1]{[#1]}
 \newcommand{\rar}{\unireaction}
 \newcommand{\void}{}
@@ -66,12 +66,12 @@ Enfin, le troisième exemple, qui est expliqué en Sect.~\ref{sec:distant}, montre
 \newcommand{\AB}[1]{#1{\A{}{\species{B}}\void}}
 \newcommand{\BC}[1]{#1{\void{\species{B}}\C{}}}
 \newcommand{\ABC}[1]{#1{\A{}{\species{B}}\C{}}}
-\newcommand{\asso}[1]{k\text{$^{\scriptscriptstyle{#1}}$}}
-\newcommand{\disso}[1]{k\text{$_{\scriptscriptstyle{d}}^{\scriptscriptstyle{#1}}$}}
-\newcommand{\ka}{\asso{\species{AB}}}
-\newcommand{\kda}{\disso{\species{AB}}}
-\newcommand{\kc}{\asso{\species{BC}}}
-\newcommand{\kdc}{\disso{\species{BC}}}
+%\newcommand{\asso}[1]{k\text{$^{\scriptscriptstyle{#1}}$}}
+%\newcommand{\disso}[1]{k\text{$_{\scriptscriptstyle{d}}^{\scriptscriptstyle{#1}}$}}
+%\newcommand{\ka}{\asso{\species{AB}}}
+%\newcommand{\kda}{\disso{\species{AB}}}
+%\newcommand{\kc}{\asso{\species{BC}}}
+%\newcommand{\kdc}{\disso{\species{BC}}}
 \newcommand{\rgives}{$\longleftrightarrow$}
 \newcommand{\gives}{$\rar$}
 \newcommand{\uBC}[1]{#1{\unknown{\species{B}}\C{}}}
@@ -142,9 +142,9 @@ Enfin, le troisième exemple, qui est expliqué en Sect.~\ref{sec:distant}, montre
 
 \newcommand{\Cstate}[3]{\langle \C{\n}{#1},\uB{\n}{#2},\uBC{\n}{#3}\rangle}
 
-Voici un modèle dans lequel chaque occurrence d'une protéine peut être découpée en deux morceaux indépendants, ce qui permet de réduire la dimension de l'espace d'états de la chaîne de Markov sous-jacente.
+Voici un modèle dans lequel chaque occurrence d'une protéine peut être découpée en deux morceaux indépendants. La dimension de l'espace d'états de la chaîne de Markov sous-jacente peut alors être réduite en conséquence.
 
-Soit une protéine \agent{B} avec deux sites de liaison
+Soit une protéine \agent{B}{} munie de deux sites de liaison
 \site{a}{}{} et \site{c}{}{}. Dans chaque occurrence de la protéine \agent{B}{}, le site \site{a}{}{} peut se lier au site \site{b}{}{} des occurrences d'une autre protéine, appelée \agent{A}{}, alors que le \site{c}{}{}
 peut se liet au site \site{b}{}{} des occurrences d'une troisième protéine, appelée \agent{C}{}.
 Les règles de liaison et de déliaison sont dessinées en Fig.~\ref{ctmc:ex1:regles}.
@@ -160,36 +160,37 @@ Les règles de liaison et de déliaison sont dessinées en Fig.~\ref{ctmc:ex1:regle
 \end{array}
 \end{equation*}
 
-Les constantes de réactions pour les règles d'association et de dissociation sont indépendantes du fait que l'occurrence de la protéine \agent{B}{} est lié, ou non, sur son autre site de liaison. C'est essentiel pour permettre la réduction du modèle.
+Les constantes de réactions pour les règles d'association et de dissociation ne dépendent pas du fait que l'occurrence de la protéine \agent{B}{} soit liée, ou non, sur son autre site de liaison. Ce point est essentiel pour justifier la correction de la réduction du modèle qui va suivre.
 
-La sémantique différentielle de ce modèle est défini
-par le système d'équations différentielles ordinaire suivant.
+%La sémantique différentielle de ce modèle est définie
+%par le système d'équations différentielles ordinaires suivant.
+%
+%\begin{equation*}
+%\ode
+%\end{equation*}
+%
 
-\begin{equation*}
-\ode
-\end{equation*}
+%Il est possible de passer sous silence la correlation entre %l'état des deux sites de liaisons des occurrences de la protéine \agent{B}{}. Ainsi,
+%les equations suivantes~:
+%\begin{equation*}
+%\begin{array}{rcl}
+%\leftode{\diff}{\concentration}
+%\end{array}\smalltab
+%\begin{array}{rcl}
+%\rightode{\diff}{\concentration}
+%\end{array}
+%\end{equation*}
+%où\footnote{Un point d'interrogation `?' à la gauche (resp.~à %la droite) de la lettre \agent{B}{} indique
+%que de savoir si l'occurrence correspondante de la protéine %\agent{B}{} est liée, ou non, à une occurrence de la protéine %\agent{A}{} (resp.~\agent{C}{}) n'a pas d'importance.}
+%$\leftequa{\concentration}{}$, $\leftequb{\concentration}{}$, %$\rightequa{\concentration}{}$, et %$\rightequb{\concentration}{}$, sont satisfaîtes.
 
-Le modèle ayant peu de complexes biochimiques différents.
-Ceux-ci sont représentés par la liste des occurrences des protéines qui les constituent. Ainsi, les notations $\A$, $\B$ et $\C$ représentent les protéines correspondantes, alors que les notations $\AB{}$, $\BC{}$, $\ABC{}$ représentent les complexes formés d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{}, d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{C}{} et d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{} et à une occurrence de la protéine \agent{C}{}.
-
-Il est possible de passer sous silence la correlation entre l'état des deux sites de liaisons des occurrences de la protéine \agent{B}{}. Ainsi,
-les equations suivantes~:
-\begin{equation*}
-\begin{array}{rcl}
-\leftode{\diff}{\concentration}
-\end{array}\smalltab
-\begin{array}{rcl}
-\rightode{\diff}{\concentration}
-\end{array}
-\end{equation*}
-où\footnote{Un point d'interrogation `?' à la gauche (resp.~à la droite) de la lettre \agent{B}{} indique
-que de savoir si l'occurrence correspondante de la protéine \agent{B}{} est liée, ou non, à une occurrence de la protéine \agent{A}{} (resp.~\agent{C}{}) n'a pas d'importance.}
-$\leftequa{\concentration}{}$, $\leftequb{\concentration}{}$, $\rightequa{\concentration}{}$, et $\rightequb{\concentration}{}$, sont satisfaîtes.
-
-
-Est-ce que cette réduction est, elle-aussi, exacte dans le système stochastique engendré par les règles de cet exemple~? Il faut regarder ce qui se passe au niveau de l'évolution de la distribution des différents états du système. L'état du système peut être representer par
+Il est tentant d'oublier la corrélation éventuelle entre
+l'état de liaison des deux sites des occurrences de la protéine
+\agent{B}{} dans le système stochastique engendré par les règles de cet exemple~? Pour cela, il faut regarder ce qui se passe au niveau de l'évolution de la distribution des différents états du système. L'état du système peut être representer par
 un sextuplet d'entiers naturels $\state{}{}{}{}{}{}$ où la composante $\n{X}$ représente le nombre d'occurrences du complexe biochimique $X$ dans cet état, pour n'importe quel complexe biochimique
-$X$ du modèle. La probabilité  $P_t(\sigma)$ que le système soit dans l'état $\sigma$ au temps $t$ est alors donnée par l'équation maîtresse suivante~:
+$X$ du modèle. Le modèle ayant peu de complexes biochimiques différents.
+Ceux-ci sont représentés par la liste des occurrences des protéines qui les constituent. Ainsi, les notations $\A$, $\B$ et $\C$ représentent les protéines correspondantes, alors que les notations $\AB{}$, $\BC{}$, $\ABC{}$ représentent les complexes formés d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{}, d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{C}{} et d'une occurrence de la protéine \agent{B}{} liée à une  occurrence de la protéine \agent{A}{} et à une occurrence de la protéine \agent{C}{}.
+La probabilité  $P_t(\sigma)$ que le système soit dans l'état $\sigma$ au temps $t$ est alors donnée par l'équation maîtresse suivante~:
 {\[\begin{array}{l}
 \diff{P_t(\state{}{}{}{}{}{})}  =\cr
 \tinytab\begin{array}{ll}
@@ -208,10 +209,10 @@ $X$ du modèle. La probabilité  $P_t(\sigma)$ que le système soit dans l'état $\s
 -&\kdc\product(\BC{\n}+\ABC{\n})\product P_t(\state{}{}{}{}{}{})
 \end{array}\end{array}\]}
 
-Dans cet exemple particulier, il est possible d'ignorer la corrélation entre l'état des deux sites des occurrences de la protéine \agent{B}{} également dans la sémantique stochastique. Pour cela, chaque état est abstrait en un triplet $\Astate{}{}{}$, dont la première composante, $\A{n}$, représente le nombre d'occurrences de la protéine \agent{A}{} isolée, le seconde composante, , représente le nombre des occurrences de la protéine \agent{B}{} qui ne sont pas liées à une occurrence de la protéine \agent{A}{}, et la troisième composante, , le nombre d'occurrences de la protéine \agent{B}{} qui sont liées à une occurrence de la protéine \agent{A}{}.
-
-
-Pour cela, chaque état $\sigma = \state{}{}{}{}{}{}$ est abstrait en un triplet  $\beta^{\A{}}(\sigma) = \langle \A{\n},\B{\n}+\BC{\n}, \AB{\n}+\ABC{\n} \rangle$, and by $\beta^{\C{}}(\sigma)$ the triple $\langle \C{\n},\B{\n}+\AB{\n},\BC{\n}+\ABC{\n}\rangle$. The probability $P_t^{\A{}}(\sigma^A)$ that the system is in a state $\sigma$ such that $\beta^{\A{}}(\sigma)=\sigma^A$ at time $t$, and  the probability $P_t^{\C{}}(\sigma^C)$ that the system is in a state $\sigma$ such that $\beta^{\C{}}(\sigma)=\sigma^C$ at time $t$, satisfy the following master equations:
+Afin d'oublier la corrélation entre l'état des deux sites de liaisons des occurrences de la protéine \agent{B}{}, chaque état $\sigma = \state{}{}{}{}{}{}$ est abstrait en deux triplets   $\beta^{\A{}}(\sigma) \bydef \langle \A{\n},\B{\n}+\BC{\n}, \AB{\n}+\ABC{\n} \rangle$ et $\beta^{\C{}}(\sigma) \bydef \langle \C{\n},\B{\n}+\AB{\n},\BC{\n}+\ABC{\n}\rangle$.
+Ces deux triplets projettent l'état du système $\sigma$ en passant sous silence l'état de liaison respectivement des sites \site{c}{}{} et \site{a}{}{} des occurrences de la protéine \agent{B}{}. L'évolution temporelle de la distribution de ces deux projections est alors noté $P_t^{\agent{A}{}}(\sigma^{\agent{A}{}})$ et $P_t^{\agent{C}{}}(\sigma^{\agent{C}{}})$. Ainsi, la quantité $P_t{\agent{A}{}}(\sigma^{\agent{A}{}})$ représente la probabilité que
+le système soit dans un état $\sigma$ tel que $\beta^{\agent{A}{}}(\sigma)=\sigma^{\agent{A}{}}$ à l'instant $t$, alors la quantité $P_t{\agent{C}{}}(\sigma^{\agent{C}{}})$ représente la probabilité que le système soit dans un état $\sigma$ tel que $\beta^{\agent{C}{}}(\sigma)=\sigma^{\agent{C}{}}$ à l'instant $t$. Il est alors possible de vérifier analytiquement que l'évolution de deux distributions de probabilités $P_t^{\agent{A}{}}(\sigma^{\agent{A}{}})$ et
+$P_t^{\agent{C}{}}(\sigma^{\agent{C}{}})$ vérifient les deux équations maîtresses suivantes~:
 \begin{equation*}
 \begin{array}{l}
 \diff{P_t^{\A{}}(\Astate{}{}{})}  =\cr
@@ -230,6 +231,8 @@ Pour cela, chaque état $\sigma = \state{}{}{}{}{}{}$ est abstrait en un triplet 
 %\hspace*{0mm}L'état des deux sites de liaison des occurrences de la protéine \agent{B}{} sont statistiquement indépendants Statistical independence can be revisited in the context of stochastic semantics as follows. We say that the two binding states of the protein $\B{}$ are statistically independent, if and only if, $P_t(\sigma_1)=P_t(\sigma_2)$, for any states $\sigma_1$ and $\sigma_2$ such that $\beta^{\A{}}(\sigma_1)=\beta^{\A{}}(\sigma_2)$ and $\beta^{\C{}}(\sigma_1)=\beta^{\C{}}(\sigma_2)$. We can check analytically that in this particular example, the two binding states of the protein $\B{}$ are statistically independent.
 }
 
+De ce fait, même dans le cadre stochastique, il n'est pas nécessaire de décrire l'état du site de liaison \site{c}{}{} dans les occurrences de la protéine \agent{B}{} pour connaître celui du site \site{a}{}{}, et réciproquement.
+
 \subsection{Un exemple avec une déliaison inconditionnelle} 
 \label{sec:coupled}
 
@@ -240,8 +243,8 @@ Pour cela, chaque état $\sigma = \state{}{}{}{}{}{}$ est abstrait en un triplet 
 \newcommand{\invfreesymbol}{\vdash\!\!}
 
 {\newcommand{\back}{\!}
- \newcommand{\ka}{k_{A+\back}}
- \newcommand{\kda}{k_{A-\back}}
+ \renewcommand{\ka}{k_{A+\back}}
+ \renewcommand{\kda}{k_{A-\back}}
  \newcommand{\kb}{k_{B+\back}}
  \newcommand{\kdb}{k_{B-\back}}
  \newcommand{\kab}{k_{AB}}

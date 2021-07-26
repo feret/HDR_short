@@ -1,4 +1,3 @@
-%\newcommand{\scalefactor}{0.29}
 \newcommand{\minipagesize}{1cm}
 \newcommand{\factor}{0.35}
 
@@ -54,11 +53,6 @@
 
 \newcommand{\pushoutcorner}{}
 
-
-
-%\newcommand{\incbox}[3]{\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/#3.pdf}}}
-
-
 \chapter{Analyse des motifs accessibles}
 
 \label{S.static}
@@ -66,7 +60,7 @@
 Si la carte de contacts (e.g.~voir en Fig.~\ref{F.contactmap} à la page \pageref{F.contactmap}) donne un aperçu rapide de toutes les interactions potentielles entre les différents sites des occurrences des protéines dans un modèle,  elle n'est en générale pas suffisante pour décrire précisément la structure de ses complexes biochimiques. En effet, l'état des différents sites d'interaction d'un complexe biochimique est souvent contraint par des invariants structurels.
 Par exemple, dans le modèle des premières étapes de l'acquisition du facteur de croissance de l'épiderme, les sites \sitefont{Y48} et \sitefont{Y68} des occurrences du récepteur membranaire, ainsi que le site \sitefont{Y7} des occurrences de la protéine d'échafaudage,
 ne peuvent être liés à un autre site sans être phosphorylés (à moins que ce soit le cas  dans l'état initial). Par ailleurs, lorsque les deux sites \sitefont{r} et \sitefont{c} d'une occurrence du récepteur sont liés simultanément, ils sont nécessairement liés respectivement au site \sitefont{r} et au site \sitefont{n} d'une même occurrence du récepteur (ce qui forme une double liaison). Un autre exemple concerne les modèles avec des compartiments, comme, par exemple, une cellule dont on distingue le noyau du cytoplasme. La localisation de chaque occurrence de protéines peut alors être spécifiée comme l'état d'activation d'un site fictif. Dans de tels modèles, toutes les occurrences de protéines d'un même complexe biochimique sont en général localisées dans un même compartiment, ce qui se traduit par la contrainte que le site fictif de deux occurrences de protéines liées entre elles doit toujours être dans le même état.
-Dans certains cas, il est toutefois possible d'avoir des complexes transmembranaires avec des portions localisées dans des compartiments voisins, c'est à dire de part et d'autre d'une membrane.
+Dans certains cas, il est toutefois possible d'avoir des complexes trans-membranaires avec des portions localisées dans des compartiments voisins, c'est à dire de part et d'autre d'une membrane.
 
 Dans cette section est décrite une analyse statique qui permet de détecter automatiquement ces contraintes, afin de vérifier que les propriétés auxquelles peut s'attendre le modélisateur sont bien vérifiées ou bien de détecter certaines erreurs de modélisation.
 En particulier, cette analyse permet de trouver des \index{règle morte}{\emph{règles mortes}}. Ce sont des règles qui ne peuvent jamais s'appliquer dans un modèle, car les contraintes qui sont exprimées dans leurs membres gauches ne sont pas réalisables.
@@ -109,7 +103,6 @@ Une transition n'est possible  que si l'état courant du système contient tous le
 
 \begin{example}Un système de transitions est donné comme exemple en Fig.~\ref{F.transition_system}. Il correspond à la restriction du système de transitions associé aux réactions qui sont données en Fig.~\ref{F.network} aux états accessibles à partir d'un état initial formé de six occurrences de l'espèce biochimique $A$. Dans ce réseau, la somme entre le nombre  d'occurrences de $A$, de $B$ et deux fois celui de $C$ est toujours égal à la quantité initiale de $A$. En effet, cette quantité n'est modifiée par l'application d'aucune des réactions du réseau.
 \end{example}
-
 
 Étant donné un ensemble d'états initiaux potentiels, $\mathcal{I}\subseteq \mathcal{S}^{\mathbb{N}}$, nous définissons l'ensemble des états accessibles comme étant ceux susceptibles d'être atteints à partir d'un état initial (de l'ensemble $\mathcal{I}$) en appliquant un nombre arbitraire (éventuellement nul) de transitions. Cet ensemble peut se définir comme le plus petit point-fixe de la fonction suivante~:
 \begin{equation*}
@@ -163,6 +156,8 @@ En toute rigueur, pour s'assurer qu'une chaine d'au moins trois occurrences du r
 $\sitefont{r}$ et $\sitefont{n}$ et la paire de sites $\sitefont{c}$ et $\sitefont{n}$.
 \end{example}
 
+
+
 Plus précisément, l'abstraction est paramétrée par le choix d'un ensemble $\patternset$ de motifs connexes. L'ensemble $\patternset$ regroupe  des motifs d'intérêt, ainsi que des motifs qui seront utilisés de manière intermédiaire dans la preuve que certains de ces motifs d'intérêt sont inaccessibles. Une sous-partie de l'ensemble $\patternset$ est appelée une propriété abstraite.
 Chaque propriété abstraite représente un ensemble d'états concrets~: un état concret $q$ sera dît compatible avec une propriété abstraite $X^{\sharp}$ si et seulement si aucun motif qui est dans l'ensemble $\patternset$ sans être dans l'ensemble $X^\sharp$ n'apparait  dans un complexe biochimique présent dans l'état $q$. L'ensemble de tous les états concrets compatibles avec la propriété abstraite $X^\sharp$ est alors noté $\concretization(X^\sharp)$.
 Qui peut le plus, peut le moins~: plus nombreux sont les motifs autorisés, plus nombreux sont les complexes biochimiques compatibles. La fonction $\concretization$ est donc croissante.
@@ -209,8 +204,6 @@ $\abstraction\left(\left\{\scalebox{0.8}{\node[0.80]{ring1}}\right\}\right)=\lef
 
 \item[$\bullet$]
 $\abstraction\left(\left\{\scalebox{0.8}{\node[1.85]{ring2}}\right\}\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}$
-
-%\item[$\bullet$]$\abstraction\left(\left\{\scalebox{0.8}{\node[1.85]{ring3}}\right\}\right)=\left\{\scalebox{0.8}{\node[0.95]{poly_bound_bound}}\right\}$\smallskip\\
 \end{itemize}
 \end{minipage}
 }

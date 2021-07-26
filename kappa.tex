@@ -12,7 +12,7 @@ La section présente décrit la notion de graphe à sites, qui permettra de représe
 
 \begin{figure}
 \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/contact_map.pdf}}
-\caption{Une carte de contacts. Elle définit la signature d'un modèle en donnant la liste de toutes les sortes de protéines, leurs différents sites d'interaction, les différents états internes que peuvent prendre ces sites et les différentes liaisons potentielles entre ces sites.}
+\caption{Une carte de contacts. Elle définit la signature d'un modèle en donnant la liste de toutes les sortes de protéines, leurs différents sites d'interaction, les différents états d'activation que peuvent prendre ces sites et les différentes liaisons potentielles entre ces sites.}
 \label{F.contactmap}
 \end{figure}
 
@@ -27,7 +27,7 @@ Cet exemple est inspiré d'un modèle
 BNGL disponible dans la littérature \cite{DBLPjournals/bioinformatics/BlinovFGH04}. Ce modèle a été étendu pour décrire la liaison asymétrique entre les récepteurs \agentfont{EGFR} et traduit en Kappa.
 Cette carte introduit cinq sortes de protéines~: des ligands \agentfont{EGF}, des récepteurs membranaires \agentfont{EGFR}, des protéines d'échafaudage \agentfont{ShC}, des protéines de transport  \agentfont{Grb2} et des protéines cibles \agentfont{Sos} (cette dernière sera ensuite phosphorylée ce qui initiera les étapes suivantes de la cascade d'interactions).
 Chaque occurrence du ligand \agentfont{EGF} a un seul site qui est nommé \sitefont{r}~; chaque occurrence du récepteur membranaire \agentfont{EGFR} a six sites qui sont nommés respectivement \sitefont{l}, \sitefont{r}, \sitefont{c}, \sitefont{n}, \sitefont{Y48} et \sitefont{Y68}~; chaque occurrence de la protéine d'échafaudage \agentfont{ShC} dispose de deux sites qui sont nommés respectivement \sitefont{Y7} et \sitefont{pi}~; chaque occurrence de la protéine de transport \agentfont{Grb2} a deux sites qui sont respectivement nommés \sitefont{a} et \sitefont{b}~; enfin chaque occurrence de la protéine cible \agentfont{Sos} a un seul site qui est nommé \sitefont{d}.
-Seuls les sites \sitefont{Y48} et \sitefont{Y68} des occurrences de la protéine \agentfont{EGFR} et le site \sitefont{Y7} des occurrences de la protéine \agentfont{ShC} portent un état interne. Ces sites sont annotés par deux pastilles colorées, une blanche et une noire.
+Seuls les sites \sitefont{Y48} et \sitefont{Y68} des occurrences de la protéine \agentfont{EGFR} et le site \sitefont{Y7} des occurrences de la protéine \agentfont{ShC} portent un état d'activation. Ces sites sont annotés par deux pastilles colorées, une blanche et une noire.
 La pastille blanche indique que ces sites peuvent être dans l'état non-phosphorylé, alors que la noire indique que ces sites peuvent être dans l'état phosphorylé.  De plus, chaque site peut être libre (symbole $\free$) ou lié. Les liaisons possibles entre sites sont entre
 le site \sitefont{r} d'une occurrence de la protéine \agentfont{EGF} et le site \sitefont{l} d'une occurrence de la protéine \agentfont{EGFR}~; entre
 les sites \sitefont{r} de deux occurrences  différentes de la protéine \agentfont{EGFR}~; entre le site \sitefont{c} et le \sitefont{n} des occurrences de la protéine \agentfont{EGFR} (il sera bientôt expliqué que la carte de contacts ne précise pas si ce doit être entre deux occurrences différentes de la protéine \agentfont{EGFR})~;
@@ -40,11 +40,11 @@ enfin entre le site \sitefont{b} d'une occurrence de la protéine \agentfont{Grb2
 
 \begin{figure}%
 \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/species.pdf}}
-\caption{Un complexe biochimique. Il contient plusieurs occurrences de protéines. Chaque occurrence  documente l'ensemble de ses sites d'interaction. Les sites qui peuvent porter un état interne en ont un. Par ailleurs, les sites sont soit libres, soit liés deux à deux.}
+\caption{Un complexe biochimique. Il contient plusieurs occurrences de protéines. Chaque occurrence  documente l'ensemble de ses sites d'interaction. Les sites qui peuvent porter un état d'activation en ont un. Par ailleurs, les sites sont soit libres, soit liés deux à deux.}
 \label{F.complexe}
 \end{figure}
 
-Les modèles Kappa décrivent l'évolution d'une soupe de \index{complexe biochimique}{complexes biochimiques}.
+Les modèles Kappa décrivent l'évolution d'une soupe de \index{complexe biochimique}{\emph{complexes biochimiques}}.
 Un complexe biochimique est formé de plusieurs occurrences de protéines. Chaque occurrence d'une protéine est associée à un ensemble de sites d'interaction. Chaque site peut éventuellement porter un état d'activation, mais un seul.
 De ce fait, si un site peut être activé de deux manières différentes, avec un état de
 phosphorylation et un état de
@@ -84,12 +84,12 @@ La signature d'un modèle restreint l'ensemble des complexes biochimiques de ce m
 
 L'évolution des complexes biochimiques est décrite par des règles de réécriture. Celles-ci définissent à la fois les conditions qui doivent être réalisées pour qu'une interaction donnée puisse avoir lieu et les effets potentiels de cette interaction. Avant d'expliquer ce que sont ces règles de réécriture, il est nécessaire d'expliquer la notion de motifs qui permet donc de spécifier sous quelles conditions une interaction peut avoir lieu.
 
-Nous nous concentrons sur les motifs connexes. Des motifs plus élaborés peuvent être obtenus en juxtaposant plusieurs motifs connexes. Un \index{motif}{motif connexe} est une portion contigüe de complexe biochimique. De ce fait, il peut comporter zéro, une ou plusieurs occurrences  de chaque sorte de protéines. Chaque occurrence de protéines est associée à un ensemble de sites d'interaction. Chaque site peut éventuellement porter un état d'activation. Enfin chaque site peut être libre, lié sans que le site auquel il est lié ne soit précisé ou lié exactement à un autre site (différent de lui-même donc). L'état de liaison d'un site peut également ne pas être spécifié.
+Nous nous concentrons sur les motifs connexes. Des motifs plus élaborés peuvent être obtenus en juxtaposant plusieurs motifs connexes. Un \index{motif}{\emph{motif connexe}} est une portion contigüe de complexe biochimique. De ce fait, il peut comporter zéro, une ou plusieurs occurrences  de chaque sorte de protéines. Chaque occurrence de protéines est associée à un ensemble de sites d'interaction. Chaque site peut éventuellement porter un état d'activation. Enfin chaque site peut être libre, lié sans que le site auquel il est lié ne soit précisé ou lié exactement à un autre site (différent de lui-même donc). L'état de liaison d'un site peut également ne pas être spécifié.
 
 
 \begin{figure}%
 \centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/pattern.pdf}}
-\caption{Un motif connexe. Il contient plusieurs occurrences de protéines. Chaque occurrence de protéines documente un sous ensemble de ses sites d'interaction. Chaque site peut éventuellement  porter un état interne et éventuellement un état de liaison (en conformité avec la signature du modèle, donnée en Fig.~\ref{F.contactmap}). Comme état de liaison, un site  peut être libre, lié sans que le site partenaire  ne soit précisé ou être lié à un autre site.}
+\caption{Un motif connexe. Il contient plusieurs occurrences de protéines. Chaque occurrence de protéines documente un sous ensemble de ses sites d'interaction. Chaque site peut éventuellement  porter un état d'activation et éventuellement un état de liaison (en conformité avec la signature du modèle, donnée en Fig.~\ref{F.contactmap}). Comme état de liaison, un site  peut être libre, lié sans que le site partenaire  ne soit précisé ou être lié à un autre site.}
 \label{F.pattern}
 \end{figure}
 
@@ -97,7 +97,7 @@ Nous nous concentrons sur les motifs connexes. Des motifs plus élaborés peuvent 
 En Fig.~\ref{F.pattern} est donné un exemple de motif connexe.
  Ce motif est formé de deux occurrences du récepteur membranaire \agentfont{EGFR} et d'une occurrence de la protéine d'échafaudage \agentfont{ShC}. L'occurrence de la protéine d'échafaudage mentionne uniquement son site \sitefont{pi}. Celui-ci est lié au site \sitefont{Y48} d'une des deux occurrences du récepteur membranaire.
  L'état d'activation de ce dernier site n'est pas précisé.
- Cette occurrence du récepteur membranaire mentionne également son site \sitefont{Y68}, sans en préciser ni l'état interne ni l'état de liaison, et son site \sitefont{r}, lui-même lié au site \sitefont{r} de l'autre occurrence du récepteur membranaire. Cet autre occurrence mentionne également son site  \sitefont{Y48} qui est phosphorylé mais dont l'état de liaison n'est pas spécifié et son site \sitefont{l} qui est lié à un site qui n'est pas précisé.
+ Cette occurrence du récepteur membranaire mentionne également son site \sitefont{Y68}, sans en préciser ni l'état d'activation ni l'état de liaison, et son site \sitefont{r}, lui-même lié au site \sitefont{r} de l'autre occurrence du récepteur membranaire. Cet autre occurrence mentionne également son site  \sitefont{Y48} qui est phosphorylé mais dont l'état de liaison n'est pas spécifié et son site \sitefont{l} qui est lié à un site qui n'est pas précisé.
  \end{example}
 
 
@@ -109,9 +109,9 @@ il doit être possible de projeter le motif sur la carte de contacts. Cela veut d
 
 
 
-Un motif peut contenir plus ou moins d'information. En effet, il est possible d'ajouter des sites dans une occurrence de protéines qui ne mentionne pas tous ses sites. Par ailleurs, il est possible d'ajouter un état de liaison et/ou un état interne à un site qui en manque. Il est possible de préciser à quel site un site est lié quand le partenaire de celui-ci n'est pas précisé. Il est même possible de lier un site au site d'une nouvelle occurrence de protéines. Nous dirons alors que le premier motif apparait dans le second ou encore que le second motif contient une occurrence du premier.  Dans ce cas, la relation entre les occurrences de protéines du motif initial et celle du motif ainsi obtenu est formalisée par un plongement. Un \index{plongement}{plongement} d'un motif vers un autre motif est une fonction qui envoie chaque occurrence de protéines du premier motif vers une occurrence de protéines du second tout en préservant la structure des graphes à sites, c'est à dire les sortes de protéines, les sites qui sont mentionnés, les états internes et les états de liaisons qui sont documentés.
+Un motif peut contenir plus ou moins d'information. En effet, il est possible d'ajouter des sites dans une occurrence de protéines qui ne mentionne pas tous ses sites. Par ailleurs, il est possible d'ajouter un état de liaison et/ou un état d'activation à un site qui en manque. Il est possible de préciser à quel site un site est lié quand le partenaire de celui-ci n'est pas précisé. Il est même possible de lier un site au site d'une nouvelle occurrence de protéines. Nous dirons alors que le premier motif apparait dans le second ou encore que le second motif contient une occurrence du premier.  Dans ce cas, la relation entre les occurrences de protéines du motif initial et celles du motif ainsi obtenu est formalisée par un plongement. Un \index{plongement}{\emph{plongement}} d'un motif vers un autre motif est une fonction qui envoie chaque occurrence de protéines du premier motif vers une occurrence de protéines du second tout en préservant la structure des graphes à sites, c'est à dire les sortes de protéines, les sites qui sont mentionnés, les états d'activation et les états de liaisons qui sont documentés.
 
-Il est intéressant de remarquer que les complexes biochimiques sont des motifs connexes particuliers. Dans ces derniers, chaque occurrence de protéines décrit tous ses sites, avec un état interne et un état de liaison quand ils en ont un. Il n'est donc pas possible d'ajouter d'information dans les complexes biochimiques. Un complexe biochimique ne peut se plonger dans aucun autre motif connexe.
+Il est intéressant de remarquer que les complexes biochimiques sont des motifs connexes particuliers. Dans ces derniers, chaque occurrence de protéines décrit tous ses sites, avec un état d'activation et un état de liaison quand ils en ont un. Il n'est donc pas possible d'ajouter d'information dans les complexes biochimiques. Un complexe biochimique ne peut se plonger dans aucun autre motif connexe.
 \begin{figure}
   \subfigure[Premier plongement.]{\label{F.emb1}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/embed.pdf}}}
 \subfigure[Second  plongement.]{\label{F.emb2}\centering\scalebox{\scalefactor}{\includegraphics{generated_pictures/embed2.pdf}}}
@@ -128,7 +128,7 @@ Il est possible de remarquer que le site \sitefont{l} de cette dernière occurren
 Dans le second plongement  (voir en Fig.~\ref{F.emb2}) l'occurrence de la protéine d'échafaudage du motif est associée à l'occurrence de la protéine d'échafaudage du complexe biochimique dont le site \sitefont{Y7} est lié. L'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage du motif est associée à l'occurrence du récepteur membranaire qui est liée à l'occurrence de la protéine d'échafaudage dont le site \sitefont{Y7} est lié. Enfin, l'autre occurrence du récepteur membranaire du motif est associée à l'autre occurrence du récepteur membranaire du complexe biochimique.
 \end{example}
 
-Il est important de remarquer qu'un plongement d'un motif connexe vers un autre motif est entièrement caractérisé par l'image d'une occurrence de protéines. Pour avoir les autres associations, il suffit de suivre les liens et d'utiliser le fait qu'ils sont nécessairement préservés par le plongement. Cette propriété facilite la recherche d'occurrences de motifs dans les autres. Les graphes Kappa sont dits \index{rigidité}{rigides} \cite{DBLPconf/lics/DanosFFHK10,DBLPconf/wsc/PetrovFK12}.
+Il est important de remarquer qu'un plongement d'un motif connexe vers un autre motif est entièrement caractérisé par l'image d'une occurrence de protéines. Pour avoir les autres associations, il suffit de suivre les liens et d'utiliser le fait qu'ils sont nécessairement préservés par le plongement. Cette propriété facilite la recherche d'occurrences de motifs dans les autres. Les graphes Kappa sont dits \index{rigidité}{\emph{rigides}} \cite{DBLPconf/lics/DanosFFHK10,DBLPconf/wsc/PetrovFK12}.
 
 \chapter{Réécriture de graphes à sites}
 
@@ -142,7 +142,7 @@ Afin de simplifier la présentation, seul un fragment du langage Kappa est présen
 
 \section{Règles d'interaction}
 
-Les complexes biochimiques peuvent se transformer en appliquant des règles d'interaction. Une \index{règle d'interaction}{règle d'interaction} est définie par une paire de motifs, qui contiennent exactement les mêmes sortes de protéines. Le premier motif spécifie quelles conditions locales doivent être réalisées pour permettre à l'interaction de se produire. La différence entre ces deux motifs décrit quelle transformation résulte de cette interaction. Aussi le second motif d'une règle doit pouvoir être obtenu à partir du premier en changeant uniquement l'état interne et/ou de liaison de certains sites d'interaction.
+Les complexes biochimiques peuvent se transformer en appliquant des règles d'interaction. Une \index{règle d'interaction}{\emph{règle d'interaction}} est définie par une paire de motifs, qui contiennent exactement les mêmes sortes de protéines. Le premier motif spécifie quelles conditions locales doivent être réalisées pour permettre à l'interaction de se produire. La différence entre ces deux motifs décrit quelle transformation résulte de cette interaction. Aussi le second motif d'une règle doit pouvoir être obtenu à partir du premier en changeant uniquement l'état d'activation et/ou de liaison de certains sites d'interaction.
 
 
 
@@ -257,7 +257,7 @@ Par ailleurs, le langage complet permet aussi de synthétiser de nouvelles occurr
 
 \section{Réactions induites par une règle d'interaction}
 
-Comme signalé précédemment, le membre gauche d'une règle d'interaction spécifie dans quel contexte cette interaction peut avoir lieu. Il est alors possible d'ajouter des contraintes sur les conditions d'application d'une règle en raffinant les motifs qui apparaissent dans les membres gauches et droits des règles exactement de la même manière. Une règle d'interaction qui ne peut plus être raffinée (sans ajouter de nouvelles composantes connexes) est alors appelée une \index{règle-réaction}{règle-réaction} \cite{Harmer-et-al-chaos2010}.
+Comme signalé précédemment, le membre gauche d'une règle d'interaction spécifie dans quel contexte cette interaction peut avoir lieu. Il est alors possible d'ajouter des contraintes sur les conditions d'application d'une règle en raffinant les motifs qui apparaissent dans les membres gauches et droits des règles exactement de la même manière. Une règle d'interaction qui ne peut plus être raffinée (sans ajouter de nouvelles composantes connexes) est alors appelée une \index{règle-réaction}{\emph{règle-réaction}} \cite{Harmer-et-al-chaos2010}.
 
 \begin{figure}
 

@@ -112,23 +112,20 @@
 \chapter{Symétrie dans les graphes à sites}
 \label{chp:sym}
 
-Les symétries apparaîssent dans les modèles décrits par des règles de réécritures sous des formes diverses.
-Certaines sont indissociables de la sémantique. C'est le cas des automorphismes qui représentent des équivalences entre agents au sein de graphes à sites. D'autres peuvent être considérer pour décrire des équivalences entre sites d'interaction, des équivalences entre sortes de protéines ou encore des équivalences spatiales qui permettent de voir  la structure de certains complexes biochimiques modulo
-des isométries.
+Les symétries apparaissent sous des formes diverses dans les modèles décrits par des règles de réécritures. Certaines sont indissociables de la sémantique. C'est le cas des automorphismes qui représentent des équivalences entre agents au sein de graphes à sites. D'autres peuvent être considérer pour décrire des équivalences entre sites d'interaction, des équivalences entre sortes de protéines ou encore des équivalences spatiales qui permettent de voir  la structure de certains complexes biochimiques modulo des isométries.
 
 Dans \cite{feret:sasb2014}, nous avons introduit un cadre de travail algébrique unifiant pour décrire, inférer, et utiliser les des groupes de transformations de graphes à sites dans le langage Kappa. L'idée principale est de considérer des groupes de transformations qui agissent sur les graphes à sites avec une opération supplémentaire permettant de restreindre une transformation sur les sous-graphes d'un graphe. Il est alors possible de définir quand un ensemble de règle est symétrique par rapport à ces groupes de transformation et d'en déduire  des propriétés au niveau du comportement global du modèle, que ce soit pour sa sémantique stochastique ou différentielle. Pour simplifier la présentation, nous nous concentrons ici aux symétries qui correspondent à  des permutations de sites, qui sont décrites dans \cite{Feret-MFPSXXVI}.
 
 
-\paragraph{Travaux voisins.} Plusieurs formalismes permettent de faire apparaître chaque site plusieurs fois dans l'interface des agents.
+\paragraph*{Travaux voisins.} Plusieurs formalismes permettent de faire apparaître chaque site plusieurs fois dans l'interface des agents.
 C'est le cas du langage BNGL \cite{DBLP:journals/bioinformatics/BlinovFGH04}.
 Dans le langage ReactC \cite{DBLP:conf/esop/JohnLNV11}, des sites indistinguable peuvent être encodés à l'aide d'hyperliens. Ceci procure un moyen syntaxique  de décrire des sites symétriques.
 En contre-partie, le calcul des l'ensembles des occurrences des motifs de réécriture devient prohibitif (les graphes ne sont plus rigides), ce qui pose de grands problèmes de complexité pour échantilloner les trajectoires de la sémantique stochastique.
 
 En Kappa, la rigidité des graphes est un principe fondamental, et donc, l'utilisation de plusieurs instances d'un même site dans l'interface d'un agent est interdite. Les équivalences entre sites d'interaction peuvent toutefois être décrites à un plus haut-niveau de spécification  \cite{DBLP:journals/corr/abs-0911-2508} puis traduites automatiquement dans le noyau pure de Kappa. Cependant, il faut être conscient que cette traduction peut générer un très grand nombre de règles, là où une seule règle aurait été suffisante en utilisant des sites à occurrences multiples.
 
-Dans ce chapitre, nous proposons une approche pour détecter automatiquement des équivalences entre sites d'intéraction qui n'ont pas besoin d'être spécifiées à la main.
-Puis, nous utilisons ces équivalences pour réduire l'espace d'état ou le nombre d'espèces biochimiques des modèles considérés. Ceci permet de réduire la dimension
-des systèmes diferentiels sous-jacents et facilite le calcul de propriétés sur la distribution des traces de la sémantique stochastique. Ce n'est en revanche pas crucial pour l'échantillonage des traces de la sémantique stochastique, puisque la simulation  travaille directement au niveau des graphes à sites \cite{DanosEtAl-APLAS07}.
+Dans ce chapitre, nous proposons une approche pour détecter automatiquement des équivalences entre sites d'interaction qui n'ont pas besoin d'être spécifiées à la main.
+Puis, nous utilisons ces équivalences pour réduire l'espace d'état ou le nombre d'espèces biochimiques des modèles considérés. Ceci permet de réduire la dimension des systèmes différentiels sous-jacents et facilite le calcul de propriétés sur la distribution des traces de la sémantique stochastique. Ce n'est en revanche pas crucial pour l'échantillonnage des traces de la sémantique stochastique, puisque la simulation  travaille directement au niveau des graphes à sites \cite{DanosEtAl-APLAS07}.
 
 Enfin, notre cadre de travail n'est pas limité à la prise en compte des équivalences entre sites d'interaction. Il peut être utilisé pour considérer des chaînes d'agents indépendamment de leur orientation ou des sous-groupes de permutations de sites comme c'est courant en chemoinformatique.
 
@@ -138,7 +135,7 @@ Enfin, notre cadre de travail n'est pas limité à la prise en compte des équivale
 Ce chapitre reprends donc les principaux résultats qui avaient été établis avec Ferdinanda Camporesi \cite{Feret-MFPSXXVI} à propos
 de la détection et de la prise en compte d'équivalences entre sites d'interaction dans un noyau sans effets de bord du langage Kappa, pour réduire la combinatoire de ses modèles. L'extension à des groupes de symétries arbitraires et au langage complet qui est introduite dans \cite{feret:sasb2014} n'est évoquée qu'en conclusion de ce chapitre.
 
-\section{Introduction}
+\section{Le cas d'études}
 
 \newcommand{\dt}{\textrm{d} t}
 \newcommand{\stateq}[1]{q_{{}_{#1}}}
@@ -183,14 +180,19 @@ de la détection et de la prise en compte d'équivalences entre sites d'interactio
 
 Nous illustrons l'usage des symétries dans Kappa à travers un exemple jouet.
 
-\subsection{Un modèle avec des sites équivalents}
-
-\label{sec:modele}
+\subsection{Modèle}
 
 Pour simplifier la présentation, nous considérons une forme très simple de symétrie, celle où des sites d'une protéine ont  exactement les mêmes capacités d'interaction.
 
-Soit une sorte de protéine,  \agent{A}{}, chaque occurrence de la protéine \agent{A}{} disposant d'exactement deux sites de liaison que nous noterons  \site{x}{}{} et  \site{y}{}{}. Les sites de deux occurrences différentes de la protéine \agent{A}{} peuvent se lier arbitrairement de mani!re réversible. Il y a donc trois types de liaison, \site{x}{}{}-\site{x}{}{}, \site{x}{}{}-\site{y}{}{}, et \site{y}{}{}-\site{y}{}{}, selon les sites qui sont impliqués dans la liaison.
-De plus, il est supposé que chaque occurrence de protéine ne peut être qu'une fois à la fois.
+\subsubsection{Les constituants du modèle et ses règles d'interaction}
+
+\label{sec:modele}
+
+
+
+Soit une sorte de protéine,  \agent{A}{}, chaque occurrence de la protéine \agent{A}{} disposant d'exactement deux sites de liaison que nous noterons  \site{x}{}{} et  \site{y}{}{}. Les sites de deux occurrences différentes de la protéine \agent{A}{} peuvent se lier arbitrairement de mani!re réversible. Il y a donc trois types de liaison, \site{x}{}{}-\site{x}{}{}, \site{x}{}{}-\site{y}{}{}, et \site{y}{}{}-\site{y}{}{}, selon les sites qui sont impliqués dans la liaison. De plus, il est fait l'hypothèse que dans chaque occurrence de protéin, au plus un site peut être lié à la fois. Sous ces hypothèses, il existe exactement quatre sortes de complexe biochimique\footnote{voir page \pageref{defn:molecular species} pour la définition d'un complexe biochimique.}. Celles-ci sont toutes les quatre dessinées en Fig.~\ref{fig:chemicalspecies}.
+Une occurrence de complexe biochimique est ainsi formé soit d'une occurrence de protéine avec ses deux sites libres (voir en Fig.~\ref{fig:sgsym21}), soit de deux occurrences de la protéine \agent{A}{} sont liées  par leurs deux sites \site{x}{}{} (voir en  Fig.~\ref{fig:sgsym22}), par leurs deux sites \site{y}{}{} (voir en Fig.~\ref{fig:sgsym23} ou par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autre (voir en Fig.~\ref{fig:sgsym24}).
+
 
 \begin{figure*}[t]
 \hfill\subfigure[Une occurrence de la protéine \agentfont{A} avec ses deux sites de liaison libres.]%
@@ -204,7 +206,8 @@ De plus, il est supposé que chaque occurrence de protéine ne peut être qu'une fo
 \begin{minipage}{0.2\linewidth}\hfill\scalebox{\scalefactor}{\includegraphics{generated_pictures/sym_4_1_c.pdf}}\hfill\mbox{}\end{minipage}}%
 \hfill\subfigure[Deux occurrences de la protéine \agentfont{A} liées respectivement par le site \sitefont{x} de l'une et le site \sitefont{y}{} de l'autre.]%
 {\label{fig:sgsym24}
-\begin{minipage}{0.2\linewidth}\hfill\scalebox{\scalefactor}{\includegraphics{generated_pictures/sym_4_1_d.pdf}}\hfill\mbox{}\end{minipage}}\caption{The four kinds of molecular species in the initial model.}
+\begin{minipage}{0.2\linewidth}\hfill\scalebox{\scalefactor}{\includegraphics{generated_pictures/sym_4_1_d.pdf}}\hfill\mbox{}\end{minipage}}\caption{
+Les quatre sortes de complexes biochimiques de notre modèle.}
 \label{fig:chemicalspecies}
 \end{figure*}
 
@@ -217,12 +220,10 @@ De plus, il est supposé que chaque occurrence de protéine ne peut être qu'une fo
 
 \hfill\subfigure[règles de liaison déliaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
 {\begin{minipage}{0.6\linewidth}\label{fig:rulesym23}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_c_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
-\caption{Les six règles de réécriture du modèle initial.}
+\caption{Les six règles de réécriture de notre modèle.}
 \label{fig:threerules}
 \end{figure*}
 
-Sous ces hypothèses, il existe exactement quatre sortes de complexe biochimique\footnote{voir page \pageref{defn:molecular species} pour la définition d'un complexe biochimique.}. Celles-ci sont toutes les quatre dessinées en Fig.~\ref{fig:chemicalspecies}.
-Une occurrence de complexe biochimique est ainsi formé soit d'une occurrence de protéine avec ses deux sites libres (voir en Fig.~\ref{fig:sgsym21}), soit deux occurrences de la protéine \agent{A}{} sont liées  par leurs deux sites \site{x}{}{} (voir en  Fig.~\ref{fig:sgsym22}), par leurs deux sites \site{y}{}{} (voir en Fig.~\ref{fig:sgsym23} ou par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autre (voir en Fig.~\ref{fig:sgsym24}).
 
 
 \begin{sidewaysfigure}\scalebox{0.90}{\begin{minipage}{\linewidth}
@@ -319,17 +320,16 @@ La règle bidirectionnelle dessinée en  Fig.~\ref{fig:rulesym21} stipule que deux
 La règle bidirectionnelle donnée en  Fig.~\ref{fig:rulesym22} précise que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{y}{} respectifs avec la constante de réaction $\kyy$ et qu'un tel lien peut se briser avec la constante de réaction $\kdyy$. Enfin, la règle bidirectionnelle dessinnée en Fig.~\ref{fig:rulesym23} spécifie que
 deux occurences de la protéine \agent{A}{} dont tous les sites sont libres, peuvent se lier respectivement par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autres avec la constante de réaction $\kxy$ et qu'un tel lien peut se casser avec la constante de réaction $\kdxy$.
 
-\subsection{sémantique}
+\subsubsection{Le comportement du modèle}
 
-Ainsi, d'un point de vue qualitatif, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} ont exactement les mêmes capacités d'interaction. Nous allons étudié de manière empirique ce que cela implique au niveau de la sémantique du modèle, à la fois pour la sémantique stochastique et pour la sémantique différentielle.
+Ainsi, d'un point de vue qualitatif, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} ont exactement les mêmes capacités d'interaction. Nous allons étudier de manière empirique ce que cela implique au niveau de la sémantique du modèle, et ceux pour les deux types de sémantiques quantitatives, la sémantique stochastique et la sémantique différentielle.
 
-\subsubsection{Équation maîtresse}
+\paragraph{Équation maîtresse.}
 
-Pour regarder le comportement de la sémantique stochastique du modèle, nous proposons de nous concentrer sur la solution de son équation maîtresse \cite{1967} qui décrit pour chaque état potentiel du système sous-jacent l'évolution temporelle de la probabilité que le système soit dans cet état. Comme il y a quatre sortes de complexes biochimiques,  l'état discrêt du système peut être représenté par un vecteur de quatre entiers naturels, en notant $\state{i,j,k,l}$ l'état dans lequel il y a exactement $i$ occurrence(s) de la protéine \agent{A}{} sans sites liés (voir en Fig.~\ref{fig:sgsym21}),
-$j$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{x}{}{} respectifs (voir en Fig.~\ref{fig:sgsym22}), $k$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{y}{}{} respectifs (voir en Fig.~\ref{fig:sgsym23}), et $l$ paires d'occurrences de la protéine \agent{A}{} liées l'une par son site \site{x}{}{} et l'autre par son site \site{y}{}{} (voir en Fig.~\ref{fig:sgsym24}). L'équation maîtresse nécessite une variable par état possible du système. Afin de faire tenir les équations sur une page, la système débutera avec la probabilité $1$ dans un état avec uniquement six occurrences de la protéine \agent{A}{} avec tous leurs sites libres. Aussi, seuls seront considérés les états $\state{i,j,k,l}$ pour lesquels $i+2\cdot(j+k+l) = 6$. Aussi, l'équation maîtresse admet vingt variables, en l'occurrence,  $\qone$, $\qtwo$, $\qthree$, $\qfour$, $\qfive$, $\qeight$, $\qten$, $\qsix$, $\qnine$, $\qseven$, $\qeleven$, $\qfourteen$, $\qfifteen$, $\qsixteen$, $\qtwenty$, $\qnineteen$, $\qtwelve$, $\qseventeen$, $\qeighteen$, et $\qthirteen$.
+Pour regarder le comportement de la sémantique stochastique du modèle, nous proposons de nous concentrer sur la solution de son équation maîtresse \cite{1967}. Celle-ci décrit pour chaque état potentiel du système sous-jacent l'évolution temporelle de la probabilité que le système soit dans cet état. Comme il y a quatre sortes de complexes biochimiques,  l'état discrêt du système peut être représenté par un vecteur de quatre entiers naturels. Ainsi la variable $\state{i,j,k,l}$ représente l'état dans lequel il y a exactement $i$ occurrence(s) de la protéine \agent{A}{} sans sites liés (voir en Fig.~\ref{fig:sgsym21}),
+$j$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{x}{}{} respectifs (voir en Fig.~\ref{fig:sgsym22}), $k$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{y}{}{} respectifs (voir en Fig.~\ref{fig:sgsym23}), et $l$ paires d'occurrences de la protéine \agent{A}{} liées l'une par son site \site{x}{}{} et l'autre par son site \site{y}{}{} (voir en Fig.~\ref{fig:sgsym24}). L'équation maîtresse nécessite une variable par état possible du système. Pour faire tenir les équations sur une seule page, il est necessaire de ne considérer qu'un nombre très limité de nombre d'occurrences de protéine. Aussi,  le système débutera avec la probabilité $1$ dans un état avec uniquement six occurrences de la protéine \agent{A}{} avec tous leurs sites libres. De ce fait, seuls seront considérés les états $\state{i,j,k,l}$ pour lesquels $i+2\cdot(j+k+l) = 6$. Ceci implique déjà admet vingt variables, en l'occurrence,  $\qone$, $\qtwo$, $\qthree$, $\qfour$, $\qfive$, $\qeight$, $\qten$, $\qsix$, $\qnine$, $\qseven$, $\qeleven$, $\qfourteen$, $\qfifteen$, $\qsixteen$, $\qtwenty$, $\qnineteen$, $\qtwelve$, $\qseventeen$, $\qeighteen$ et $\qthirteen$.
 
-
-L'équation maîtresse de notre modèle jouet est donnée en Fig.~\ref{CME}, alors que l'évolution temporelle de la distribution de probabilité de chaque état accessible à partir de l'état initial est donné  en Fig.~\ref{distributionko} pour les paramètres cinétiques  $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$.
+L'équation maîtresse de notre modèle est donnée en Fig.~\ref{CME}.  L'évolution temporelle de la distribution de probabilité de chaque état accessible à partir de l'état initial est-elle donnée  en Fig.~\ref{distributionko} pour les paramètres cinétiques  $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$.
 
 \begin{figure}[ht]
 \begin{center}
@@ -340,7 +340,7 @@ $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$, et la distribution d'états in
 \label{distributionko}%
 \end{figure}
 
-\subsubsection{Sémantique différentielle}
+\paragraph{Sémantique différentielle.}
 
 La sémantique différentielle du modèle est définie par le systèmes d'équations différentielles donné en Fig.~\ref{fig:sym:ODE}. Ces équations décrivent l'évolution de la concentration des différents complexes biochimique sous les hypothèses de la loi d'action de masse. Les trajectoires de ce système en prenant pour état initial, l'état où les monomères de la protéine \agent{A}{} ont pour concentration $6$ et les dimers ont pour concentration $0$ sont décrites en Fig.~\ref{sym:trajectoires}.
 
@@ -366,21 +366,20 @@ La sémantique différentielle du modèle est définie par le systèmes d'équations d
 \label{sym:trajectoires}%
 \end{figure}
 
-\subsection{Symétries et propriétés comportementales}
+\subsubsection{Symétries et propriétés comportementales}
 
 Sans considérer les aspects quantitatifs, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} sont équivalents. Dès qu'une règle permet de lier le site \site{x}{}{} d'une occurence de la protéine \agent{A}{} à un site, une autre règle permet de lier le site \site{y}{}{} de cette occurence de protéine au même site. De même, quand une règle permet de casser un lien entre le site \site{x}{}{} d'une occurrence de protéine et un autre site, une autre règle permet de casser ce lien, si ce lien avait été porté par le site \site{y}{}{} ce cette occurence de protéines.
 
-Il s'en suit la question suivante :
-quelles conséquences les équivalences entre sites peuvent-elles impliquées en terme de comportement du système sous-jacent et pour quelles conditions supplémentaires sur les paramètres cinétiques du modèle et son état (ou sa distribution d'états) initial(e) ?
+Il est donc légitime de se poser la question suivante~:
+quelles conséquences les équivalences entre sites peuvent-elles impliquer en terme de comportement du système sous-jacent et pour quelles conditions supplémentaires sur les paramètres cinétiques du modèle et son état initial (ou sa distribution d'états initiale) ?
 
 
-\subsubsection{Modèle simplifié}
+\subsection{Modèle simplifié}
 
-Il semble naturel de vouloir oublier la différence entre des sites équivalents. Dans notre modèle jouet, cela revient à ignorer la différence entre les sites \site{x}{}{} et \site{y}{}{} dans les occurrences de la protéine \agent{A}{}.
-\`A ce niveau d'abstraction, les occurrences de la protéine \agent{A}{} ont chacune deux sites, désormais supposés indistingables.
+Il semble naturel de vouloir oublier la différence entre des sites équivalents. Dans notre modèle, cela revient à ignorer la différence entre les sites \site{x}{}{} et \site{y}{}{} dans les occurrences de la protéine \agent{A}{}.
+\`A ce niveau d'abstraction, les occurrences de la protéine \agent{A}{} ont chacune deux sites, désormais supposés indistinguables.
 
-
-\paragraph{Complexes biochimiques.}
+\subsubsection{Complexes biochimiques.}
 
 Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sortes de complexes biochimiques, les monomères qui sont formés d'une occurrence de la protéine \agent{A}{} avec ses deux sites de liaison libres et les dimères qui sont constitués de deux occurrences de la protéine \agent{A}{} liées exactement par une liaison entre un site de l'une et un site de l'autre.
 
@@ -402,13 +401,13 @@ Deux occurrences de la protéine \agentfont{A} peuvent se lier à une constante de
 \label{Arule}
 \end{figure}
 
-\paragraph{États des systèmes stochastiques et différentiels sous-jacent}
+\subsubsection{États des systèmes stochastiques et différentiels sous-jacent.}
 
 Les états du système stochastique sous-jacent sont donc décrits par le nombre d'occurrences de monomère (qui sont formées d'une occurrence de la protéine \agent{A}{}) et le nombre d'occurrences de dimère (qui sont formées de deux occurrences de la protéine \agent{A}{} liées entre-elles). Un tel état sera noté $\Qgen$ avec $i$ le nombre d'occurrences de monomère et $j$ le nombre d'occurrences de dimère.
 
 Quant à eux, les états du système differentiel sous-jacent sont décrits par deux concentrations. La concentration en monomère est notée $\conc{\mono}$ alors que celle en dimère est notée $\conc{\dimer}$.
 
-\paragraph{règles simplifiées}
+\subsubsection{Règles simplifiées}
 
 Par ailleurs, les règles se simplifient de la même manière.
 Puisqu'il n'y a plus de distinctions entre les sites de liaison de chaque occurence de la protéine \agent{A}{}, les trois règles de liaison peuvent se résumer en une seule.
@@ -417,11 +416,13 @@ possibilité de créer un liaison pour une constante de réaction  corrigée totale 
 Si le lien est entre deux sites \sitefont{y}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdyy}{2}$. Enfin si le lien est entre un site \sitefont{x}{}{} et un site \sitefont{y}{}{}, la règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxy}{2}$. Du coup, la simplication n'est possible que si les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ sont égales. Dans ce cas, la constante de la règle de déliaison dans le modèle simplifié sera fixé à $\kdxx$.
 Les deux règles du modèle simplifié sont données en Fig.~\ref{Arule}.
 
-\paragraph{systèmes dynamiques sous-jacent}
+\subsubsection{Systèmes dynamiques sous-jacent}
 
-L'équation maîtresse du modèle simplifié est donnée en Fig.~\ref{LCME}. La solution de ce système d'équations défini
+\paragraph{\'Equation maîtresse.}
+
+L'équation maîtresse du modèle simplifié est donnée en Fig.~\ref{LCME}. La solution de ce système d'équations définit
 donc l'évolution de la distribution de probabilités du nombre de dimers au cours du temps dans la sémantique stochastique.
-Seuls les états accessibles à partir de six monomères ont été considérés, c'est à dire les états $\Qzero$, $\Qone$, $\Qtwo$ et $\Qthree$.
+Seuls les états accessibles à partir de six monomères ont été considérés, c'est à dire les quatre états potentiels $\Qzero$, $\Qone$, $\Qtwo$ et $\Qthree$.
 
 \begin{figure}[ht]
 \scalebox{0.86}{\begin{minipage}{\linewidth}
@@ -443,6 +444,7 @@ Seuls les états accessibles à partir de six monomères ont été considérés, c'est 
 \label{LCME}
 \end{figure}
 
+\paragraph{Sémantique différentielle.}
 
 La sémantique différentielle est quant à elle donnée en Fig.~\ref{LODE}. Elle donne l'évolution de la concentration en monomère, $\conc{\mono}$, et en dimère, $\conc{\dimer}$, au cours du temps, sous les hypothèses de la loi d'action de masse.
 
@@ -459,10 +461,11 @@ La sémantique différentielle est quant à elle donnée en Fig.~\ref{LODE}. Elle do
 \label{LODE}
 \end{figure}
 
-\paragraph{Comparaison entre les deux modèles}
+\subsection{Comparaison des dynamiques des deux modèles}
 
-Les composants de modèle simplifié ont été définis de manière  intentionnelle sous la forme de graphe à sites.
-Quelques écarts ont été pris par rapport à la syntaxe de Kappa. En effet, celle-ci ne permet pas de répéter des sites dans l'interface d'une protéine. Cette description intentionnelle permet des raisonnements intuitifs sur le comportement des composants du modèle simplifié. Toutefois, une caractérisation  extensionelle de ces composante est requise pour relier formellement les composants du modèle simplifié au composants du modèle initial et ainsi justifier rigoureusement ces raisonnements. Il suffit pour cela d'interpréter les complexes biochimiques et les états du modèle simplifié respectivement comme des classes d'équivalences de complexes biochimiques et d'états du modèle initial. Les complexes biochimiques sont regroupés en deux classes, les monomères et les dimères. Ainsi, dans le cadre différentiel, les variables du modèle simplifié correspondent à la somme des concentrations des espèce biochimiques dans chaque classe d'équivalences de complexes biochimiques, comme indiqué en Fig.~\ref{changevarode}.
+\subsubsection{Quotient}
+
+Les composants de modèle simplifié ont été définis de manière  intentionnelle sous la forme de graphe à sites. Quelques écarts ont été pris par rapport à la syntaxe de Kappa. En effet, celle-ci ne permet pas de répéter des sites dans l'interface d'une protéine. Cette description intentionnelle permet des raisonnements intuitifs sur le comportement des composants du modèle simplifié. Toutefois, une caractérisation  extensionnelle de ces composante est requise pour relier formellement les composants du modèle simplifié au composants du modèle initial et ainsi justifier rigoureusement ces raisonnements. Il suffit pour cela d'interpréter les complexes biochimiques et les états du modèle simplifié respectivement comme des classes d'équivalences de complexes biochimiques et d'états du modèle initial. Les complexes biochimiques sont regroupés en deux classes, les monomères et les dimères. Ainsi, dans le cadre différentiel, les variables du modèle simplifié correspondent à la somme des concentrations des espèce biochimiques dans chaque classe d'équivalences de complexes biochimiques, comme indiqué en Fig.~\ref{changevarode}.
 De la même manière, les états du système stochastique initial peuvent être regroupés selon le nombre d'occurrences de monomère et de dimère. Du coup, à partir d'un état initial formé de $6$ occurrences de la protéine \agent{A}{} aves ses deux sites sont libres, il est possible d'attendre des états dans exactement $4$ classes d'équivalence, selon qu'il y ait $0$, $1$, $2$ ou $3$ dimères. Ceci peut être étendu aux distributions d'états qui apparaîssent dans l'équation maîtresse~: la probabilité d'avoir exactement $i$ monomères et $j$ dimères est alors vue comme la somme des probabilité des états du modèle initial ayant exactement $i$ monomères et $j$ dimères. Cette relation est exprimée en Fig.~\ref{changevarctmc} pour les états accessibles à partir de $6$ occurrences de la protéine \agent{A}{} avec les deux sites de liaison libres.
 
 \begin{sidewaysfigure}\scalebox{0.90}{\begin{minipage}{\linewidth}
@@ -608,7 +611,7 @@ Dans le modèle simplifié, la constante de dissociation est prise comme étant éga
 
 
 \item Le troisième jeu de paramètres permet de tester l'importance éventuelle de l'état initial. Par rapport au premier jeu de paramètre, seule la distribution des états initiaux (ou l'état initial dans le cadre différentiel) est modifiée. Le système stochastique débute dans un état avec deux occurrences de la protéine \agent{A}{} sans lien, et deux occurrences du dimère chacun débute de deux occurrences de la protéine \agent{A}{} lié par leurs sites \site{x}{}{} respectifs. Quant au système différentiel, il démare d'un état où les monomères et les dimères $\sitefont{x}-\sitefont{x}$ sont en concentration $2$, alors que les deux autres formes de dimère sont en concentration $0$.  l'évolution des distributions d'états des deux systèmes stochastiques sous-jacents est dessinée en Fig.~\ref{figctmcnotsyminitial}, alors que l'évolution des concentrations en monomère et en dimère dans les deux systèmes différentiels sous-jacents est donnée en Fig.~\ref{figodenotsyminitial}. à la fois, le cadre stochastique et dans le cadre différentiel,
-les courbes coÃ¯ncident entre le modèle initial et le modèle simplifié, ce qui nous conforte dans l'idée que la correction du modèle simplifié ne dépend pas de la distribution initiale (ou de l'état initial dans le cadre stochastique).
+les courbes coïncident entre le modèle initial et le modèle simplifié, ce qui nous conforte dans l'idée que la correction du modèle simplifié ne dépend pas de la distribution initiale (ou de l'état initial dans le cadre stochastique).
 
 \item Enfin, le quatrième jeu de paramètres nous conforte dans l'idée que les constantes d'association n'ont pas d'importance pour prouver la correction du modèle simplifié. Les paramètres sont les mêmes que dans le premier jeu, sauf la constante $\kyy$ qui est fixée à $2$ et la constante $\kxy$ qui est fixée à $4$. De plus, la constante d'association dans le modèle simplifié, $\K$,  reste la somme des constantes d'association dans le modèle initial, c'est à dire $7$. Là encore, le comportement du modèle initial et celui du modèle simplifié coincident, que ce soit pour la sémantique stochastique ou la sémantique différentielle (voir en Fig.~\ref{figctmcnotsymasso} et en Fig.~\ref{figodenotsymasso}).
 \end{enumerate}
@@ -685,7 +688,7 @@ $\K=7$, $\KD=2$, initialement $\conc{\mono}=6$ et $\conc{\dimer}=0$.]%
 Ainsi, si l'égalité entre les constantes de dissociation
 semble cruciale pour pouvoir simplifier le modèle de manière exacte, le choix de la distribution initiale (ou de l'état initial) et des constantes d'association semblent ne pas importer. Pour les constantes d'association, ceci s'explique par la simplicité du cas d'étude, puisque que les règles de liaison ne lient que des monomères et que ces monomères sont invariants par échange de leurs sites \site{x}{}{} et \site{y}{}{}. De manière général, les conditions sur les constantes cinétique portent sur des règles qui effectuent des actions similaires sur des motifs équivalents à permutation de sites près. La correction du modèle simplifiée peut alors s'expliquer par une bisimulation en-avant \cite{1347609} sur l'espace des états du système stochastique sous-jacent ou de son analogue différentiel \cite{Cardelli2015ForwardAB}.
 
-\paragraph{Invariants quantitatifs}
+\subsubsection{Invariants quantitatifs}
 
 Dans le paragraphe précédent, le fait que certains sites puissent partager exactement les mêmes capacités d'interaction a été exploité pour simplifier un modèle jouet de manière exacte. Les composés du modèle simplifié ont été reliés formellement à ceux du modèle initial et les mêmes résultats ont été obtenus, en exécutant le modèle initial avant d'utiliser ces relations formelles pour en déduire  l'évolution des composants du modèle simplifié ou en exécutant directement le modèle simplifié.
 
@@ -812,14 +815,11 @@ De même, cela permet de réduire le système différentiel sous-jacent pour certain
 
 Dans le cas du premier jeu de paramètres, le quotient opère même à plus bas-niveau, puisqu'il s'exprime au niveau réactionnel: à chaque réaction, peut être associée une réaction symétrique obtenue en échangeant les instances des sites \site{x}{}{} et \site{y}{}{} dans certaines occurrences de la protéine \agent{A}{}, ce qui permet de montrer l'existence d'une bisimulation arrière \cite{1347609} sur système de transition stochastique sous-jacent ou de réduire le système différentiel sous-jacent.
 
-\subsection{Symetries and model reduction}
+\subsection{Symétries et réduction de modèles}
 
+Pour conclure avec cet exemple jouet, nous avons vu que des symétries pouvaient apparaître dans les complexes biochimiques, dans les états du système, dans les distribitions d'états ou même dans l'effet des règles. Ces symétries ont un impact sur notre capacité à réduire la dynamique du système. En effet, lorsque l'action des règles est symétrique, il est possible d'induire une relation d'équivalence pour quotienter l'ensemble des états, ce qui suggère l'existence d'une bisimulation avant. De plus, lorsque la distribution des états initiaux est également symétrique, alors le système non réduit comporte des invariants statistiques (le quotient entre la probabilité de deux états symétiques est égal à l'inverse du quotient de leur nombre d'automorphismes), ce qui suggère l'existence d'une bisimulation arrière.
 
-
-To conclude with this motivating example, we have seen that symetries can arise in molecular species, in the states of the systems, in distributions of states and in the action of the rules and that the symetries have an impact in our capability to coarse-grain the dynamic of our system. In particular, when the action of the rules are symetric, we can safely quotient the states of the systems, which makes us think of a forward bisimulation. Moreover, in the initial distribution is symetric as well, then the reduced system carries a statistic invariant (namely, the quotient between probability of two symetric states is invariant and is equal to the inverse of the quotient between their number of automorphisms, which suggest a backward bisimulation.
-
-Let us see how these results can be generalised to all the models written in the language \kappa.
-
+\ignore{%
 \section{Group actions over rule-based models}
 
 \label{sym-algebraic}
@@ -3343,21 +3343,39 @@ We pick an $\iso$-equivalence class of rules in the model among the ones that we
 
 
 Notice, that in Prop.~\ref{prop:sym:model:efficient}, thanks to Prop.~\ref{countisorule}, we could have multiply the rate of each rule $r$ by the number $\card([r]_\iso\cap [r]_{\groupequiv})$ of the rules which are both symetric and isomorphic to this rule, instead of multiplying by the number of automorphisms of this rule.
+}
+
+\section{Permutations de sites dans des graphes à sites} 
+
+Pour rester simple, le cadre général ne sera pas décrit. Au lieu de cela, la présentation se concentre sur le cas particulier où les symétries prennent la forme de permutation de sites. Le but de cette section est de définir l'effet de la permution de sites dans les différents éléments du langage Kappa, c'est à dire les motifs, les plongements, les règles et l'application des règles.
+
+Les permutations de sites forment un groupe. Ainsi il est possible de les composer et chaque permutation admet une permutation inverse. De plus, ce groupe est engendré par les transpositions de sites (qui consistent à échanger uniquement deux sites). Aussi, seul l'effet des transpositions de sites sera décrit, l'effet des autres permutations pouvant être déduit en décomposant ses permutations en séquences de transpositions.
+
+\subsection{Transposition de deux sites dans un motif}
+
+Il est possible d'échanger deux sites dans une instance de protéine dans un motif. Pour cela il suffit de choisir une instance de protéine dans un motif, et deux sites dans l'interface de la sorte de protéine correspondante.
+Si l'instance de protéine ne contient aucun de ces deux sites, alors le motif reste tel qu'il est. Si l'instance de protéine contient exactement un des deux sites, alors celui-ci est remplacé par l'autre site en gardant ses éventuels états d'activation et de liaison. Enfin, si l'instance de protéine contient les deux sites, alors l'un est remplacé par l'autre, et réciproquement. De ce fait, les deux sites échangent leurs éventuels états d'activation et de liaison. Le motif reste inchangé si les deux sites avaient les mêmes états.
+
+%\begin{figure}[htp]
+%\subfigure
+%\subfigure
+%\end{figure}
 
 
-\section{Permutations of sites in site graphs}
-
-Before giving the main properties about the semantic of symetric models, we formalise further the notion of permutions of sites that we have used in our running example.
- In particular, in our running examples, we have only swapped pairs of property sites, and we have wisely avoided permuting  pairs of binding sites.
-In this section, we propose to instantiate the algebraic framework that we have introduced  so as to model permutations of sites in general.
-
-In this section, we disallow the use of  binding types in site graphs.
-We make this assumption because whenever an embedding maps a site with a binding type to a site that is bound to another site,
-it is quite tricky to restrict a permutation of sites that can be applied to the image of this embedding, into a permutation of sites that can be applied to the domain of this embedding, while ensuring the group structure of the sets of permutations and the distributivity of the restriction of the permutations of sites over the product between these permutations ({\eg}see Def.~\ref{defn:symetriesdistributeovercomposition}).
+\begin{example}
+En Fig.~\ref{fig:sym:motig} sont montrés des exemples de transpositions de sites dans des motifs.
 
 
+\end{example}
 
-\subsection{Formalisation}
+\subsubsection{Restriction d'une transposition de deux sites au domaine d'un plongement}
+
+\subsubsection{Effet d'une transposition de sites sur une règle}
+
+\subsubsection{Effet d'une transposition de sites sur une réaction induite par une règle}
+
+
+
 
 
 We start with some examples of permutations of the sites of a site graph.
