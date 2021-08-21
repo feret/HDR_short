@@ -3351,313 +3351,134 @@ Pour rester simple, le cadre général ne sera pas décrit. Au lieu de cela, la pré
 
 Les permutations de sites forment un groupe. Ainsi il est possible de les composer et chaque permutation admet une permutation inverse. De plus, ce groupe est engendré par les transpositions de sites (qui consistent à échanger uniquement deux sites). Aussi, seul l'effet des transpositions de sites sera décrit, l'effet des autres permutations pouvant être déduit en décomposant ses permutations en séquences de transpositions.
 
+
+
+\newcommand{\sympatternm}[2]{\xymatrix@C=8mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2.pdf} \ar@[orange]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_op_#2.pdf}}}
+
+\newcommand{\sympatternl}[2]{\xymatrix@C=8mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2.pdf} \ar@[green]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_op_#2.pdf}}}
+
+\newcommand{\sympatternr}[2]{\xymatrix@C=8mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2.pdf} \ar@[red]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2_op.pdf}}}
+
+\newcommand{\sympatternd}[2]{\xymatrix@C=8mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2.pdf} \ar@[brown]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_op_#2_op.pdf}}}
+
+\subsection{Transposition de deux sites dans un complexe biochimique}
+
+\begin{figure}[htp]
+
+\hfill\subfigure[Transposition des sites dans espèces biochimiques formées d'une seule instance de la protéine \agentfont{A}.]%
+{\label{fig:trans:mono}%
+\begin{minipage}{\linewidth}\hfill\sympatternm{}{Free_Free}\hfill\mbox{}\end{minipage}}%
+\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A}.]%
+{\label{fig:trans:dimg}%
+\sympatternl{sdimer}{x_x_Free_Free}%
+\hspace*{2cm}\sympatternl{sdimer}{x_y_Free_Free}}%
+\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A}.]%
+{\label{fig:trans:dimd}%
+\sympatternr{sdimer}{x_x_Free_Free}%
+\hspace*{2cm}\sympatternr{sdimer}{x_y_Free_Free}}%
+\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A}.]{%
+\label{fig:trans:dimboth}%
+\sympatternd{sdimer}{x_x_Free_Free}%
+\hspace*{2cm}\sympatternd{sdimer}{x_y_Free_Free}}%
+\hfill\mbox{}
+
+\caption{Effet des transpositions de site sur les espèces biochimiques du modèle jouet.}
+\label{fig:sym:complex}
+\end{figure}
+
+
+
+
+\begin{example}
+En Figs.~\ref{fig:sym:complex} et \ref{fig:sym:motifs} sont montrés des exemples de transpositions de sites dans des graphes à sites.
+L'action d'une permutation de site qui transforme un graphe à site en un autre est notée par une double flèche ondulée colorée. Les couleurs représentent différentes sortes de permutation.  Dans le cas particulier des transpositions de sites, cette flèche est bidirectionnelle puisque cette action est involutive (appliquer deux fois une transposition revient à ne rien changer). L'effet des transpositions sur les graphes à site est dessiné en échangeant la couleur et le nom des sites qui sont permutés, sans changer leurs états de liaison (les sites n'ont pas d'états d'activation dans ce modèle, sinon eux-aussi auraient été conservés).
+
+En Fig.~\ref{fig:sym:complex}, les transpositions de sites sont appliquées aux complexes biochimiques de l'exemple étudié dans ce chapitre (voir en Fig.~\ref{fig:threerules}). En Fig.~\ref{fig:trans:mono} est montré l'effet des transpositions de sites sur les espèces biochimiques qui ne sont formées que d'une instance de la protéine \agentfont{A}.
+Il n'y a donc qu'une transposition possible, puisqu'il n'y a qu'une instance de la protéine \agentfont{A}. Cette transposition est dessinée en orange. Les deux sites de l'instance de la protéine \agentfont{A} sont nécessairement libres, sinon ce ne serait pas un monomère. Du coup, la transposition des deux sites laisse la configuration de l'espèce biochimique inchangée (puisqu'en effet la position des sites dans une instance de protéine n'a pas de signification particulière en Kappa).
+
+Pour les espèces chimiques formées de deux instances de la protéine \agentfont{A}, il est possible de permuter les sites de l'instance de gauche, les sites de l'instance de droite, ou les deux.
+En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition des sites de gauche. En Fig.~\ref{fig:trans:dimd} est montré, en rouge, l'effet de la transposition des sites de droite. Enfin en Fig.~{fig:trans:dimboth} est montré, en marron, l'effet de la combinaison des deux transpositions. L'ordre n'a pas d'influence sur le résultat. Hormis dans le cas où les sites de deux occurrences de la protéine \agentfontA} sont échangées dans le dimer formé par une liason entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence de la protéine \agentfont{A}, l'application des transpositions de sites changent l'espèce biochimique. Essentiellement, les liaisons entre deux sites identiques deviennent des liaisons entre deux sites différents lorsque les sites sont évhangés dans une seule instance de la protéine \agentfont{A} (voir en Figs.~\ref{fig:trans:dimg} et \ref{fig:trans:dimd}), alors que réciproquement, les liaisons entre deux sites différents deviennent des liaisons entre deux sites identiques (le site en question dépend de quel côté la transposition est appliquée). Lorsque les transpositions de sites sont appliquées simultanément aux deux occurrences de la protéine \agentfont{A} (voir en Fig.~\ref{fig:trans:dimboth}), l'effet est de transformer un dimer formé par une liaison entre les deux sites \site{x}{} des instances de la protéine \agentfont{A} en un dimer formé par une liaison entre les deux sites \site{y}{} des instances de la protéine \agentfont{A}, et réciproquement. Dans le cas d'un dimer formé d'une liaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence, le rôle des deux instances est échangé. Ceci ne change pas l'espèce biochimique. Le résultat de la transformation est isomorphe au complexe biochimique initial.
+\end{example}
+
+
 \subsection{Transposition de deux sites dans un motif}
+
+
+\begin{figure}[htp]
+
+\subfigure[Transposition des sites sur les motifs avec une seule instance de la protéine \agentfont{A} partiellement définie.]{%
+\hspace*{2cm}{\sympatternm{}{None_None}}%
+\hspace*{1cm}{\sympatternm{}{None_Free}}%
+\hspace*{1cm}{\sympatternm{}{None_Bound}}%
+\hspace*{1cm}{\sympatternm{}{Free_Bound}}%
+%\hfill{\sympatternr{}{Bound_Bound}}%
+\hfill\mbox{}}
+
+\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
+{\begin{minipage}{\linewidth}\hfill{\sympatternl{sdimer}{x_x_None_None}}%
+\hspace*{2cm}{\sympatternl{sdimer}{x_y_None_None}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternl{sdimer}{x_x_None_Free}}%
+\hspace*{2cm}{\sympatternl{sdimer}{x_y_None_Free}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternl{sdimer}{x_x_Free_None}}%
+\hspace*{2cm}{\sympatternl{sdimer}{x_y_Free_None}}%
+\hfill\mbox{} \bigskip\\
+\end{minipage}}
+
+\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
+{\begin{minipage}{\linewidth}\hfill{\sympatternr{sdimer}{x_x_None_None}}%
+\hspace*{2cm}{\sympatternr{sdimer}{x_y_None_None}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternr{sdimer}{x_x_None_Free}}%
+\hspace*{2cm}{\sympatternr{sdimer}{x_y_None_Free}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternr{sdimer}{x_x_Free_None}}%
+\hspace*{2cm}{\sympatternr{sdimer}{x_y_Free_None}}%
+\hfill\mbox{} \bigskip\\ \end{minipage}}
+
+\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les espèces biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
+{\begin{minipage}{\linewidth}\hfill{\sympatternd{sdimer}{x_x_None_None}}%
+\hspace*{2cm}{\sympatternd{sdimer}{x_y_None_None}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternd{sdimer}{x_x_None_Free}}%
+\hspace*{2cm}{\sympatternd{sdimer}{x_y_None_Free}}%
+\hfill\mbox{} \bigskip\\
+
+\hfill{\sympatternd{sdimer}{x_x_Free_None}}%
+\hspace*{2cm}{\sympatternd{sdimer}{x_y_Free_None}}%
+\hfill\mbox{} \bigskip\\\end{minipage}
+
+}
+\caption{Effet des transpositions de sites dans les motifs connexes qui ne sont pas des espèces biochimiques.}
+\label{fig:sym:motifs}
+\end{figure}
 
 Il est possible d'échanger deux sites dans une instance de protéine dans un motif. Pour cela il suffit de choisir une instance de protéine dans un motif, et deux sites dans l'interface de la sorte de protéine correspondante.
 Si l'instance de protéine ne contient aucun de ces deux sites, alors le motif reste tel qu'il est. Si l'instance de protéine contient exactement un des deux sites, alors celui-ci est remplacé par l'autre site en gardant ses éventuels états d'activation et de liaison. Enfin, si l'instance de protéine contient les deux sites, alors l'un est remplacé par l'autre, et réciproquement. De ce fait, les deux sites échangent leurs éventuels états d'activation et de liaison. Le motif reste inchangé si les deux sites avaient les mêmes états.
 
-%\begin{figure}[htp]
-%\subfigure
-%\subfigure
-%\end{figure}
+\subsection{Restriction d'une transposition de deux sites au domaine d'un plongement}
+
+\subsection{Effet d'une transposition de sites sur une règle}
+
+\subsection{Effet d'une transposition de sites sur une réaction induite par une règle}
 
 
-\begin{example}
-En Fig.~\ref{fig:sym:motig} sont montrés des exemples de transpositions de sites dans des motifs.
-
-
-\end{example}
-
-\subsubsection{Restriction d'une transposition de deux sites au domaine d'un plongement}
-
-\subsubsection{Effet d'une transposition de sites sur une règle}
-
-\subsubsection{Effet d'une transposition de sites sur une réaction induite par une règle}
-
-
-
-
-
-We start with some examples of permutations of the sites of a site graph.
-
-\begin{figure}[t]
-\begin{center}
-\begin{minipage}{0.6\linewidth}
-\xymatrix@C=8mm@R=4mm{%
-& \incgraphics[0.4\linewidth]{generated_pictures/sym_4_18bis_top.pdf}\ar@2@/_/@{~>}_{\sigma_1}[dl]\ar@2@/_/@{~>}_{\sigma_2\circ \sigma_1}[dr] & \\
-\incgraphics[0.4\linewidth]{generated_pictures/sym_4_18bis_left.pdf}\ar@2@/_/@{~>}_{\sigma^{-1}_1}[ur]\ar@2@/^/@{~>}^{\sigma_2}[rr] & & \incgraphics[0.4\linewidth]{generated_pictures/sym_4_18bis_right.pdf}\ar@2@/^/@{~>}^{\sigma^{-1}_2}[ll]
-               \ar@2@/_/@{~>}_{\sigma^{-1}_1\circ\sigma^{-1}_2}[ul]\\}
-\end{minipage}
-\end{center}
-\caption{Examples of permutations of the sites of an agent.
-The permutation $\sigma_1$ swaps the states of the site $x$ and the site $z$ in the agent $1$. The permutation $\sigma_2$ swaps the states of the site $x$ and the site $y$ in the agent $1$. }
-\label{fig:exampleofpermutations}
-\end{figure}
-
-\begin{example}
-\label{exampleofpermutations}
-In Fig.~\ref{fig:exampleofpermutations}, we consider an agent and some permutations of the state of its sites. More precisely, We consider two kinds of agents $A$ and $B$, and six site identifiers $u$, $v$, $w$, $x$, $y$, and $z$. We assume that agents of type $A$ have the three following binding sites: $x$, $y$ and $z$, and that agents of type $B$ have the three following binding sites $u$, $v$, and $w$. We assume that agents have no property site. The agent type $B$ will be used later in Exa.~\ref{example:permutations:embedding}.
-
-More formally, the signature of our model is defined  by:
-\begin{itemize}
-\item $\agentname=\{A,B\}$;
-\item $\sitename=\{u,v,w,x,y,z\}$;
-\item $\statename=\emptyset$;
-\item $\linksite(A)=\{x,y,z\}$;
-\item $\linksite(B)=\{u,v,w\}$;
-\item $\statesite(A)=\emptyset$;
-\item and $\statesite(B)=\emptyset$.
-\end{itemize}
-
-We consider an agent of type $A$ with the site $x$ bound (without any further information about to which site this site is bound to), the site $y$ free, and with no information about the binding state of the site $z$.   This agent is denoted by the following expression:
-\begin{equation*}
-\text{\agent{A$_1$}{\site{x}{}{\bound{}}\sitesep\site{y}{}{}\sitesep\site{z}{}{\boundornot{}}}}.
-\end{equation*}
-
-We apply a first permutation, $\sigma_1$, which consists in swapping the binding state of the sites $x$ and $z$. Thus, we get the following agent:
-\begin{equation*}
-\text{\agent{A$_1$}{\site{x}{}{\boundornot{}}\sitesep\site{y}{}{}\sitesep\site{z}{}{\bound{}}}},
-\end{equation*}
-where the binding state of the site $x$ is unknown, the site $y$ is free, and the site $z$ is bound (without any information about the about to which site this site is bound to).
-
-Then we apply another permutation, $\sigma_2$, which consists in by swapping the binding state of the sites $x$ and $y$. Thus, we get the following agent
-\begin{equation*}
-\text{\agent{A$_1$}{\site{x}{}{}\sitesep\site{y}{}{\boundornot{}}\sitesep\site{z}{}{\bound{}}}},
-\end{equation*}
- where the site $x$ is free, the binding state of the site $y$ is unknown, and the site $z$ is bound (without any information about to which site this site is bound to).
-\end{example}
-
-
-
-
-\begin{definition}[permutations among the sites of a site graph]
-Let $G$ be a site graph.
-We call a permutation of the sites of the site graph $G$, any family $(f_n)_{n\in\agents[G]}$  of one to one functions, indexed over the agents of the site graph $G$,   such that, for any agent $n\in\agents[G]$ of the site graph $G$, $f_n$ is a one to one function over the set $\bothsite(\type[G](n))$ that preserves the set $\linksite(\type[G](n))$  of the binding sites\footnote{Since, $\{\linksite(\type[G](n)),\statesite(\type[G](n))\}$ forms a partition of the set $\bothsite(\type[G](n))$ and $f_n$ is one to one, this is equivalent to say that $f_n$ preserves the set $\statesite(\type[G](n))$ of the property sites of the agents of type $\type[G](n)$.}Â  of the agents of type $\type[G](n)$ (that is to say that for any site identified $i\in\sites$, if $i\in\linksite(\type[G](n))$, then $f_n(i)\in\linksite(\type[G](n))$).
-
-The set of all the permutations of the sites of the site graph $G$ is denoted by $\symsymbol[G]$.
-\end{definition}
-
-In a permutation $(f_n)_{n\in\agents[G]}\in\symsymbol[G]$ of the sites of a given graph $G$, the one to one function  $f_n$ denotes the permutation to be applied to the sites of the agent $n$ in the site graph $G$. Such a permutation is applied  by replacing each site $i$ by the site $f_n(i)$,  so that the site $f_n(i)$ of the agent $n$, takes the former state of the site $i$ in the agent $n$. This is formalised in the following definition.
-
-
-
-\begin{definition}[action of a permutation of sites on a site graph]
-\label{def:action_permutation}
-Let $G$ be a site graph.
-Let $(f_n)_{n\in\agents[G]}\in\symsymbol[\graphsymb]$ be a permutation of the sites of the site graph $G$.
-
-Then, the image  $(f_n)_{n\in\agents[G]}\cdot \graphsymb$ of the site graph $\graphsymb$ by the  permutation $(f_n)_{n\in\agents[G]}$ of the sites of the site graph $\graphsymb$, is given by the site graph $H$ that is defined as follows:
-\begin{enumerate}
-\item $\agents[H]=\agents[G]$;
-\item $\type[H]=\type[G]$;
-\item $\sites[H]=\{(n,f_n(i))\;|\;(n,i)\in\sites[G]\}$;
-\item $\links[H]=\{(p(s),p(s'))\;|\;(s,s')\in\links[G]\}$
-
-where, for any $s\in\sites[G]\cup\{\free,\bound{}\}$,
-\begin{equation*}
-p(s) \bydef \begin{cases}\begin{array}{cl}
-(n,f_n(i)) & \text{if } s\in\sites[G] \text{ and } s=(n,i);\cr
-s  & \text{if }s=\free \text{ or } s=\bound{};\end{array}
-\end{cases}
-\end{equation*}
-\item $\props[H](n,i) = \props[G](n,f_n^{-1}(i))$.
-\end{enumerate}
-\end{definition}
-In Def.~\ref{def:action_permutation}, we notice that each site $(n,i)$ that occurs in $\sites[\graphsymb]$ and in $\links[\graphsymb]$ is replaced by the site $(n,f_n(i))$. We deal with the internal states in another way: instead of replacing each site $(n,i)$ by the site $(n,f_n(i))$, we associate each site $(n,i)$ with the previous internal state of the site $(n,f^{-1}(i))$, so that, after the permutation, the site $(n,f_n(i))$ is associated with previous the internal state of the site $(n,i)$.
-
-\begin{example}
-We consider the same signature, the same site graphs, and the same permutations of sites as Exa.~\ref{exampleofpermutations} ({\eg}see Fig.~\ref{fig:exampleofpermutations}).
-
-The agent that is denoted by the following expression:
-\begin{equation*}
-\text{\agent{A$_1$}{\site{x}{}{\bound{}}\sitesep\site{y}{}{}\sitesep\site{z}{}{\boundornot{}}}},
-\end{equation*}
-is described by the site graph $\graphsymb$ that is defined by:
-\begin{itemize}
-\item $\agents[G]=\{1\}$;
-\item $\type[G]=[1 \mapsto \agent{A}{}]$;
-\item $\sites[G]=\{(1,\text{\site{x}{}{}}),(1,\text{\site{y}{}{}}),(1,\text{\site{z}{}{}})\}$;
-\item $\links[G]=\Delta(\{((1,\text{\site{x}{}{}}),\bound{}),((1,\text{\site{y}{}{}}),\free)\})$;
-\item $\props[G]=[(1,\text{\site{x}{}{}})\mapsto \emptyset, (1,\text{\site{y}{}{}}) \mapsto \emptyset, (1,\text{\site{z}{}{}}) \mapsto \emptyset]$.
-\end{itemize}
-
-Now we give the encoding of the permutations of sites $\sigma_1$.
-We denote by $(f_n)_{n\in\{1\}}$ the permutation of sites $\sigma_1$.
-This permutation swaps the sites $x$ and $z$. Thus, we have:
-\begin{equation*}
-f_1 = [x \mapsto z,y\mapsto y,z\mapsto x].
-\end{equation*}
-
-Let us apply the permutation of sites $\sigma_1$ to the site graph $G$.
-%Let us denote by $H$ the image of $G$ by the permutation of sites $\sigma_1$.
-By Def.~\ref{def:action_permutation}, we have:
-\begin{itemize}
-\item $\agents[\actiongraphlong{\sigma_1}{G}]=\agents[G]$;
-\item $\type[\actiongraphlong{\sigma_1}{G}]=\type[G]$;
-\item $\sites[\actiongraphlong{\sigma_1}{G}]=\{(n,f_n(i))\;|\;(n,i)\in\sites[G]\}$;
-\item $\links[\actiongraphlong{\sigma_1}{G}]=\{(p(s),(s'))\;|\;(s,s')\in\links[G]\}$
-
-where, for any $s\in\sites[G]\cup\{\free,\bound{}\}$,
-\begin{equation*}
-p(s) \bydef \begin{cases}\begin{array}{cl}
-(n,f_n(i)) & \text{if } s\in\sites[G] \text{ and } s=(n,i);\cr
- s & \text{if }s\in\{\free;\bound{}\}.
- \end{array}\end{cases}
-\end{equation*}
-\item $\props[\actiongraphlong{\sigma_1}{G}] = [(n,i) \mapsto \props[G](n,f_n^{-1}(i))]$.
-\end{itemize}
-Thus, we have:
-\begin{itemize}
-\item $\agents[\actiongraphlong{\sigma_1}{G}]=\{1\}$;
-\item $\type[\actiongraphlong{\sigma_1}{G}]=[1 \mapsto \agent{A}{}]$;
-\item $\sites[\actiongraphlong{\sigma_1}{G}]=\{(1,f_1(\text{\site{x}{}{}})),(1,f_1(\text{\site{y}{}{}})),(1,f_1(\text{\site{z}{}{}}))\}$;
-\item $\links[\actiongraphlong{\sigma_1}{G}]=\Delta(\{((1,f_1(\text{\site{x}{}{}})),\bound{}),((1,f_1(\text{\site{y}{}{}})),\free)\})$;
-\item $\props[\actiongraphlong{\sigma_1}{G}]=\left[\begin{array}{l}(1,\text{\site{x}{}{}})\mapsto \props[G]((1,f_1^{-1}(\text{\site{x}{}{}})),\cr
-                                                     (1,\text{\site{y}{}{}})\mapsto \props[G]((1,f_1^{-1}(\text{\site{y}{}{}})),\cr
-                                                     (1,\text{\site{z}{}{}})\mapsto \props[G]((1,f_1^{-1}(\text{\site{z}{}{}}))\end{array}\right]$.
-\end{itemize}
-And:
-\begin{itemize}
-\item $\agents[\actiongraphlong{\sigma_1}{G}]=\{1\}$;
-\item $\type[\actiongraphlong{\sigma_1}{G}]=[1 \mapsto \agent{A}{}]$;
-\item $\sites[\actiongraphlong{\sigma_1}{G}]=\{(1,\text{\site{z}{}{}}),(1,\text{\site{y}{}{}}),(1,\text{\site{x}{}{}})\}$;
-\item $\links[\actiongraphlong{\sigma_1}{G}]=\Delta(\{((1,\text{\site{z}{}{}}),\bound{}),((1,\text{\site{y}{}{}}),\free)\})$;
-\item $\props[\actiongraphlong{\sigma_1}{G}]=[(1,\text{\site{x}{}{}})\mapsto \emptyset,
-                                                     (1,\text{\site{y}{}{}})\mapsto \emptyset,
-                                                     (1,\text{\site{z}{}{}})\mapsto \emptyset]$.
-\end{itemize}
-
-We can check that the site graph $\actiongraphlong{\sigma_1}{G}$ denotes the following agent:
-\begin{equation*}
-\text{\agent{A$_1$}{\site{x}{}{\boundornot{}}\sitesep\site{y}{}{}\sitesep\site{z}{}{\bound{}}}},
-\end{equation*}
-
-The permutation $\sigma_2$ of sites swaps the sites $x$ and $y$. We denote by $(f'_n)_{n\in\{1\}}$ the permutation of sites $\sigma_2$.
-
-We have:
-\begin{equation*}
-f'_1 = [x \mapsto y,y\mapsto x,z\mapsto z].
-\end{equation*}
-\end{example}
-
-
-Permutations of sites can be composed,  as formalised in the following definition:
-\begin{definition}[composition]
-\label{def:product}
-Let $\graphsymb$ be a site graph.
-Let $(f_n)_{n\in\agents[G]}$ and $(f'_n)_{n\in\agents[G]}$ be two permutations of sites in $\symsymbol[\graphsymb]$.  We define the product of the permutation of sites $(f_n)_{n\in\agents[G]}$ and the permutation of sites $(f'_n)_{n\in\agents[G]}$ as the family $(f_nf'_n)_{n\in\agents[G]}$ of one to one functions.
-
-The product between $(f_n)_{n\in\agents[G]}$  and $(f'_n)_{n\in\agents[G]}$ belongs to the set $\symsymbol[\graphsymb]$, we denote it by
- $(f_n)_{n\in\agents[G]}\circ_{\graphsymb}(f'_n)_{n\in\agents[G]}$.
-\end{definition}
-
-This way, the composition of permutations of sites is obtained by composing the one to one functions component-wise.
-
-\begin{example}
-We consider the same signature, the same site graphs, and the same permutations of sites  as Exa.~\ref{exampleofpermutations} ({\eg}see Fig.~\ref{fig:exampleofpermutations}).
-
-We compute the composition of the permutations  of sites $\sigma_2$ and $\sigma_1$, and we check that we get the expected result.
-
-We denote by $(f_n)_{n\in\{1\}}$ the permutation $\sigma_1$, by $(f'_n)_{n\in\{1\}}$ the permutation $\sigma_2$, and by $(f''_n)_{n\in\{1\}}$ the product $\sigma_2\circ_G \sigma_1$.
-
-By Def.~\ref{def:product}, the one to one function  $f''_1$ is defined by $f'_1\circ f_1$. Thus,
-\begin{equation*}
-f''_1 = [x\mapsto y,y\mapsto x,z\mapsto z][x\mapsto z,y\mapsto y,z\mapsto x].
-\end{equation*}
-It follows that:
-\begin{equation*}
-f''_1 = [x\mapsto z,y\mapsto x,z\mapsto y].
-\end{equation*}
-
-Thus the permutation of sites $\sigma_2\circ\sigma_1$  substitutes the site identifier $x$ with the site identifier $z$, the site identifier $y$ with the site identifier $x$, and the site identifier $z$ with the site identifier $y$ (so that the new state of the site $z$ is the former state of the site $x$, the new state of the site $x$ is the former state of the site $y$, and the new state of the site $y$ is the former state of the site $z$).
-\end{example}
-
-
-
-
-For any site graph $G$,  the permutations of sites that can be applied to the site graph $G$ form a group for composition, as established in the following proposition.
-\begin{prop}
-\label{prop:group:permutation:sites}
-Let $G$ be a site graph. The set $\symsymbol[G]$ forms a group for the composition  $\circ_{\graphsymb}$.
-More precisely,
-\begin{enumerate}
-\item the identity element is the family $(\textit{Id}_{\bothsite(\type[\graphsymb](n))})_{n\in\agents[G]}$ made, for each agent $n$ of the site graph $G$,  of the identity function over the set
-$\bothsite(\type[\graphsymb](n))$;
-\item \label{prop:group:permutation:sites:inverse}
-the inverse of an element $(f_n)_{n\in\agents[G]}$ is the family $(f^{-1}_n)_{n\in\agents[G]}$ made, for each agent $n$ of the site graph $G$, of the inverse of the function $f_n$.
-\end{enumerate}
-\end{prop}
-
-\begin{example}
-We consider the same signature, the same site graphs, and the same permutations of sites  as Exa.~\ref{exampleofpermutations} ({\eg}see Fig.~\ref{fig:exampleofpermutations}).
-
-
-
-Now we compute the inverse of $\sigma_1$.
-We denote by $(f_n)_{n\in\{1\}}$ the permutation $\sigma_1$ and by $(f'''_n)_{n\in\{1\}}$ the permutation $\sigma_1^{-1}$.
-
-By applying Prop.~\ref{prop:group:permutation:sites}.(\ref{prop:group:permutation:sites:inverse}), we get that:
-\begin{equation*}
-f'''_1 = (f_1{})^{-1}.
-\end{equation*}
-It follows that:
-\begin{equation*}
-f'''_1= [x \mapsto z, y\mapsto y, z\mapsto x].
-\end{equation*}
-That is to say that the permutation of sites $\sigma_1$ is its own inverse.  The same way, the permutation of sites  $\sigma_2$ is in own inverse.
-
-
-Now we compute the permutation of sites $(\sigma_2 \circ \sigma_1)^{-1}$ in two different ways (as the inverse of the permutation of sites $\sigma_2 \circ_{\graphsymb} \sigma_1$, and as the combination of the permutations of sites $\sigma_1^{-1}$ and $\sigma_2^{-1}$ , and check that we get the same result.
-
-Let us denote by $(f'_n)_{n\in\{1\}}$ the permutation of sites $\sigma_2$ and
-by $(f''''_n)_{n\in\{1\}}$ the permutation of sites $(\sigma_2 \circ_{\graphsymb} \sigma_1)^{-1}$.
-
-As the inverse of the permutation of sites $(\sigma_2 \circ_{\graphsymb} \sigma_1)$, we get, by applying Prop.~\ref{prop:group:permutation:sites}.(\ref{prop:group:permutation:sites:inverse}), that:
-\begin{equation*}
-f_1'''' = (f''_1)^{-1}.
-\end{equation*}
-It follows that:
-\begin{equation*}
-f_1'''' = [x\mapsto z, y\mapsto x, z\mapsto y]^{-1}.
-\end{equation*}
-Thus,
-\begin{equation*}
-f_1'''' = [x\mapsto y, y\mapsto z, z\mapsto x].
-\end{equation*}
-That is to say that the permutation of sites $(\sigma_2\circ_{\graphsymb}\sigma_1)^{-1}$ consists in substituting the site identifier $x$ with the site identifier $y$, the site identifier $y$ with the site identifier $z$, and the site identifier $z$ with the site identifier $x$.
-
-As the composition of the permutation of sites $\sigma^{-1}_1$ and the permutation of sites $\sigma^{-1}_2$, we get by Def.~\ref{def:product} that:
-\begin{equation*}
-f_1''''= (f_1)(f'_1).
-\end{equation*}
-It follows that:
-\begin{equation*}
-f_1''''= [x\mapsto z,y\mapsto y,z\mapsto x][x\mapsto y,y\mapsto x,z\mapsto z].
-\end{equation*}
-Thus:
-\begin{equation*}
-f_1'''' = [x\mapsto y,y\mapsto z,z\mapsto x].
-\end{equation*}
-
-Thus, the two computations are consistent with each other.
-\end{example}
-
-\begin{figure*}[t]
-\hfill
-\incgraphics[0.28\linewidth]{generated_pictures/sym_4_19bis_left.pdf}
-\begin{minipage}{0.20\linewidth}
-\xymatrix@C=2cm@R=2mm{%
-\\\\\\%\\%\\
-\ar@2@{~>}^{\sigma_3}[r] & \\\\\\\\
-\ar@2@{~>}^{\sigma_3}[r] &  \\\\\\\\\\
-\ar@2@{~>}^{\actionembactionlong{\sigma_3}{h}}[r] & \\\\\\\\%\\%\\
-}
-\end{minipage}
-\incgraphics[0.28\linewidth]{generated_pictures/sym_4_19bis_right.pdf}
-\hfill\mbox{}
-\caption{Restriction of a permutation of sites to the domain of an embedding.}
-\label{fig:propperm}
-\end{figure*}
 
 Now we define the restriction of a permutation of sites that can be applied to the image of an embedding, into a permutation of sites that can be applied to the domain of this embedding.
 \begin{definition}[permutation propagation]

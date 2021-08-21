@@ -68,16 +68,30 @@ let build_mono ~sitex ~sitey ~op =
         let a_y,g_a_x = add_site s_a a_y g_a_x in
         snd (add_free_list [a_y,[]] g_a_x)
   in
-  let s = Format.sprintf "sym_g_%s_%s%s.ladot"
-      (string_of_state_opt sitex)
-      (string_of_state_opt sitey)
+  let s =
+    Format.sprintf "sym_g%s_%s_%s.ladot"
       (string_of_op op)
+      (string_of_state_opt (if op then sitey else sitex))
+      (string_of_state_opt (if op then sitex else sitey))
   in
   let _ = dump s g_a_xy in
   ()
 
 let list_op = [true;false]
 let list_state = [None;Some true;Some false]
+
+let _ =
+  List.iter
+    (fun op ->
+       List.iter
+         (fun sitex ->
+           List.iter
+             (fun sitey ->
+                build_mono ~sitex ~sitey ~op
+             )
+             list_state)
+         list_state)
+    list_op
 
 let build_d_dimer ~op1 ~op2 ~sitex1 ~sitex2 =
   let [s_a,[sax,_;say,_]],g_a =
@@ -156,6 +170,23 @@ let build_s_dimer ~op1 ~op2 ~sitex1b ~sitex2b ~site1 ~site2 =
            | false, false -> a_y), [],[]]]
       signature_sym
   in
+  let g_a' =
+    let sy =
+      match sitex2b,op2 with
+      | true, true -> a_y_op
+      | true, false -> a_y
+      | false, true -> a_x_op
+      | false, false -> a_x
+    in
+    match site2 with
+    | None -> g_a'
+    | Some true ->
+      let sy, g_a' = add_site s_a sy g_a' in
+      snd (add_bound sy g_a')
+    | Some false ->
+      let sy, g_a' = add_site s_a sy g_a' in
+      snd (add_free_list [sy,[]] g_a')
+  in
   let g_a' = move_remanent_right_to 0.3 (vertical_swap g_a') g_a in
   let sigma,sigma',g = disjoint_union g_a g_a' in
   let g =
@@ -180,29 +211,14 @@ let build_s_dimer ~op1 ~op2 ~sitex1b ~sitex2b ~site1 ~site2 =
       let sy, g = add_site (lift_agent sigma s_a) sy g in
       snd (add_free_list [sy,[]] g)
   in
-  let g =
-    let sy =
-      match sitex2b,op2 with
-      | true, true -> a_y_op
-      | true, false -> a_y
-      | false, true -> a_x_op
-      | false, false -> a_x
-    in
-    match site2 with
-    | None -> g
-    | Some true ->
-      let sy, g = add_site (lift_agent sigma' s_a) sy g in
-      snd (add_bound sy g)
-    | Some false ->
-      let sy, g = add_site (lift_agent sigma' s_a) sy g in
-      snd (add_free_list [sy,[]] g)
-    in
-    let () =
+  let () =
     dump
       (Format.sprintf "sym_gsdimer%s_%s_%s_%s_%s%s.ladot"
          (string_of_op op1)
-         (if sitex1b then "x" else "y")
-         (if sitex2b then "x" else "y")
+         (if ((not op1) && sitex1b) || (op1 && not sitex1b)
+          then "x" else "y")
+         (if ((not op2) && sitex2b) || (op2 && not sitex2b)
+          then "x" else "y")
          (string_of_state_opt site1)
          (string_of_state_opt site2)
          (string_of_op op2))
