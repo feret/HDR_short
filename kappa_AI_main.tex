@@ -3,7 +3,7 @@
 
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{natbib}
+\usepackage{frbib}
 \usepackage{makeidx}
 \usepackage{lscape}
 \usepackage{diagbox}
@@ -24,6 +24,7 @@
 \usepackage{rotating}
 \usepackage[margin={2cm,2cm},top={1.2in},bottom={1.2in}]{geometry}
 \usepackage{chemarr}
+\usepackage{booktabs}
 \newcommand{\no}{}
 
 \newcommand{\ignore}[1]{}
@@ -32,14 +33,14 @@
 \setcounter{secnumdepth}{5}
 
 \pagestyle{plain}
-\bibliographystyle{francais}
+\bibliographystyle{plain-fr}
 
 \newcommand{\incgraphics}[2][]{\scalebox{\scalefactor}{\includegraphics{#2}}}
-\renewcommand\bibsection{\section{\bibname}}
-\setlength{\bibsep}{3pt}
-\setcitestyle{citesep={~;}}
-\setcitestyle{aysep={}}
-\let\cite=\citep
+%\renewcommand\bibsection{\section{\bibname}}
+%\setlength{\bibsep}{3pt}
+%\setcitestyle{citesep={~;}}
+%\setcitestyle{aysep={}}
+%\let\cite=\citep
 
 \newcommand{\egrave}{è}
 \newcommand{\ecute}{é}

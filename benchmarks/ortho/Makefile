@@ -15,13 +15,13 @@ all:
 
 clean:
 	rm -rf output
-	rm -f benchmarks.tex  
+	rm -f benchmarks.tex
 
 hline:
 	echo '\\hline' >> $(OUTPUT)
 
 title:
-	echo " & nombre & nombre de & nombre de & temps " > $(OUTPUT)
+	echo " & nombre & nombre de & nombre de & temps " >> $(OUTPUT)
 	echo '\\cr' >> $(OUTPUT)
 	echo " mod{\\egrave}le & de & contraintes & r{\\egrave}gles mortes & d'analyse " >> $(OUTPUT)
 	echo '\\cr' >> $(OUTPUT)

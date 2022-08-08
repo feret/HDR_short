@@ -1,0 +1,48 @@
+\documentclass[a4paper,twoside,8pt,twocolumn]{report}
+\usepackage{graphicx,psfrag,color}
+\usepackage{amsmath,amssymb}%
+\usepackage{kappa}%
+\usepackage{anyfontsize}%
+\usepackage{stmaryrd}%
+\newcommand{\ladottext}[1]{\text{$#1$}}%
+\usepackage{../../../fm_notations}%
+
+\setlength{\topmargin}{-1in}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\textheight}{\paperheight}
+\setlength{\oddsidemargin}{-1in}
+\setlength{\evensidemargin}{-1in}
+\setlength{\textwidth}{\paperwidth}
+\setlength{\parindent}{0pt}
+\special{! TeXDict begin /landplus90{true}store end }
+%\special{! statusdict /setpage undef }
+%\special{! statusdict /setpageparams undef }
+\pagestyle{empty}
+\newsavebox{\pict}
+\graphicspath{{../../}}
+
+\begin{document}
+  \begin{lrbox}{\pict}%
+  % Just an ordinary comment%
+  %%
+  % Some special comments:%
+  % fmclass: report%
+  % fmclassopt: a4paper,twoside,8pt,twocolumn%
+  %%
+  % Another special comment:%
+  % head:%
+  % \usepackage{amsmath,amssymb}%
+  % \usepackage{kappa}%
+  % \usepackage{anyfontsize}%
+  % \usepackage{stmaryrd}%
+  % \newcommand{\ladottext}[1]{\text{$#1$}}%
+  % \usepackage{../../../fm_notations}%
+  % end head%
+  %
+  \includegraphics[]{ai_step_fm.eps}%
+  \end{lrbox}
+  \special{papersize=\the\wd\pict,\the\ht\pict}
+  \usebox{\pict}
+\end{document}

@@ -1,6 +1,6 @@
 set xlabel '$t$'
 set ylabel '$\text{Probabilités}$'
-set title 'Distrubution des états VS Temps'
+set title 'Distrubution des états en fonction du temps'
 set term epslatex linewidth 5
 set autoscale
 set xrange [0.:1.]

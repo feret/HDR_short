@@ -482,9 +482,10 @@ le site \sitefont{c} ne peut être lié sans que le site \sitefont{r}  ne le soit 
 
   \begin{figure}[t]
   \centering{\begin{tabular}{||c||c|c|c||c||}
-  %\hline
-  \input{benchmarks/ortho/benchmarks}
-  %\hline
+  \toprule\hline
+  \input{benchmarks/ortho/benchmarks}\cr
+  \hline
+  \hline 
 \end{tabular}}
   \caption{Résultats expérimentaux
   (calculés sur un MacBook Pro avec une puce Intel Core i7-6567U (cadencée 3.3 GHz)). Pour chaque modèle et chaque version, le nombre de règles est donné, ainsi que le nombre de contraintes découvertes par l'analyse et le nombre de règles mortes trouvées (qui ne sont donc jamais utilisées dans le modèle). Le temps total de l'analyse est également fourni.}

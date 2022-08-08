@@ -1,6 +1,6 @@
 set xlabel '$t$'
 set ylabel '$\text{Concentrations}$'
-set title 'Concentration VS Temps'
+set title 'Concentration en fonction du temps'
 set term epslatex linewidth 5
 set autoscale
 set xrange [0.:1.]

@@ -112,9 +112,9 @@
 \chapter{Symétrie dans les graphes à sites}
 \label{chp:sym}
 
-Les symétries apparaissent sous des formes diverses dans les modèles décrits par des règles de réécritures. Certaines sont indissociables de la sémantique. C'est le cas des automorphismes qui représentent des équivalences entre agents au sein de graphes à sites. D'autres peuvent être considérer pour décrire des équivalences entre sites d'interaction, des équivalences entre sortes de protéines ou encore des équivalences spatiales qui permettent de voir  la structure de certains complexes biochimiques modulo des isométries.
+Les symétries apparaissent sous des formes diverses dans les modèles décrits par des règles de réécritures. Certaines sont indissociables de la sémantique. C'est le cas des automorphismes qui représentent des équivalences entre agents au sein de graphes à sites. D'autres peuvent décrire des équivalences entre sites d'interaction, des équivalences entre sortes de protéines ou encore des équivalences spatiales qui permettent de voir  la structure de certains complexes biochimiques modulo des isométries.
 
-Dans \cite{feret:sasb2014}, nous avons introduit un cadre de travail algébrique unifiant pour décrire, inférer, et utiliser les des groupes de transformations de graphes à sites dans le langage Kappa. L'idée principale est de considérer des groupes de transformations qui agissent sur les graphes à sites avec une opération supplémentaire permettant de restreindre une transformation sur les sous-graphes d'un graphe. Il est alors possible de définir quand un ensemble de règle est symétrique par rapport à ces groupes de transformation et d'en déduire  des propriétés au niveau du comportement global du modèle, que ce soit pour sa sémantique stochastique ou différentielle. Pour simplifier la présentation, nous nous concentrons ici aux symétries qui correspondent à  des permutations de sites, qui sont décrites dans \cite{Feret-MFPSXXVI}.
+Dans \cite{feret:sasb2014}, nous avons introduit un cadre de travail algébrique unifiant pour décrire, inférer, et utiliser des groupes de transformations de graphes à sites dans le langage Kappa. L'idée principale est de considérer des groupes de transformations qui agissent sur les graphes à sites avec une opération supplémentaire permettant de restreindre une transformation sur les sous-graphes d'un graphe. Il est alors possible de définir quand un ensemble de règle est symétrique par rapport à ces groupes de transformation et d'en déduire  des propriétés au niveau du comportement global du modèle, que ce soit pour sa sémantique stochastique ou différentielle. Pour simplifier la présentation, nous nous concentrons ici aux symétries qui correspondent à  des permutations de sites, qui sont décrites dans \cite{Feret-MFPSXXVI}.
 
 
 \paragraph*{Travaux voisins.} Plusieurs formalismes permettent de faire apparaître chaque site plusieurs fois dans l'interface des agents.
@@ -178,11 +178,11 @@ de la détection et de la prise en compte d'équivalences entre sites d'interactio
 \newcommand{\mono}{A_1}
 \newcommand{\dimer}{A_2}
 
-Nous illustrons l'usage des symétries dans Kappa à travers un exemple jouet.
+Nous illustrons la notion de symétries dans Kappa à travers un exemple jouet.
 
 \subsection{Modèle}
 
-Pour simplifier la présentation, nous considérons une forme très simple de symétrie, celle où des sites d'une protéine ont  exactement les mêmes capacités d'interaction.
+Nous considérons un example dans lequel certains sites les sites d'une protéine ont exactement les mêmes capacités d'interaction.
 
 \subsubsection{Les constituants du modèle et ses règles d'interaction}
 
@@ -190,8 +190,8 @@ Pour simplifier la présentation, nous considérons une forme très simple de symét
 
 
 
-Soit une sorte de protéine,  \agent{A}{}, chaque occurrence de la protéine \agent{A}{} disposant d'exactement deux sites de liaison que nous noterons  \site{x}{}{} et  \site{y}{}{}. Les sites de deux occurrences différentes de la protéine \agent{A}{} peuvent se lier arbitrairement de mani!re réversible. Il y a donc trois types de liaison, \site{x}{}{}-\site{x}{}{}, \site{x}{}{}-\site{y}{}{}, et \site{y}{}{}-\site{y}{}{}, selon les sites qui sont impliqués dans la liaison. De plus, il est fait l'hypothèse que dans chaque occurrence de protéin, au plus un site peut être lié à la fois. Sous ces hypothèses, il existe exactement quatre sortes de complexe biochimique\footnote{voir page \pageref{defn:molecular species} pour la définition d'un complexe biochimique.}. Celles-ci sont toutes les quatre dessinées en Fig.~\ref{fig:chemicalspecies}.
-Une occurrence de complexe biochimique est ainsi formé soit d'une occurrence de protéine avec ses deux sites libres (voir en Fig.~\ref{fig:sgsym21}), soit de deux occurrences de la protéine \agent{A}{} sont liées  par leurs deux sites \site{x}{}{} (voir en  Fig.~\ref{fig:sgsym22}), par leurs deux sites \site{y}{}{} (voir en Fig.~\ref{fig:sgsym23} ou par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autre (voir en Fig.~\ref{fig:sgsym24}).
+On considère une unique sorte de protéine,  \agent{A}{}. On suppose que chaque occurrence de cette protéine dispose exactement de deux sites de liaison qui seront notés \site{x}{}{} et  \site{y}{}{}. Les sites de deux occurrences différentes de la protéine \agent{A}{} peuvent se lier arbitrairement de manière réversible. Il y a donc trois types de liaison, \site{x}{}{}-\site{x}{}{}, \site{x}{}{}-\site{y}{}{} et \site{y}{}{}-\site{y}{}{}, selon les sites qui sont impliqués dans la liaison. De plus, il est fait l'hypothèse que dans chaque occurrence de cette protéine, au plus un site peut être lié à la fois. Sous ces hypothèses, il existe exactement quatre sortes de complexes biochimiques\footnote{voir page \pageref{complexe biochimique} pour la définition d'un complexe biochimique.}. Celles-ci sont toutes les quatre dessinées en Fig.~\ref{fig:chemicalspecies}.
+L'occurrence d'un complexe biochimique est ainsi formée soit d'une occurrence de la protéine \agent{A}{} avec les deux sites libres (voir en Fig.~\ref{fig:sgsym21}), soit de deux occurrences de la protéine \agent{A}{} liées  par leurs deux sites \site{x}{}{} (voir en  Fig.~\ref{fig:sgsym22}), par leurs deux sites \site{y}{}{} (voir en Fig.~\ref{fig:sgsym23} ou par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autre (voir en Fig.~\ref{fig:sgsym24}).
 
 
 \begin{figure*}[t]
@@ -207,20 +207,20 @@ Une occurrence de complexe biochimique est ainsi formé soit d'une occurrence de 
 \hfill\subfigure[Deux occurrences de la protéine \agentfont{A} liées respectivement par le site \sitefont{x} de l'une et le site \sitefont{y}{} de l'autre.]%
 {\label{fig:sgsym24}
 \begin{minipage}{0.2\linewidth}\hfill\scalebox{\scalefactor}{\includegraphics{generated_pictures/sym_4_1_d.pdf}}\hfill\mbox{}\end{minipage}}\caption{
-Les quatre sortes de complexes biochimiques de notre modèle.}
+Les quatre sortes de complexes biochimiques du cas d'étude sur les symétries.}
 \label{fig:chemicalspecies}
 \end{figure*}
 
 \begin{figure*}[t]%
-\hfill\subfigure[règles de liaison/déliaison entre les sites \sitefont{x} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{y} est libre.]%
+\hfill\subfigure[Règles de liaison/déliaison entre les sites \sitefont{x} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{y} est libre.]%
 {\begin{minipage}{0.6\linewidth}\label{fig:rulesym21}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_a_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
 
-\hfill\subfigure[règles de liaison/déliaison entre les sites \sitefont{y} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{x} est libre.]%
+\hfill\subfigure[Règles de liaison/déliaison entre les sites \sitefont{y} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{x} est libre.]%
 {\begin{minipage}{0.6\linewidth}\label{fig:rulesym22}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_b_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
 
-\hfill\subfigure[règles de liaison déliaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
+\hfill\subfigure[Règles de liaison déliaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
 {\begin{minipage}{0.6\linewidth}\label{fig:rulesym23}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_c_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
-\caption{Les six règles de réécriture de notre modèle.}
+\caption{Les six règles de réécriture du cas d'étude sur les symétries.}
 \label{fig:threerules}
 \end{figure*}
 
@@ -311,25 +311,26 @@ Les quatre sortes de complexes biochimiques de notre modèle.}
                           - 3\kdxy{\cdot}\probstate{\qthirteen}\cr
 \end{cases}
 \end{equation*}\end{minipage}}
-\caption{Équation maîtresse.}
+\caption{Équation maîtresse pour le cas d'étude sur les symétries.}
 \label{CME}
 \end{sidewaysfigure}
 
 Les règles de liaison et de déliaison entre les occurrences de la protéine \agent{A}{} sont décrites en Fig.~\ref{fig:threerules}.
-La règle bidirectionnelle dessinée en  Fig.~\ref{fig:rulesym21} stipule que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{x}{} respectifs avec la constante de réaction $\kxx$ et qu'un tel lien peut se défaire avec la constante de réaction $\kdxx$.
-La règle bidirectionnelle donnée en  Fig.~\ref{fig:rulesym22} précise que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{y}{} respectifs avec la constante de réaction $\kyy$ et qu'un tel lien peut se briser avec la constante de réaction $\kdyy$. Enfin, la règle bidirectionnelle dessinnée en Fig.~\ref{fig:rulesym23} spécifie que
-deux occurences de la protéine \agent{A}{} dont tous les sites sont libres, peuvent se lier respectivement par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autres avec la constante de réaction $\kxy$ et qu'un tel lien peut se casser avec la constante de réaction $\kdxy$.
+La règle bidirectionnelle dessinée en  Fig.~\ref{fig:rulesym21} stipule que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{x}{}{} respectifs avec la constante de réaction $\kxx$ et qu'un tel lien peut se défaire avec la constante de réaction $\kdxx$.
+La règle bidirectionnelle donnée en  Fig.~\ref{fig:rulesym22} précise que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{y}{}{} respectifs avec la constante de réaction $\kyy$ et qu'un tel lien peut se briser avec la constante de réaction $\kdyy$. Enfin, la règle bidirectionnelle dessinée en Fig.~\ref{fig:rulesym23} spécifie que
+deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres, peuvent se lier respectivement par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autres avec la constante de réaction $\kxy$ et qu'un tel lien peut se casser avec la constante de réaction $\kdxy$.
 
 \subsubsection{Le comportement du modèle}
 
-Ainsi, d'un point de vue qualitatif, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} ont exactement les mêmes capacités d'interaction. Nous allons étudier de manière empirique ce que cela implique au niveau de la sémantique du modèle, et ceux pour les deux types de sémantiques quantitatives, la sémantique stochastique et la sémantique différentielle.
+D'un point de vue qualitatif, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} ont exactement les mêmes capacités d'interaction. On peut étudier de manière empirique ce que cela implique au niveau de la sémantique du modèle, et ce pour les deux types de sémantiques quantitatives, à savoir la sémantique stochastique et la sémantique différentielle.
 
 \paragraph{Équation maîtresse.}
 
-Pour regarder le comportement de la sémantique stochastique du modèle, nous proposons de nous concentrer sur la solution de son équation maîtresse \cite{1967}. Celle-ci décrit pour chaque état potentiel du système sous-jacent l'évolution temporelle de la probabilité que le système soit dans cet état. Comme il y a quatre sortes de complexes biochimiques,  l'état discrêt du système peut être représenté par un vecteur de quatre entiers naturels. Ainsi la variable $\state{i,j,k,l}$ représente l'état dans lequel il y a exactement $i$ occurrence(s) de la protéine \agent{A}{} sans sites liés (voir en Fig.~\ref{fig:sgsym21}),
-$j$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{x}{}{} respectifs (voir en Fig.~\ref{fig:sgsym22}), $k$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{y}{}{} respectifs (voir en Fig.~\ref{fig:sgsym23}), et $l$ paires d'occurrences de la protéine \agent{A}{} liées l'une par son site \site{x}{}{} et l'autre par son site \site{y}{}{} (voir en Fig.~\ref{fig:sgsym24}). L'équation maîtresse nécessite une variable par état possible du système. Pour faire tenir les équations sur une seule page, il est necessaire de ne considérer qu'un nombre très limité de nombre d'occurrences de protéine. Aussi,  le système débutera avec la probabilité $1$ dans un état avec uniquement six occurrences de la protéine \agent{A}{} avec tous leurs sites libres. De ce fait, seuls seront considérés les états $\state{i,j,k,l}$ pour lesquels $i+2\cdot(j+k+l) = 6$. Ceci implique déjà admet vingt variables, en l'occurrence,  $\qone$, $\qtwo$, $\qthree$, $\qfour$, $\qfive$, $\qeight$, $\qten$, $\qsix$, $\qnine$, $\qseven$, $\qeleven$, $\qfourteen$, $\qfifteen$, $\qsixteen$, $\qtwenty$, $\qnineteen$, $\qtwelve$, $\qseventeen$, $\qeighteen$ et $\qthirteen$.
+Pour regarder le comportement de la sémantique stochastique du modèle, nous proposons de nous concentrer sur la solution de son équation maîtresse \cite{1967}. Celle-ci décrit pour chaque état potentiel du système sous-jacent l'évolution temporelle de la probabilité que le système soit dans cet état. Comme il y a quatre sortes de complexes biochimiques,  l'état du système sera représenté par un vecteur de quatre entiers naturels. Ainsi la variable $\stateq{i,j,k,l}$ représente l'état dans lequel il y a exactement $i$ occurrence(s) de la protéine \agent{A}{} sans sites liés (voir en Fig.~\ref{fig:sgsym21}),
+$j$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{x}{}{} respectifs (voir en Fig.~\ref{fig:sgsym22}), $k$ paires d'occurrences de la protéine \agent{A}{} liées par leurs sites \site{y}{}{} respectifs (voir en Fig.~\ref{fig:sgsym23}), et $l$ paires d'occurrences de la protéine \agent{A}{} liées l'une par son site \site{x}{}{} et l'autre par son site \site{y}{}{} (voir en Fig.~\ref{fig:sgsym24}). L'équation maîtresse nécessite une variable par état potentiel. Pour faire tenir les équations sur une seule page, il est nécessaire de ne considérer qu'un nombre très limité de nombre d'occurrences de la protéine \agentfont{A}.
+De ce fait, le système débutera avec la probabilité $1$ dans un état avec uniquement six occurrences de la protéine \agent{A}{}, avec tous leurs sites libres. Ainsi, comme les règles d'interaction conservent le nombre d'occurrences des protéines, seuls seront considérés les états $\state{i,j,k,l}$ pour lesquels $i+2\cdot(j+k+l) = 6$. Le système est dont constitué de vingt variables, en l'occurrence,  $\qone$, $\qtwo$, $\qthree$, $\qfour$, $\qfive$, $\qeight$, $\qten$, $\qsix$, $\qnine$, $\qseven$, $\qeleven$, $\qfourteen$, $\qfifteen$, $\qsixteen$, $\qtwenty$, $\qnineteen$, $\qtwelve$, $\qseventeen$, $\qeighteen$ et $\qthirteen$.
 
-L'équation maîtresse de notre modèle est donnée en Fig.~\ref{CME}.  L'évolution temporelle de la distribution de probabilité de chaque état accessible à partir de l'état initial est-elle donnée  en Fig.~\ref{distributionko} pour les paramètres cinétiques  $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$.
+L'équation maîtresse du cas d'étude sur les symétries  est donnée en Fig.~\ref{CME}.  L'évolution temporelle de la distribution de probabilité de certains états est-elle donnée  en Fig.~\ref{distributionko} pour les paramètres cinétiques  $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$.
 
 \begin{figure}[ht]
 \begin{center}
@@ -342,7 +343,7 @@ $\kxx=\kxy=1$, $\kyy=\kdxx=\kdyy=2$, et $\kdxy=4$, et la distribution d'états in
 
 \paragraph{Sémantique différentielle.}
 
-La sémantique différentielle du modèle est définie par le systèmes d'équations différentielles donné en Fig.~\ref{fig:sym:ODE}. Ces équations décrivent l'évolution de la concentration des différents complexes biochimique sous les hypothèses de la loi d'action de masse. Les trajectoires de ce système en prenant pour état initial, l'état où les monomères de la protéine \agent{A}{} ont pour concentration $6$ et les dimers ont pour concentration $0$ sont décrites en Fig.~\ref{sym:trajectoires}.
+La sémantique différentielle du modèle est définie par le systèmes d'équations différentielles donné en Fig.~\ref{fig:sym:ode}. Ces équations décrivent l'évolution de la concentration des différents complexes biochimique sous les hypothèses de la loi d'action de masse. Les trajectoires de ce système en prenant pour état initial, l'état où les monomères de la protéine \agent{A}{} ont pour concentration $6$ et les dimers ont pour concentration $0$ sont décrites en Fig.~\ref{sym:trajectoires}.
 
 \begin{figure}[ht]
 \begin{equation*}
@@ -377,9 +378,9 @@ quelles conséquences les équivalences entre sites peuvent-elles impliquer en ter
 \subsection{Modèle simplifié}
 
 Il semble naturel de vouloir oublier la différence entre des sites équivalents. Dans notre modèle, cela revient à ignorer la différence entre les sites \site{x}{}{} et \site{y}{}{} dans les occurrences de la protéine \agent{A}{}.
-\`A ce niveau d'abstraction, les occurrences de la protéine \agent{A}{} ont chacune deux sites, désormais supposés indistinguables.
+\`A ce niveau d'abstraction, les occurrences de la protéine \agent{A}{} auront donc chacune deux sites d'interaction, désormais supposés indistinguables.
 
-\subsubsection{Complexes biochimiques.}
+\subsubsection{Complexes biochimiques et règles d'interaction.}
 
 Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sortes de complexes biochimiques, les monomères qui sont formés d'une occurrence de la protéine \agent{A}{} avec ses deux sites de liaison libres et les dimères qui sont constitués de deux occurrences de la protéine \agent{A}{} liées exactement par une liaison entre un site de l'une et un site de l'autre.
 
@@ -392,6 +393,15 @@ Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sor
 \caption{Les deux sortes de complexes biochimiques dans le modèle simplifié. Le nom des sites a été retiré car ils sont maintenant supposés indistinguables.}
 \label{fig:Achemicalspecies}
 \end{figure}
+
+
+%\subsubsection{Règles simplifiées}
+
+Par ailleurs, les règles se simplifient de la même manière.
+Puisqu'il n'y a plus de distinctions entre les sites de liaison de chaque occurence de la protéine \agent{A}{}, les trois règles de liaison peuvent se résumer en une seule. Il faut cependant prendre garde pour fixer les constantes cinétiques de ces règles. \'Etant donné deux occurrences de la protéine \agentfont{A} dont tous les sites sont libres, il y avait auparavant trois règles pour créer un lien entre ces deux occurrences et chacune d'elles pouvait  s'appliquer de deux manières différentes (selon le choix de quelle occurrence est utilisée pour la première occurrence de la protéine \agent{A}{} du membre grauche de la règle)
+possibilité de créer un liaison pour une constante de réaction  corrigée totale $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Du coup, pour simuler ces règles et rester fidèle à la cinétique, la constante de réaction corrigée de la nouvelle règle devra être égale elle aussi à $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Par ailleurs, étant données deux occurrences de la protéine \agent{A}{}, une seule règle s'applique pour briser ce lien. Si le lien est entre deux sites \sitefont{x}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxx}{2}$.
+Si le lien est entre deux sites \sitefont{y}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdyy}{2}$. Enfin si le lien est entre un site \sitefont{x}{}{} et un site \sitefont{y}{}{}, la règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxy}{2}$. Du coup, la simplication n'est possible que si les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ sont égales. Dans ce cas, la constante de la règle de déliaison dans le modèle simplifié sera fixé à $\kdxx$.
+Les deux règles du modèle simplifié sont données en Fig.~\ref{Arule}.
 
 
 \begin{figure}[t]%
@@ -407,14 +417,6 @@ Les états du système stochastique sous-jacent sont donc décrits par le nombre d'
 
 Quant à eux, les états du système differentiel sous-jacent sont décrits par deux concentrations. La concentration en monomère est notée $\conc{\mono}$ alors que celle en dimère est notée $\conc{\dimer}$.
 
-\subsubsection{Règles simplifiées}
-
-Par ailleurs, les règles se simplifient de la même manière.
-Puisqu'il n'y a plus de distinctions entre les sites de liaison de chaque occurence de la protéine \agent{A}{}, les trois règles de liaison peuvent se résumer en une seule.
-\'Etant donné deux occurrences de la protéine \agentfont{A} dont tous les sites sont libres, il y a trois règles pour créer un lien entre ces deux occurrences et chacune peut s'appliquer de deux manières différentes (selon le choix de quelle occurrence est utilisée pour la première occurrence de la protéine \agent{A}{} du membre grauche de la règle)
-possibilité de créer un liaison pour une constante de réaction  corrigée totale $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Du coup, pour simuler ces règles et rester fidèle à la cinétique, la constante de réaction corrigée de la nouvelle règle devra être égale elle aussi à $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Par ailleurs, étant données deux occurrences de la protéine \agent{A}{}, une seule règle s'applique pour briser ce lien. Si le lien est entre deux sites \sitefont{x}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxx}{2}$.
-Si le lien est entre deux sites \sitefont{y}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdyy}{2}$. Enfin si le lien est entre un site \sitefont{x}{}{} et un site \sitefont{y}{}{}, la règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxy}{2}$. Du coup, la simplication n'est possible que si les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ sont égales. Dans ce cas, la constante de la règle de déliaison dans le modèle simplifié sera fixé à $\kdxx$.
-Les deux règles du modèle simplifié sont données en Fig.~\ref{Arule}.
 
 \subsubsection{Systèmes dynamiques sous-jacent}
 
@@ -554,7 +556,7 @@ De la même manière, les états du système stochastique initial peuvent être regro
 \end{cases}
 \end{equation*}\end{minipage}}
 \caption{Équation maîtresse.}
-\label{CME}
+\label{CMEbis}
 \end{sidewaysfigure}
 
 \begin{figure}[t]
@@ -3407,7 +3409,7 @@ En Fig.~\ref{fig:sym:complex}, les transpositions de sites sont appliquées aux c
 Il n'y a donc qu'une transposition possible, puisqu'il n'y a qu'une instance de la protéine \agentfont{A}. Cette transposition est dessinée en orange. Les deux sites de l'instance de la protéine \agentfont{A} sont nécessairement libres, sinon ce ne serait pas un monomère. Du coup, la transposition des deux sites laisse la configuration de l'espèce biochimique inchangée (puisqu'en effet la position des sites dans une instance de protéine n'a pas de signification particulière en Kappa).
 
 Pour les espèces chimiques formées de deux instances de la protéine \agentfont{A}, il est possible de permuter les sites de l'instance de gauche, les sites de l'instance de droite, ou les deux.
-En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition des sites de gauche. En Fig.~\ref{fig:trans:dimd} est montré, en rouge, l'effet de la transposition des sites de droite. Enfin en Fig.~{fig:trans:dimboth} est montré, en marron, l'effet de la combinaison des deux transpositions. L'ordre n'a pas d'influence sur le résultat. Hormis dans le cas où les sites de deux occurrences de la protéine \agentfontA} sont échangées dans le dimer formé par une liason entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence de la protéine \agentfont{A}, l'application des transpositions de sites changent l'espèce biochimique. Essentiellement, les liaisons entre deux sites identiques deviennent des liaisons entre deux sites différents lorsque les sites sont évhangés dans une seule instance de la protéine \agentfont{A} (voir en Figs.~\ref{fig:trans:dimg} et \ref{fig:trans:dimd}), alors que réciproquement, les liaisons entre deux sites différents deviennent des liaisons entre deux sites identiques (le site en question dépend de quel côté la transposition est appliquée). Lorsque les transpositions de sites sont appliquées simultanément aux deux occurrences de la protéine \agentfont{A} (voir en Fig.~\ref{fig:trans:dimboth}), l'effet est de transformer un dimer formé par une liaison entre les deux sites \site{x}{} des instances de la protéine \agentfont{A} en un dimer formé par une liaison entre les deux sites \site{y}{} des instances de la protéine \agentfont{A}, et réciproquement. Dans le cas d'un dimer formé d'une liaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence, le rôle des deux instances est échangé. Ceci ne change pas l'espèce biochimique. Le résultat de la transformation est isomorphe au complexe biochimique initial.
+En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition des sites de gauche. En Fig.~\ref{fig:trans:dimd} est montré, en rouge, l'effet de la transposition des sites de droite. Enfin en Fig.~{fig:trans:dimboth} est montré, en marron, l'effet de la combinaison des deux transpositions. L'ordre n'a pas d'influence sur le résultat. Hormis dans le cas où les sites de deux occurrences de la protéine \agentfont{A} sont échangées dans le dimer formé par une liason entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence de la protéine \agentfont{A}, l'application des transpositions de sites changent l'espèce biochimique. Essentiellement, les liaisons entre deux sites identiques deviennent des liaisons entre deux sites différents lorsque les sites sont évhangés dans une seule instance de la protéine \agentfont{A} (voir en Figs.~\ref{fig:trans:dimg} et \ref{fig:trans:dimd}), alors que réciproquement, les liaisons entre deux sites différents deviennent des liaisons entre deux sites identiques (le site en question dépend de quel côté la transposition est appliquée). Lorsque les transpositions de sites sont appliquées simultanément aux deux occurrences de la protéine \agentfont{A} (voir en Fig.~\ref{fig:trans:dimboth}), l'effet est de transformer un dimer formé par une liaison entre les deux sites \site{x}{} des instances de la protéine \agentfont{A} en un dimer formé par une liaison entre les deux sites \site{y}{} des instances de la protéine \agentfont{A}, et réciproquement. Dans le cas d'un dimer formé d'une liaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence, le rôle des deux instances est échangé. Ceci ne change pas l'espèce biochimique. Le résultat de la transformation est isomorphe au complexe biochimique initial.
 \end{example}
 
 

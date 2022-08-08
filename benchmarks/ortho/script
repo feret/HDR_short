@@ -1,4 +1,6 @@
+make clean
 make hline
+make hline 
 make title
 make hline
 make OPTIONS="-syntax V3" OUTPUTDIRECTORY=output/BNGL/repressilator MODEL=BNGL/Repressilator.ka TITLE=repressilator line
