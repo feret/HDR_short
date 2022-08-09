@@ -1,6 +1,6 @@
 set xlabel '$t$ '
-set ylabel '$\text{Rapport entre probabilités}$'
-set title 'Rapport de probabilité VS temps'
+set ylabel '$\text{Rapports entre probabilités}$'
+set title 'Rapports de probabilité en fonction du temps'
 set term epslatex linewidth 5
 set autoscale
 set xrange [0.:6.]

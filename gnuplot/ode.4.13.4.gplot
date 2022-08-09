@@ -1,6 +1,6 @@
 set xlabel '$t$ '
-set ylabel '$\text{Rapport entre concentrations}$'
-set title 'Rapport de concentration en fonction du temps'
+set ylabel '$\text{Rapports entre concentrationss}$'
+set title 'Rapports de concentration en fonction du temps'
 set term epslatex linewidth 5
 set autoscale
 set xrange [0.:6.]
