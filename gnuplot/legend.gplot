@@ -1,0 +1,43 @@
+set xlabel 'N'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set datafile separator ','
+set term png size 400,320
+set output 'generated_pictures/legend.png'
+#set title 'gnuplot/multiple phosphorylation sites'
+set xrange [0.:0.1]
+set yrange [0.001:0.0015]
+set key autotitle columnhead
+set key center
+set noborder
+set noxtics
+set noytics
+set notitle
+set noxlabel
+set noylabel
+
+set output 'generated_pictures/legend.png'
+plot 'gnuplot/multi_phos.csv' using 1:2 title "Ground system generation" lt rgb "white"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:2 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:6 title 'BNGL' lc rgb "red"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:2 title "Symmetries detection" lt rgb "white"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:3 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:2 title "Direct model reduction" lt rgb "white"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:4 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:7 title 'BNGL' lc rgb "red"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:8 title 'ERODE (BB)' lc rgb "#006600"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:9 title 'ERODE (FB)' lc rgb "#006600"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:2 title "Further reduction of the reduced models" lt rgb "white"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:10 title 'ERODE (NBB)' lc rgb "#006600"
+set output 'generated_pictures/legend.png'
+replot 'gnuplot/multi_phos.csv' using 1:11 title 'ERODE (NFB)' lc rgb "#006600"

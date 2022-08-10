@@ -198,7 +198,12 @@ demo: $(HTML)
 sessions:
 	mkdir sessions
 
+%.pdf: %.png
+	touch $@
 
+%.tex: %.png
+	touch $@
+	
 clean:
 	rm -f *.blg *.out *.toc *.todo *.idx *.bbl *~ \#* *.dvi *.aux *.log  *.bak *.html $(PREIMAGES) $(BBL) $(TEX) $(DATA) $(WITNESS)
 	rm -fr sessions $(BIN) $(BUILD)

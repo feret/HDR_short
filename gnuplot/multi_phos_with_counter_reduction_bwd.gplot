@@ -1,0 +1,33 @@
+set xlabel 'n'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set term png size 800,350
+set datafile separator ','
+set output 'generated_pictures/multi_phos_with_counter_reduction_bwd.png'
+set key autotitle columnhead
+set key outside
+set title 'gnuplot/model reduction (bwd bisimulation)'
+set xrange [0:10]
+set yrange [0.001:700.]
+set logscale y
+
+set style line 1 lc rgb 'white'
+set pointintervalbox 1
+set style line 2 lc rgb 'blue'
+set style line 3 lc rgb 'red'
+set style line 4 lc rgb 'white'
+set style line 5 lc rgb 'blue'
+set style line 6 lc rgb 'white'
+set style line 7 lc rgb 'blue'
+set style line 8 lc rgb 'red'
+set style line 9 lc rgb "#006600"
+set style line 10 lc rgb "#006600"
+set style line 11 lc rgb 'white'
+set style line 12 lc rgb "#006600"
+set style line 13 lc rgb "#006600"
+
+set output 'generated_pictures/multi_phos_with_counter_reduction_bwd.png'
+plot 'gnuplot/multi_phos_with_counter.csv' using 1:($5+$15) title 'KaDE pipeline' with linespoints ls 2
+set output 'generated_pictures/multi_phos_with_counter_reduction_bwd.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:($7+$15) title 'BNGL pipeline' with linespoints ls 3
+set output 'generated_pictures/multi_phos_with_counter_reduction_bwd.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:($6+$10) title 'ERODE pipeline' with linespoints ls 9

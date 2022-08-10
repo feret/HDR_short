@@ -1,0 +1,31 @@
+set xlabel 'n'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set datafile separator ','
+set term png size 800,350
+set output 'generated_pictures/other_examples_netgen.png'
+set key autotitle columnhead
+set key outside
+set title 'Ground system generation'
+set xrange [0:13]
+set yrange [0.001:700.]
+set logscale y
+
+set style line 1 lc rgb 'white'
+set pointintervalbox 1
+set style line 2 lc rgb 'blue'
+set style line 3 lc rgb 'red'
+set style line 4 lc rgb 'white'
+set style line 5 lc rgb 'blue'
+set style line 6 lc rgb 'white'
+set style line 7 lc rgb 'blue'
+set style line 8 lc rgb 'red'
+set style line 9 lc rgb "#006600"
+set style line 10 lc rgb "#006600"
+set style line 11 lc rgb 'white'
+set style line 12 lc rgb "#006600"
+set style line 13 lc rgb "#006600"
+
+set output 'generated_pictures/other_examples_netgen.png'
+plot 'gnuplot/other_examples.csv' using 1:2 title 'KaDE' with linespoints ls 2
+set output 'generated_pictures/other_examples_netgen.png'
+replot 'gnuplot/other_examples.csv' using 1:6 title 'BNGL' with linespoints ls 3

@@ -1,0 +1,53 @@
+set xlabel 'n'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set datafile separator ','
+set term png size 320,300
+set output 'generated_pictures/multi_phos_with_counter.png'
+set key autotitle columnhead
+set key off
+#set title 'gnuplot/multiase/phosphatase'
+set xrange [0:10]
+set yrange [0.001:700.]
+set logscale y
+
+set style line 1 lc rgb 'white'
+set pointintervalbox 1
+set style line 2 lc rgb 'blue'
+set style line 3 lc rgb 'red'
+set style line 4 lc rgb 'white'
+set style line 5 lc rgb 'blue'
+set style line 6 lc rgb 'white'
+set style line 7 lc rgb 'blue'
+set style line 8 lc rgb 'red'
+set style line 9 lc rgb "#006600"
+set style line 10 lc rgb "#006600"
+set style line 11 lc rgb 'white'
+set style line 12 lc rgb "#006600"
+set style line 13 lc rgb "#006600"
+
+set output 'generated_pictures/multi_phos_with_counter.png'
+plot 'gnuplot/dummy.csv' using 1:2 with linespoints title "Ground system generation" lt rgb "white"
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:2 with linespoints ls 2
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:6 with linespoints ls 3
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/dummy.csv' using 1:2 with linespoints ls 4
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:3 with linespoints ls 5
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/dummy.csv' using 1:2 with linespoints ls 6
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:4 with linespoints ls 7
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:7 with linespoints ls 8
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:10 with linespoints ls 9
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:8 with linespoints ls 10
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/dummy.csv' using 1:2 with linespoints ls 11
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:15 with linespoints ls 12
+set output 'generated_pictures/multi_phos_with_counter.png'
+replot 'gnuplot/multi_phos_with_counter.csv' using 1:13 with linespoints ls 13

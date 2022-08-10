@@ -1,0 +1,53 @@
+set xlabel 'n'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set datafile separator ','
+set term png size 320,300
+set output 'generated_pictures/other_examples.png'
+set key autotitle columnhead
+set key off
+#set title 'kinase/phosphatase'
+set xrange [0:11]
+set yrange [0.001:700.]
+set logscale y
+
+set style line 1 lc rgb 'white'
+set pointintervalbox 1
+set style line 2 lc rgb 'blue'
+set style line 3 lc rgb 'red'
+set style line 4 lc rgb 'white'
+set style line 5 lc rgb 'blue'
+set style line 6 lc rgb 'white'
+set style line 7 lc rgb 'blue'
+set style line 8 lc rgb 'red'
+set style line 9 lc rgb "#006600"
+set style line 10 lc rgb "#006600"
+set style line 11 lc rgb 'white'
+set style line 12 lc rgb "#006600"
+set style line 13 lc rgb "#006600"
+
+set output 'generated_pictures/other_examples.png'
+plot 'gnuplot/dummy.csv' using 1:2 title "Ground system generation" lt rgb "white"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:2 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:6 title 'BNGL' lc rgb "red"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/dummy.csv' using 1:2 title "Symmetries detection" lt rgb "white"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:3 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/dummy.csv' using 1:2 title "Model reduction" lt rgb "white"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:4 title 'KaDE' lc rgb "blue"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:7 title 'BNGL' lc rgb "red"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:8 title 'ERODE (bwd)' lc rgb "#006600"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:9 title 'ERODE (fwd)' lc rgb "#006600"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/dummy.csv' using 1:1 title "Further model reduction" lt rgb "white"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:10 title 'ERODE (bwd)' lc rgb "#006600"
+set output 'generated_pictures/other_examples.png'
+replot 'gnuplot/other_examples.csv' using 1:11 title 'ERODE (fwd)' lc rgb "#006600"

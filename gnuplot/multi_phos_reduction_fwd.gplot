@@ -1,0 +1,18 @@
+set xlabel 'n'
+set ylabel 'CPU time (s.)' offset 2.5,0
+set datafile separator ','
+set term png size 800,350
+set output 'generated_pictures/multi_phos_reduction_fwd.png'
+set key autotitle columnhead
+set key outside
+set title 'gnuplot/model reduction (fwd bisimulation)'
+set xrange [0:10]
+set yrange [0.001:700.]
+set logscale y
+
+set output 'generated_pictures/multi_phos_reduction_fwd.png'
+plot 'gnuplot/multi_phos.csv' using 1:($4+$13) title 'KaDE pipeline' with linespoints ls 2
+set output 'generated_pictures/multi_phos_reduction_fwd.png'
+replot 'gnuplot/multi_phos.csv' using 1:($7+$13) title 'BNGL pipeline' with linespoints ls 3
+set output 'generated_pictures/multi_phos_reduction_fwd.png'
+replot 'gnuplot/multi_phos.csv' using 1:($6+$8) title 'ERODE pipeline' with linespoints ls 9

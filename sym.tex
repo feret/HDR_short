@@ -89,6 +89,10 @@
 \newcommand{\permut}[1][]{\xymatrix@C=0.6cm{{}&\ar@2@/_/@{~>}^{#1}[rr]&&{}}}
 \newcommand{\permutbis}[1][]{\xymatrix@C=0.6cm{{}&\ar@2@/^/@{~>}^{#1}[rr]&&{}}}
 
+\newcommand{\kade}{\textsc{KaDe}}
+\newcommand{\erode}{\textsc{ERODE}}
+\newcommand{\BNGL}{\textsc{BNGL}}
+
 \newcommand{\squarespembedding}[9]{%
 \begin{equation*}%
 \xymatrix@C=\csize@R=\rsize{%
@@ -377,6 +381,8 @@ quelles conséquences les équivalences entre sites peuvent-elles impliquer en ter
 
 \subsection{Modèle simplifié}
 
+\label{par:forward}
+
 Il semble naturel de vouloir oublier la différence entre des sites équivalents. Dans notre modèle, cela revient à ignorer la différence entre les sites \site{x}{}{} et \site{y}{}{} dans les occurrences de la protéine \agent{A}{}.
 \`A ce niveau d'abstraction, les occurrences de la protéine \agent{A}{} auront donc chacune deux sites d'interaction, désormais supposés indistingables.
 
@@ -598,7 +604,7 @@ Même si les paramètres n'ont pas la même signification dans le cadre stochastiqu
 
 Le but de ces simulations numériques est de tester l'importance de trois contraintes. La première contrainte concerne les constantes de réaction pour les règles de déliaison. La seconde concerne l'état (ou la distribution d'états) initial(le). Enfin, la troisième concerne les constantes de réaction pour les règles de liaison.
 \begin{itemize}
-\item \textbf{Contrainte sur les constantes de déliaison.} Intuitivement, pour que les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} tiennent un rôle symétrique, il est nécessaire que chaque lien puisse se défaire avec la même vitesse. Notons que les règles de déliaisons pour les liens symétriques (entre deux sites \site{x}{}{} ou entre deux sites \site{y}{}{}) peuvent s'appliquer deux fois, mais, par convention, leurs constantes de réaction sont divisées par $2$. Aussi pour chaque type de lien puisse se défaire avec la même cinétique, il faut que les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ soient égales. Enfin, pour que le modèle simplifié puisse simuler ce comportement, il faut prendre la constante $\KD$ égale à la valeur commune des trois constantes de déliaison.
+\item \textbf{Contrainte sur les constantes de déliaison.} Intuitivement, pour que les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} tiennent un rôle symétrique, il est nécessaire que chaque lien puisse se défaire avec la même vitesse. Notons que les règles de déliaison pour les liens symétriques (entre deux sites \site{x}{}{} ou entre deux sites \site{y}{}{}) peuvent s'appliquer deux fois, mais, par convention, leurs constantes de réaction sont divisées par $2$. Aussi pour chaque type de lien puisse se défaire avec la même cinétique, il faut que les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ soient égales. Enfin, pour que le modèle simplifié puisse simuler ce comportement, il faut prendre la constante $\KD$ égale à la valeur commune des trois constantes de déliaison.
 \item \textbf{Contrainte sur l'état initial ou la distribution initiale.}  La seconde contrainte concerne l'état initial (ou la distribution des états initiaux). Elle a pour but de tester empiriquement l'importance que les sites \site{x}{}{} et \site{y}{}{} soient, ou non, indistingables dans la distribution initiale (ou dans l'état initial). Pour cela, sous cette hypothèse, on ne considérera que des occurrences de la protéine \agent{A}{} dont tous les sites \site{x}{}{} et \site{y}{}{} sont libres (puisque c'est la seule conformation de la protéine \agent{A}{} dans laquelle les deux sites sont dans le même état).
 \item \textbf{Contrainte sur les constantes de liaison.} La troisième contrainte concerne les règles de liaison.
 On peut se demander s'il est important que les liaisons entre deux occurrences libres de la protéine \agent{A}{} peuvent s'établir de manière équiprobable entre les $4$ positions potentielles (\sitefont{x}-\sitefont{x}, \sitefont{y}-\sitefont{y}, \sitefont{x}-\sitefont{y} et \sitefont{y}-\sitefont{x}). On a ici distingué les deux occurrences de la protéine \agent{A}{} dans les dimères.
@@ -607,9 +613,9 @@ Il faut se rappeler que les trois constantes de réaction correspondantes sont, p
 
 
 
-%L'élaboration du modèle simplifié a mis en lumière qu'il était suffisant que que les constantes de dissociation $\kdxx$, $\kdxy$ et $\kdyy$ soient tous trois égaux. C'est la première contrainte qui sera considérée. Par ailleurs, il semble légitime de se demander si des contraintes sur la distribution initiale (ou sur l'état initial dans le cadre différentiel) et sur les constantes d'association ont aussi des conséquences notables. Aussi l'importance que les sites \site{x}{}{} et \site{y}{}{} soient, ou non, indistinguables dans la distribution initiale (ou l'état initial) sera également testé empiriquement et, par ailleurs, l'impact de la contrainte qui impose aux deux constantes $\kxx$ et $\kyy$ d'être égales et à la constante $\kxy$ d'être le double de leur valeur commune sera aussi testé (le choix des rapports sera expliquer plus tard).
+%L'élaboration du modèle simplifié a mis en lumière qu'il était suffisant que que les constantes de dissociation $\kdxx$, $\kdxy$ et $\kdyy$ soient tous trois égaux. C'est la première contrainte qui sera considérée. Par ailleurs, il semble légitime de se demander si des contraintes sur la distribution initiale (ou sur l'état initial dans le cadre différentiel) et sur les constantes d'association ont aussi des conséquences notables. Aussi l'importance que les sites \site{x}{}{} et \site{y}{}{} soient, ou non, indistingables dans la distribution initiale (ou l'état initial) sera également testé empiriquement et, par ailleurs, l'impact de la contrainte qui impose aux deux constantes $\kxx$ et $\kyy$ d'être égales et à la constante $\kxy$ d'être le double de leur valeur commune sera aussi testé (le choix des rapports sera expliquer plus tard).
 
-La correspondance entre le modèle initial et le modèle simplifiée est testée, pour la sémantique stochastique et pour la sémantique différentielle, sous quatre scénarios. Dans le premier, les trois contraintes de symmétrie sont satisfaites, alors que les autres scénarios invalident exactement une de ces contraintes.
+La correspondance entre le modèle initial et le modèle simplifiée est testée, pour la sémantique stochastique et pour la sémantique différentielle, sous quatre scénarios. Dans le premier, les trois contraintes de symétrie sont satisfaites, alors que les autres scénarios invalident exactement une de ces contraintes.
 
 
 \begin{figure*}[hp]
@@ -681,7 +687,7 @@ $\K=7$, $\KD=2$, initialement $\conc{\mono}=6$ et $\conc{\dimer}=0$.]%
 \label{fig:comparison}
 \end{figure*}
 
-La description de chaque scénario et des résultats optenus est donnée ci-dessous~:
+La description de chaque scénario et des résultats obtenus est donnée ci-dessous~:
 \begin{enumerate}
 \item Dans le premier jeu de paramètres, les trois contraintes sont satisfaites. Les constantes
 $\kxx$ et $\kyy$ sont fixées à $1$, alors que les constantes
@@ -709,26 +715,36 @@ semble cruciale pour pouvoir simplifier le modèle de manière exacte, le choix de
 
 \subsubsection{Invariants quantitatifs}
 
-Dans le paragraphe précédent, le fait que certains sites puissent partager exactement les mêmes capacités d'interaction a été exploité pour simplifier un modèle jouet de manière exacte. Les composés du modèle simplifié ont été reliés formellement à ceux du modèle initial et les mêmes résultats ont été obtenus, en exécutant le modèle initial avant d'utiliser ces relations formelles pour en déduire  l'évolution des composants du modèle simplifié ou en exécutant directement le modèle simplifié.
+Dans le paragraphe \ref{par:forward}, le fait que certains sites puissent partager exactement les mêmes capacités d'interaction a été exploité pour simplifier un modèle jouet de manière exacte. Les composés du modèle simplifié ont été reliés formellement à ceux du modèle initial et les mêmes résultats ont été obtenus en exécutant le modèle initial avant d'utiliser ces relations formelles pour en déduire  l'évolution des composants du modèle simplifié ou en exécutant directement le modèle simplifié.
 
 Une autre classe de propriétés intéressante est celle des invariants quantitatifs. Il semble naturel de supposer que lorsque deux sites sont équivalents dans toutes les occurrences d'une protéine, alors, dans le cadre stochastique, les états obtenus en permutant ces deux sites dans une ou plusieurs occurrences de cette protéine dans un état donné soient équiprobables.
-De même, dans le cadre différentiel, la concentration des espèces biochimiques obtenues en permutant ces deux sites dans une ou plusieurs occurrences de cette protéine dans un complexe biochimique devrait être égales.
-
-En fait, ces quantités ne sont pas égales en général. Pour mieux comprendre ce phénomène, nous pouvons nous intéresser à un jeu de "pile" ou "face" avec deux pièces. Lorsque les pièces sont jetées, elles tombent toutes deux sur le côté "pile"  avec une probabilité un quart, toutes deux sur le côté "face" avec une probabilité un quart et l'une sur le côté "pile" et l'autre sur le côté "face"  avec une probabilité un demi. Pourtant il est possible d'intervertir les côtés "pile" et "face" d'une ou des deux pièces sans changer la nature du jeu. Les côtés "pile" et "face" jouent donc un rôle symétrique. Les trois configurations ne sont pas équiprobables. Leur probabilité est proportionnelle au nombre de manière de retourner les pièces sans changer la configuration globale.  Ainsi, la configuration comportant les deux côtés, est inchangée lorsque les deux pièces sont retournées simultanément (c'est la seule manière non triviale de laisser cette configuration inchangée), alors qu'un tirage double est changé dès que l'on retourne au moins une des deux pièces, d'où un rapport de $2$ sur $1$ (en tenant compte de la permutation triviale).
-
-Il semble légitime de se demander quelles conditions sont nécessaires pour retrouver de tels rapports de proportionnalité. Dans le cas d'étude,
-ces conditions doivent assurer, dans le cadre stochastique, que les probabilités d'être dans deux états obtenus en remplaçant une occurrence d'un type de dimère par une occurrence d'un autre type restent dans le même rapport de proportionnalité  au cours du temps. Dans le cadre différentiel, ces conditions doivent assurer que les concentrations entre les différentes sortes de dimères restent dans le même rapport de proportionnalité aux cours du temps.
-
-Pour simplifier le raisonnement, et quitte à renforcer les conditions nécessaires trouvées, supposons que la valeur
-des rapports de proportionnalité éventuels soit dictée par les rapports entre les constantes d'association.
-Pour que retrouver ces rapports de proportionnalités, il faut qu'ils soient également vérifier dans la distribution initiale (dans le cadre stochastique) ou dans l'état initial (dans le cadre différentiel). Comme ces rapports de proportions ne sont pas à priori connu, le plus simple est de considérer, dans le cadre stochastique, une distribution initiale avec un état avec uniquement des occurrences de monomères avec probabilité $1$ et, dans le cadre différentiel, un état initial avec uniquement des monomères. Par ailleurs, si le système est dans un état transitoire, vu la simplicité du modèle en question, le système va converger vers une distribution ou un état stationnaire dans lequel le quantité de chaque sorte de dimère sera proportionnelle au rapport entre les constantes d'association et de dissociation correspondantes. Du coup, pour que les rapports de proportions soient maintenus, il est nécessaire  que les constantes de dissociations soient égales.
+De même, dans le cadre différentiel, la concentration des espèces biochimiques obtenues en permutant ces deux sites dans une ou plusieurs occurrences de cette protéine dans un complexe biochimique devrait être égales. En fait, ces quantités ne sont en pratique pas égales, mais plutôt proportionnelles. Pour mieux comprendre ce phénomène, nous pouvons étudier ce qui se passe dans un jeu de "pile" ou "face" avec deux pièces. Lorsque les deux pièces sont jetées, elles tombent toutes deux sur le côté "pile"  avec une probabilité un quart, toutes deux sur le côté "face" avec une probabilité un quart et l'une sur le côté "pile" et l'autre sur le côté "face"  avec une probabilité un demi. Pourtant il est possible d'intervertir les côtés "pile" et "face" d'une ou des deux pièces sans changer la nature du jeu. Les côtés "pile" et "face" ont donc un rôle symétrique. Les trois configurations ne sont pas équiprobables. Leur probabilité est proportionnelle au nombre de manière de retourner les pièces sans changer la configuration globale.  Ainsi, la configuration comportant les deux côtés "pile" et "face", reste inchangée lorsque les deux pièces sont retournées simultanément (c'est la seule manière non triviale de laisser cette configuration inchangée), alors qu'un tirage double est changé dès que l'on retourne au moins une des deux pièces, d'où un rapport de $2$ sur $1$ (en tenant compte de la transformation triviale qui consiste à ne changer aucune pièce). Ainsi, il faut tenir compte du nombre des transformations qui laissent un état ou un complexe biochimique inchangé pour connaître les rapports de proportionnalité entre les probabilités d'être dans deux états symétriques ou les concentrations de deux complexes symétriques.
 
 
+Nous étudions maintenant l'importance de trois contraintes pour assurer l'invariance de ces rapports de proportionnalité.  Ce sont en fait les trois contraintes testées pour l'adéquation entre le modèle initial et le modèle simplifié, mais pour des raisons un peu différentes.
+\begin{itemize}
+\item \textbf{Contrainte sur les constantes de déliaison.} Intuitivement, pour préserver des rapports de proportionnalité entre les probabilités des états symétriques et entre les concentrations des différents types de dimères de la protéine \agent{A}{}, il faut que  chaque lien puisse se défaire à la même vitesse. Notons que les règles de déliaison pour les liens symétriques (entre deux sites \site{x}{}{} ou entre deux sites \site{y}{}{}) peuvent s'appliquer deux fois, mais, par convention, leurs constantes de réaction sont divisées par $2$. Aussi pour chaque type de lien puisse se défaire avec la même cinétique, il faut que les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ soient égales.
 
 
-En Fig.~\ref{fig:proportion} est vérifié de manière empririque si de tels rapports de proportionnalité se manifestent pour plusieurs jeux de paramètres, que ce soit dans la cadre stochastique (colonne de gauche) ou différentiel (colonne de droite), en faisant varier la valeur des constantes de dissociations, la distribution initiale (ou l'état initial),
+\item \textbf{Contrainte sur l'état initial ou la distribution initiale.}  La seconde contrainte concerne l'état initial (ou la distribution des états initiaux).  Pour que des rapports de proportionnalités se retrouvent tout au long de l'exécution du système, ils doivent également être vérifiés dans la distribution initiale (dans le cadre stochastique) ou dans l'état initial (dans le cadre différentiel). Comme ces rapports de proportionnalité ne sont pas à priori connus, le plus simple est de considérer uniquement des monomères dans les états initiaux. Ainsi, dans la version stochastique, on considérera  une distribution initiale avec un état avec uniquement des occurrences de monomères avec probabilité $1$ et, dans le cadre différentiel, un état initial avec uniquement des monomères.
+
+\item \textbf{Contrainte sur les constantes de liaison.} La troisième contrainte concerne les règles de liaison.
+On peut se demander s'il est important que les liaisons entre deux occurrences libres de la protéine \agent{A}{} peuvent s'établir de manière équiprobable entre les $4$ positions potentielles (\sitefont{x}-\sitefont{x}, \sitefont{y}-\sitefont{y}, \sitefont{x}-\sitefont{y} et \sitefont{y}-\sitefont{x}). On a ici distingué les deux occurrences de la protéine \agent{A}{} dans les dimères.
+Il faut se rappeler que les trois constantes de réaction correspondantes sont, par convention, divisées par $2$. Cependant les règles de liaison symétrique offrent chacune deux manières de créer la liaison correspondante (car les deux occurrences de la protéine $\agent{A}{}$ jouent exactement le même rôle dans la règle), alors que la règle de liaison asymétrique peut établir deux liaisons différentes si l'on distingue les deux occurrences de la protéine \agent{A}{} auxquelles on applique la règle de liaison. De ce fait, la troisième contrainte spécifie que les constantes $\kxx$ et $\kyy$ sont égales et que la constante $\kxy$ est égale au double de la contrainte $\kxx$. Par ailleurs, pour simuler ces règles, la constante $\K$ sera choisie comme la somme des trois constantes $\kxx$, $\kyy$ et $\kxy$. En effet, les trois règles de liaison du modèle initial, ainsi que celle du modèle simplifié peut s'appliquer dans deux positions chacune par paire d'occurrences libres de la protéine \agent{A}{}, et d'autre part ces quatre constantes sont toutes divisées par $2$ par convention.
+\end{itemize}
+
+Dans le cas d'étude, ces conditions doivent assurer, dans le cadre stochastique, que les probabilités d'être dans deux états obtenus en remplaçant une occurrence d'un type de dimère par une occurrence d'un autre type restent dans le même rapport de proportionnalité  au cours du temps. Dans le cadre différentiel, ces conditions doivent assurer que les concentrations entre les différentes sortes de dimères restent dans le même rapport de proportionnalité aux cours du temps. En Fig.~\ref{fig:proportion} est vérifié de manière empirique si de tels rapports de proportionnalité se manifestent pour plusieurs jeux de paramètres, que ce soit dans le cadre stochastique (colonne de gauche) ou différentiel (colonne de droite), en faisant varier la valeur des constantes de dissociations, la distribution initiale (ou l'état initial),
 et les constantes d'association.
-Dans le cadre stochastique, l'évolution de trois rapports est considéré~: le rapport entre l'état composé de quatre occurrences du monomère de la protéine \agent{A}{} et d'une occurrence du dimère symétrique \site{x}{}{}-\site{x}{}{} de la protéine \agent{A}{} et celui comprenant quatre occurrences du monomère de la protéine \agent{A}{} et une occurrence du dimère symétrique \site{y}{}{}-\site{y}{}{}~; le rapport entre l'état composé de quatre occurrences du  monomère de la protéine \agent{A} et d'une occurrence du dimère symétrique \site{x}{}{}-\site{x}{}{} de la protéine \agent{A}{} et celui comportant quatre occurrences du monomère de la protéine \agent{A}{} et une occurrence du dimère asymétrique de la protéine \agent{A}{} et le rapport entre l'état composé de deux occurrences du monomère de la protéine \agent{A}{} et de deux occurrences du dimère asymétrique de la protéine \agent{A}{} et celui formé de deux occurrences du monomère de la protéine \agent{A}{}, d'une occurrence de chacune des sortes de dimères symétriques de la protéine \agent{A}{}.
+Dans le cadre stochastique, l'évolution de trois rapports est considéré~: le rapport entre l'état composé de quatre occurrences du monomère de la protéine \agent{A}{} et d'une occurrence du dimère symétrique \site{x}{}{}-\site{x}{}{} de la protéine \agent{A}{} et celui comprenant quatre occurrences du monomère de la protéine \agent{A}{} et une occurrence du dimère symétrique \site{y}{}{}-\site{y}{}{}~; le rapport entre l'état composé de quatre occurrences du  monomère de la protéine \agent{A}{} et d'une occurrence du dimère symétrique \site{x}{}{}-\site{x}{}{} de la protéine \agent{A}{} et celui comportant quatre occurrences du monomère de la protéine \agent{A}{} et une occurrence du dimère asymétrique de la protéine \agent{A}{} et le rapport entre l'état composé de deux occurrences du monomère de la protéine \agent{A}{} et de deux occurrences du dimère asymétrique de la protéine \agent{A}{} et celui formé de deux occurrences du monomère de la protéine \agent{A}{}, d'une occurrence de chacune des sortes de dimères symétriques de la protéine \agent{A}{}. Dans le cadre différentielle, est considérée l'évolution des rapports entre les concentrations des différentes sortes des dimères de la protéine \agent{A}{}.
+
+%Il semble légitime de se demander sous quelles conditions de tels rapports de proportionnalité se manifestent.
+
+
+
+
+
+
+
 
 
 \begin{figure*}[hp]
@@ -797,7 +813,7 @@ initialement $\conc{\pone}=\conc{\pxx}=2$ et $\conc{\pyy}=\conc{\pxy}=0$.]%
 
 
 \begin{enumerate}
-\item Dans le premier jeu de paramètres, les constantes d'association sont choisies pour que les liaisons se forment de manière équitable entre les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{}. Les constantes de dissociation prennent toutes les trois la même valeur afin de préserver les rapports de proportionnalité quels qu'ils soient. Enfin, aucun dimère n'est présent ni dans la distribution initiale des états du système stochastique, ni dans l'état initial du système différentiel, de sortes que et la distribution initiale du système stochastique, et l'état initial du système différentiel satisfont n'importe quels  rapports de proportionnalité à propose de l'abondance des différentes sortes de dimère.  En Fig.~\ref{figctmcprop}, les courbes montrent de manière empirique que
+\item Dans le premier jeu de paramètres, les constantes d'association sont choisies pour que les liaisons se forment de manière équitable entre les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{}. Les constantes de dissociation prennent toutes les trois la même valeur afin de préserver les rapports de proportionnalité quels qu'ils soient. Enfin, aucun dimère n'est présent ni dans la distribution initiale des états du système stochastique, ni dans l'état initial du système différentiel, de sortes que et la distribution initiale du système stochastique, et l'état initial du système différentiel, satisfont n'importe quels  rapports de proportionnalité entre  l'abondance des différentes sortes de dimères de la protéine \agent{A}{}.  En Fig.~\ref{figctmcprop}, les courbes montrent de manière empirique que
 la probabilité d'être dans l'état avec quatre occurrences de la protéine \agent{A}{} sous forme de monomère et deux occurrences de la protéine \agent{A}{} liées par leurs sites \site{x}{}{} est toujours la même que celle d'être dans l'état avec quatre occurrences de la protéine \agent{A}{} sous forme de monomère et deux occurrences de la protéine \agent{A}{} liées par leurs sites \site{y}{}{}. Par ailleurs, cette probabilité est toujours la moitié de celle d'être dans l'état avec quatre occurrences de la protéine \agent{A}{} sous forme de monomère et deux occurrences de la protéine \agent{A}{} liées par le site \site{x}{}{} de l'un et le site \site{y}{}{} de l'autre.
 Ces rapports de proportionnalité correspondent à ceux déjà observer dans le jeu de "pile" ou "face".
 Enfin, la probabilité d'être dans un état avec deux occurrences de la protéine \agent{A}{} sous forme de monomère et deux occurrences de dimères asymétriques est toujours deux fois plus grande que celle d'être dans un état avec deux occurrences de la protéine \agent{A}{} sous forme de monomère et d'une occurrence de chaque forme de dimère symétrique. Ce rapport s'explique que la formation d'un dimère asymétrique est deux fois plus probable que celle d'un type donnée de dimère symétrique (d'où un facteur $4$). Cependant, il faut diviser ce facteur par $2$, car deux dimères symétriques différents peuvent être obtenu en prenant le premier formé par une liaison entre deux sites \site{x}{}{} et le second entre deux sites \site{y}{}{}, ou l'inverse, soit deux fois plus de possibilités.
@@ -832,7 +848,7 @@ Dans le cas du premier jeu de paramètres, le quotient opère même à plus bas-nive
 
 \subsection{Symétries et réduction de modèles}
 
-Pour conclure avec cet exemple jouet, nous avons vu que des symétries pouvaient apparaître dans les complexes biochimiques, dans les états du système, dans les distribitions d'états ou même dans l'effet des règles. Ces symétries ont un impact sur notre capacité à réduire la dynamique du système. En effet, lorsque l'action des règles est symétrique, il est possible d'induire une relation d'équivalence pour quotienter l'ensemble des états, ce qui suggère l'existence d'une bisimulation avant. De plus, lorsque la distribution des états initiaux est également symétrique, alors le système non réduit comporte des invariants statistiques (le quotient entre la probabilité de deux états symétiques est égal à l'inverse du quotient de leur nombre d'automorphismes), ce qui suggère l'existence d'une bisimulation arrière.
+Pour conclure avec cet exemple jouet, nous avons vu que des symétries pouvaient apparaître dans les complexes biochimiques, dans les états du système, dans les distribitions d'états ou même dans l'effet des règles. Ces symétries ont un impact sur notre capacité à réduire la dynamique du système. En effet, lorsque l'action des règles est symétrique, il est possible d'induire une relation d'équivalence pour quotienter l'ensemble des états, ce qui suggère l'existence d'une bisimulation avant. De plus, lorsque la distribution des états initiaux est également symétrique, alors le système non réduit comporte des invariants statistiques (le quotient entre la probabilité de deux états symétiques est égal à l'inverse du quotient de leur nombre d'automorphismes), ce qui suggère l'existence d'une bisimulation arrière. Contrairement aux raisonnements sur les rapport entre constantes de liaison et de déliaison, c'est un raisonnement compositionnel qui considère les réactions, classe de symétrie par classe de symétrie. C'est pourquoi ce type de raisonnement sera privilégié dans la suite de ce chapitre.
 
 \ignore{%
 \section{Group actions over rule-based models}
@@ -3680,7 +3696,104 @@ Quitte à échanger le rÃ´le des deux occurrences des protéines \agent{A}{}, cette
 Dans le cadre stochastique, il faut regarder, pour déduire  un sous-espace de distributions stable, les catégories d'états du système. Quite à permuter l'état des sites \site{x}{}{} et \site{y}{}{}, dans une ou plusieurs occurrences de la protéine \agent{A}{}, deux états sont équivalents s'ils contiennent le même nombre d'occurrence de monomère et le même nombre d'occurrence de dimère.
 
 Reprenant la notation $\state{i,j,k,l}$ pour désigner un état avec $i$ occurrences de monomère, $j$ occurrences du dimère formé d'une liaison entre deux sites \site{x}{}{}, $k$ occurrences du dimère formé d'une liaison entre deux sites \site{y}{}{} et $l$ occurrences du dimère formé d'une liaison entre le site \site{x}{}{} d'une occurrence de la protéine \agent{A}{} et le site \site{y}{}{} d'une autre occurrence de la protéine \agent{A}{}, deux états $\state{i',j',k',l'}$ et
-$\state{i'',j'',k'',l''}$ sont donc équivalents losque $i'=i''$ et $j'+k'+l'=j''+k''+l''$. Reste à calculer les rapports de proportions entre les probabilités de deux tels états dans le sous espace de distributions stable défini par l'équivalence entre les sites \site{x}{}{} et \site{y}{}{}.
+$\state{i'',j'',k'',l''}$ sont donc équivalents losque $i'=i''$ et $j'+k'+l'=j''+k''+l''$. Reste à calculer les rapports de proportionnalité entre les probabilités de deux tels états dans le sous espace de distributions stable défini par l'équivalence entre les sites \site{x}{}{} et \site{y}{}{}.
+
+
+
+\section{Benchmarks}
+\label{sec:benchmark}
+
+
+\begin{figure}[t]
+\hspace*{1.cm}\begin{minipage}{\linewidth}
+  {%
+    \scalebox{0.9}{\centering\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+    \multirow{2}{*}{model} & \multirow{2}{*}{\;sites\;} &
+      \multirow{2}{*}{\;rules\;} & \multicolumn{2}{c|}{species} & \multicolumn{2}{c|}{reactions}  \\\cline{4-7}
+  & & & original & reduced & original & reduced \\
+  \hline
+  kinase/phosphatase & $n$ & $6n$ & $2+4^n$ & \;$2+\left( {}^{n+3}_{\;\;3\;\;}\right)\;$ & $6n4^{n-1}$ & $2n\left({}^{n+2}_{\;\;2\;\;}\right)$
+  \\
+  multiple phosphorylation & $n$ & $n2^n$ & $2^n$ & $n+1$ & $n2^n$ & \;$2n$\; \cr
+  mult. phosphoryl. with counter & $n$ & $2n^2$ & $2^n$ & $n+1$ & $n2^n$ & $2n$ \cr
+  \hline
+\end{tabular}}
+  }
+  \end{minipage}
+\caption{Key attributes of our models with respect to the parameter $n$.}
+\label{fig:key:attributes}
+\end{figure}
+
+\begin{figure}[t]
+\begin{minipage}{0.55\linewidth}
+\subfigure[kinetase/phosphatase model.]{%
+\begin{minipage}{\linewidth}
+\centering\scalebox{0.435}{\includegraphics[width=320px]{generated_pictures/kin_phos.png}}
+\end{minipage}}
+\end{minipage}
+\begin{minipage}{0.45\linewidth}
+\subfigure[multi-phosphorylation site model.]{%
+\begin{minipage}{\linewidth}
+\centering\scalebox{0.435}{\includegraphics[width=320px]{generated_pictures/multi_phos.png}}
+\end{minipage}}
+\end{minipage}
+
+\vspace*{-2mm}
+
+\begin{minipage}{0.6\linewidth}
+\subfigure[multi-phosphorylation site model with counter.]{%
+\begin{minipage}{\linewidth}
+\centering\hspace*{-0.1\linewidth}\scalebox{0.435}{\includegraphics[width=320px]{generated_pictures/multi_phos_with_counter.png}}
+\end{minipage}}
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\vspace*{-1mm}
+
+\hspace*{-20px}
+\subfigure[legend.]{%
+\begin{minipage}{\linewidth}
+\centering\hspace*{-20px}\scalebox{0.435}{\includegraphics[width=360px]{generated_pictures/legend.png}}
+\end{minipage}}
+\end{minipage}
+
+
+\caption{Comparison between the time performances of {\kade}, {\BNGL}, and {\erode}, on a MacBookPro with a \texttt{2,8 GHz Intel Core i7} CPU and a \texttt{16 Go 1600 MHz DDR3} memory and with a $10$ minutes time-out.  %\textbf{\emph{Ground reactions}}: we plot the CPU time for generating reaction networks with {\kade}  and with {\BNGL}. \textbf{\emph{Symmetries analysis}}: we plot the total time to compute the sets of equivalence sites (both in forward and in backward bisimulation modes) with {\kade}. \textbf{\emph{Model reduction}}: we plot the time to compute reduced networks with {\kade}, {\BNGL}, and {\erode}, starting from the unreduced network.  \textbf{\emph{Further reduction}}: we plot the CPU-time on running {\erode} on the reduced networks computed by {\kade}.
+}
+\label{fig:benchmarks}
+\end{figure}
+
+
+We test the reduction power and the time efficiency of our framework on three families of models offering  various conditions about the ratio of the number of Kappa rules to the number of reactions and about the ratio of the number of different bio-molecular species configurations to the number of their equivalence classes. In {\kade}, the computation time for generating networks (or ODEs) depends mainly on the number of rules and the number of equivalence classes of bio-molecular species configurations. The data-structure described in \cite{DBLP:conf/esop/BoutillierEK17} is used to generate reactions efficiently.  More examples, including most of the {\BNGL} test suite, are provided in Supplementary Information \cite{SI}.
+
+The first family involves a kinase, a phosphatase, and a target protein. The target protein has $n$ sites ($n$ is left as a parameter).
+The kinase may bind and unbind to each non-phosphorylated site of the target protein. The kinase may phosphorylate a site when releasing it.
+Conversely, the phosphatase may bind and unbind to each phosphorylated site of the target protein. The phosphatase may also dephosphorylate a site when releasing it. We assume that every site has the same mechanistic properties and that the rate of reactions does not depend on the state of the other sites in the target protein.
+
+%\item
+The second and third families of models are inspired by the protein Kai. This protein plays a crucial role in the control of the circadian clock oscillations.  We consider a protein with $n$ sites ($n$ is left as a parameter) which may each be phosphorylated, or not.
+The kinase and the phosphatase are not described explicitly.
+We assume that the rate constants of phosphoralylation (resp.~dephosphorylation) of a site in a protein depend on the number of sites that are already phosphorylated in this protein.
+%The second and the third families of models are the same, except that
+In the third family of models, a trick suggested by Pierre Boutillier is used to reduce drastically the number of rules that are required to describe the models. %This trick has been proposed by Pierre Boutillier.
+We use a fictitious site that is bound to a chain of fictitious proteins the length of which encodes the number of phosphorylated sites.
+When a site is phosphorylated, a new protein is inserted in the chain and removed when a site gets dephosphorylated. Thus the phosphorylation level of a protein can be checked by looking at the length of this chain, without having to enumerate the different combinations fot the sites that are phosphorylated.
+
+In Fig.~\ref{fig:key:attributes}, we give the number of rules, species and reactions, for each family of models for the parameter $n$ ranging from $1$ to $10$, as well as the number of reactions and species when equivalent sites are considered. In Fig.~\ref{fig:benchmarks}, we compare
+the computation time to generate the original and the reduced networks with {\BNGL} and {\kade}. The generation of reduced models with  {{\kade}} (which does not require explicit annotation of equivalent sites) is  much faster than the one of the unreduced networks.
+%give the computation time to compute the original (unreduced) network and both reduced networks by forward bisimulation and  by backward bisimulation.with {\kade}.
+%run {\kade} to compute the original (unreduced) network, the networks reduced by forward bisimulation and  by backward bisimulation.
+%We compare with the {\BNGL} network generation time, starting with both  versions of the model (with/without the equivalent sites specified explicitly).
+{\kade} and {\BNGL} generate exactly the same reduced networks.
+ Lastly, we apply the fast version of {\erode}
+of the bisimulation inference algorithm  \cite{TACAS2016}
+on the original networks and the complete version on the reduced ones  \cite{DBLP:conf/concur/CardelliTTV15}.
+ But we found not further reduction this way.
+% followed by the reduction with {{\erode}}.
+In \cite{SI}, we observe as good results on the {\BNGL} test suite.
+
+
+
 
 %\findechapitre
 %%% Local Variables:
