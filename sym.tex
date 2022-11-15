@@ -118,7 +118,7 @@
 
 Les symétries apparaissent sous des formes diverses dans les modèles décrits par des règles de réécritures. Certaines sont indissociables de la sémantique. C'est le cas des automorphismes qui représentent des équivalences entre agents au sein de graphes à sites. D'autres peuvent décrire des équivalences entre sites d'interaction, des équivalences entre sortes de protéines ou encore des équivalences spatiales qui permettent de voir  la structure de certains complexes biochimiques modulo des isométries.
 
-Dans \cite{feret:sasb2014}, nous avons introduit un cadre de travail algébrique unifiant pour décrire, inférer, et utiliser des groupes de transformations de graphes à sites dans le langage Kappa. L'idée principale est de considérer des groupes de transformations qui agissent sur les graphes à sites avec une opération supplémentaire permettant de restreindre une transformation sur les sous-graphes d'un graphe. Il est alors possible de définir quand un ensemble de règle est symétrique par rapport à ces groupes de transformation et d'en déduire  des propriétés au niveau du comportement global du modèle, que ce soit pour sa sémantique stochastique ou différentielle. Pour simplifier la présentation, nous nous concentrons ici aux symétries qui correspondent à  des permutations de sites, qui sont décrites dans \cite{Feret-MFPSXXVI}.
+Dans \cite{feret:sasb2014}, nous avons introduit un cadre de travail algébrique unifiant pour décrire, inférer, et utiliser des groupes de transformations de graphes à sites dans le langage Kappa. L'idée principale est de considérer des groupes de transformations qui agissent sur les graphes à sites avec une opération supplémentaire permettant de restreindre une transformation sur les sous-graphes d'un graphe. Il est alors possible de définir quand un ensemble de règle est symétrique par rapport à ces groupes de transformation et d'en déduire  des propriétés au niveau du comportement global du modèle, que ce soit pour sa sémantique stochastique ou différentielle. Pour simplifier la présentation, nous nous concentrons ici aux symétries qui correspondent à  des échanges de sites, qui sont décrites dans \cite{Feret-MFPSXXVI}.
 
 
 \paragraph*{Travaux voisins.} Plusieurs formalismes permettent de faire apparaître chaque site plusieurs fois dans l'interface des agents.
@@ -126,12 +126,12 @@ C'est le cas du langage BNGL \cite{DBLP:journals/bioinformatics/BlinovFGH04}.
 Dans le langage ReactC \cite{DBLP:conf/esop/JohnLNV11}, des sites indistinguable peuvent être encodés à l'aide d'hyperliens. Ceci procure un moyen syntaxique  de décrire des sites symétriques.
 En contre-partie, le calcul des l'ensembles des occurrences des motifs de réécriture devient prohibitif (les graphes ne sont plus rigides), ce qui pose de grands problèmes de complexité pour échantilloner les trajectoires de la sémantique stochastique.
 
-En Kappa, la rigidité des graphes est un principe fondamental, et donc, l'utilisation de plusieurs instances d'un même site dans l'interface d'un agent est interdite. Les équivalences entre sites d'interaction peuvent toutefois être décrites à un plus haut-niveau de spécification  \cite{DBLP:journals/corr/abs-0911-2508} puis traduites automatiquement dans le noyau pure de Kappa. Cependant, il faut être conscient que cette traduction peut générer un très grand nombre de règles, là où une seule règle aurait été suffisante en utilisant des sites à occurrences multiples.
+En Kappa, la rigidité des graphes est un principe fondamental, et donc, l'utilisation de plusieurs occurrences d'un même site dans l'interface d'un agent est interdite. Les équivalences entre sites d'interaction peuvent toutefois être décrites à un plus haut-niveau de spécification  \cite{DBLP:journals/corr/abs-0911-2508} puis traduites automatiquement dans le noyau pure de Kappa. Cependant, il faut être conscient que cette traduction peut générer un très grand nombre de règles, là où une seule règle aurait été suffisante en utilisant des sites à occurrences multiples.
 
 Dans ce chapitre, nous proposons une approche pour détecter automatiquement des équivalences entre sites d'interaction qui n'ont pas besoin d'être spécifiées à la main.
 Puis, nous utilisons ces équivalences pour réduire l'espace d'état ou le nombre d'complexes biochimiques des modèles considérés. Ceci permet de réduire la dimension des systèmes différentiels sous-jacents et facilite le calcul de propriétés sur la distribution des traces de la sémantique stochastique. Ce n'est en revanche pas crucial pour l'échantillonnage des traces de la sémantique stochastique, puisque la simulation  travaille directement au niveau des graphes à sites \cite{DanosEtAl-APLAS07}.
 
-Enfin, notre cadre de travail n'est pas limité à la prise en compte des équivalences entre sites d'interaction. Il peut être utilisé pour considérer des chaînes d'agents indépendamment de leur orientation ou des sous-groupes de permutations de sites comme c'est courant en chemoinformatique.
+Enfin, notre cadre de travail n'est pas limité à la prise en compte des équivalences entre sites d'interaction. Il peut être utilisé pour considérer des chaînes d'agents indépendamment de leur orientation ou des sous-groupes d'échanges de sites comme c'est courant en chemoinformatique.
 
 
 \section*{Remerciements.}
@@ -216,18 +216,30 @@ Les quatre sortes de complexes biochimiques du cas d'étude sur les symétries.}
 \end{figure*}
 
 \begin{figure*}[t]%
-\hfill\subfigure[Règles de liaison/dissociation entre les sites \sitefont{x} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{y} est libre.]%
-{\begin{minipage}{0.6\linewidth}\label{fig:rulesym21}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_a_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+\hfill\subfigure[Règle de liaison entre les sites \sitefont{x} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{y} est libre.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym21}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_asso_a_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
 
-\hfill\subfigure[Règles de liaison/dissociation entre les sites \sitefont{y} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{x} est libre.]%
-{\begin{minipage}{0.6\linewidth}\label{fig:rulesym22}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_b_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+\hfill\subfigure[Règle de liaison entre les sites \sitefont{y} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{x} est libre.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym22}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_asso_b_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
 
-\hfill\subfigure[Règles de liaison dissociation entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
-{\begin{minipage}{0.6\linewidth}\label{fig:rulesym23}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_c_id_id.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
-\caption{Les six règles de réécriture du cas d'étude sur les symétries.}
+\hfill\subfigure[Règle de liaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym23}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_asso_c_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+\caption{Les trois règles de liaison du cas d'étude sur les symétries.}
 \label{fig:threerules}
 \end{figure*}
 
+\begin{figure*}[t]%
+\hfill\subfigure[Règle de dissociation entre les sites \sitefont{x} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{y} est libre.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym21d}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_diss_a_sparse_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+
+\hfill\subfigure[Règle de dissociation entre les sites \sitefont{y} de deux occurrences de la protéine \agentfont{A} dont le site \sitefont{x} est libre.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym22d}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_diss_b_sparse_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+
+\hfill\subfigure[Règle de dissociation entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} d'une autre occurrence de la protéine \agentfont{A}, sous la condition que le site \sitefont{y} de la première occurrence de protéine et le site \sitefont{x} de la seconde soient tous les deux libres.]%
+{\begin{minipage}{0.6\linewidth}\label{fig:rulesym23d}\hfill\incgraphics[\linewidth]{generated_pictures/sym_4_2_diss_c_sparse_id_id_rate.pdf}\hfill\mbox{}\end{minipage}}\hfill\mbox{}
+\caption{Les trois règles de dissociation du cas d'étude sur les symétries.}
+\label{fig:threerulesdiss}
+\end{figure*}
 
 
 \begin{sidewaysfigure}\scalebox{0.90}{\begin{minipage}{\linewidth}
@@ -319,10 +331,11 @@ Les quatre sortes de complexes biochimiques du cas d'étude sur les symétries.}
 \label{CME}
 \end{sidewaysfigure}
 
-Les règles de liaison et de dissociation entre les occurrences de la protéine \agent{A}{} sont décrites en Fig.~\ref{fig:threerules}.
-La règle bidirectionnelle dessinée en  Fig.~\ref{fig:rulesym21} stipule que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{x}{}{} respectifs avec la constante de réaction $\kxx$ et qu'un tel lien peut se défaire avec la constante de réaction $\kdxx$.
-La règle bidirectionnelle donnée en  Fig.~\ref{fig:rulesym22} précise que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{y}{}{} respectifs avec la constante de réaction $\kyy$ et qu'un tel lien peut se briser avec la constante de réaction $\kdyy$. Enfin, la règle bidirectionnelle dessinée en Fig.~\ref{fig:rulesym23} spécifie que
-deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres, peuvent se lier respectivement par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autres avec la constante de réaction $\kxy$ et qu'un tel lien peut se casser avec la constante de réaction $\kdxy$.
+Les règles du modèle sont décrites en Figs.~\ref{fig:threerules} et \ref{fig:threerulesdiss}. La Fig.~\ref{fig:threerules} contient trois règles de liaisons. La règle  dessinée en  Fig.~\ref{fig:rulesym21} stipule que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{x}{}{} respectifs avec la constante de réaction $\kxx$.
+La règle donnée en  Fig.~\ref{fig:rulesym22} précise que deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres peuvent lier leurs sites \site{y}{}{} respectifs avec la constante de réaction $\kyy$.
+La règle dessinée en Fig.~\ref{fig:rulesym23} spécifie que
+deux occurrences de la protéine \agent{A}{} dont tous les sites sont libres, peuvent se lier respectivement par le site \site{x}{}{} de l'une et le site \site{y}{}{} de l'autres avec la constante de réaction $\kxy$.
+Ces différents types de liens peuvent être briser. Les règles de dissociation sont décrites en Fig.~\ref{fig:threerulesdiss}. Selon la règle donnée en Fig.~\ref{fig:rulesym21d}, un lien entre deux sites \site{x}{}{} peut être briser avec une constante de réaction $\kdxx$. Selon la règle dessinée en Fig.~\ref{fig:rulesym22d}, un lien entre deux sites \site{y}{}{} peut être briser avec une constante de réaction $\kdyy$. Enfin, le règle décrite en Fig.~\ref{fig:rulesym23d}, un lien entre deux sites \site{x}{}{} et \site{y}{}{} peut se casser avec une constante de réaction $\kdxy$.
 
 \subsubsection{Le comportement du modèle}
 
@@ -373,7 +386,7 @@ La sémantique différentielle du modèle est définie par le systèmes d'équations d
 
 \subsubsection{Symétries et propriétés comportementales}
 
-Sans considérer les aspects quantitatifs, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} sont équivalents. Dès qu'une règle permet de lier le site \site{x}{}{} d'une occurence de la protéine \agent{A}{} à un site, une autre règle permet de lier le site \site{y}{}{} de cette occurence de protéine au même site. De même, quand une règle permet de casser un lien entre le site \site{x}{}{} d'une occurrence de protéine et un autre site, une autre règle permet de casser ce lien, si ce lien avait été porté par le site \site{y}{}{} ce cette occurence de protéines.
+Sans considérer les aspects quantitatifs, les sites \site{x}{}{} et \site{y}{}{} des occurrences de la protéine \agent{A}{} sont équivalents. Dès qu'une règle permet de lier le site \site{x}{}{} d'une occurrence de la protéine \agent{A}{} à un site, une autre règle permet de lier le site \site{y}{}{} de cette occurrence de protéine au même site. De même, quand une règle permet de casser un lien entre le site \site{x}{}{} d'une occurrence de protéine et un autre site, une autre règle permet de casser ce lien, si ce lien avait été porté par le site \site{y}{}{} ce cette occurrence de protéines.
 
 Il est donc légitime de se poser la question suivante~:
 quelles conséquences les équivalences entre sites peuvent-elles impliquer en terme de comportement du système sous-jacent et pour quelles conditions supplémentaires sur les paramètres cinétiques du modèle et son état initial (ou sa distribution d'états initiale) ?
@@ -388,7 +401,7 @@ Il semble naturel de vouloir oublier la différence entre des sites équivalents. 
 
 \subsubsection{Complexes biochimiques et règles d'interaction.}
 
-Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sortes de complexes biochimiques, les monomères qui sont formés d'une occurrence de la protéine \agent{A}{} avec ses deux sites de liaison libres et les dimères qui sont constitués de deux occurrences de la protéine \agent{A}{} liées exactement par une liaison entre un site de l'une et un site de l'autre.
+Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sortes d'occurrences de complexes biochimiques, les occurrences du monomère de la protéine \agent{A}{} (qui ne sont formés que d'une occurrence de la protéine \agent{A}{} avec ses deux sites de liaison libres) et les occurrences de dimères de la protéine \agent{A}{} (qui sont constitués de deux occurrences de la protéine \agent{A}{} liées exactement par une liaison entre un site de l'une et un site de l'autre).
 
 
 \begin{figure}[t]
@@ -404,23 +417,30 @@ Comme dessiné en Fig.~\ref{fig:Achemicalspecies}, il ne reste alors que deux sor
 %\subsubsection{Règles simplifiées}
 
 Par ailleurs, les règles se simplifient de la même manière.
-Puisqu'il n'y a plus de distinctions entre les sites de liaison de chaque occurence de la protéine \agent{A}{}, les trois règles de liaison peuvent se résumer en une seule, ainsi que les règles de dissociation.
+Puisqu'il n'y a plus de distinctions entre les sites de liaison de chaque occurrence de la protéine \agent{A}{}, les trois règles de liaison peuvent se résumer en une seule, ainsi que les règles de dissociation.
  %Il faut cependant prendre garde pour fixer les constantes cinétiques de ces règles.
 %\'Etant donné deux occurrences de la protéine \agentfont{A} dont tous les sites sont libres, il y avait auparavant trois règles pour créer un lien entre ces deux occurrences et chacune d'elles pouvait  s'appliquer de deux manières différentes (selon le choix de quelle occurrence est utilisée pour la première occurrence de la protéine \agent{A}{} du membre grauche de la règle) possibilité de créer un liaison pour une constante de réaction  corrigée totale $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Du coup, pour simuler ces règles et rester fidèle à la cinétique, la constante de réaction corrigée de la nouvelle règle devra être égale elle aussi à $\smallfrac{2\kxx+2\kyy+2\kxy}{2}$. Par ailleurs, étant données deux occurrences de la protéine \agent{A}{}, une seule règle s'applique pour briser ce lien. Si le lien est entre deux sites \sitefont{x}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxx}{2}$.
 %Si le lien est entre deux sites \sitefont{y}{}{}, cette règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdyy}{2}$. Enfin si le lien est entre un site \sitefont{x}{}{} et un site \sitefont{y}{}{}, la règle peut s'appliquer de deux manières pour une constante de réaction cumulée corrigée  de $\smallfrac{2\kdxy}{2}$. Du coup, la simplication n'est possible que si les trois constantes $\kdxx$, $\kdyy$ et $\kdxy$ sont égales. Dans ce cas, la constante de la règle de dissociation dans le modèle simplifié sera fixé à $\kdxx$.
-Les deux règles du modèle simplifié sont données en Fig.~\ref{Arule}. La constante de réaction pour la règle de liaison est notée $\K$, alors que celle pour la règle de dissociation $\KD$ (dans le modèle simplifié).
+Les deux règles du modèle simplifié sont données en Figs.~\ref{Arule} et \ref{Aruled}. La constante de réaction pour la règle de liaison est notée $\K$, alors que celle pour la règle de dissociation $\KD$ (dans le modèle simplifié).
 
 
 \begin{figure}[t]%
 {\label{rulesym211}\hfill\incgraphics{generated_pictures/sym_4_11.pdf}\hfill\mbox{}}
-\caption{La règle bidirectionnelle du modèle simplifié.
-Deux occurrences de la protéine \agentfont{A} peuvent se lier à une constante de réaction $\K$ (peu importe à quels sites) quand tous leurs sites sont libres. De plus, ce lien peut se rompre avec une constante de réaction $\KD$.}
+\caption{La règle de liaison du modèle simplifié.
+Deux occurrences de la protéine \agentfont{A} peuvent se lier à une constante de réaction $\K$ (peu importe à quels sites) quand tous leurs sites sont libres.}
 \label{Arule}
+\end{figure}
+
+\begin{figure}[t]%
+{\label{rulesym211}\hfill\incgraphics{generated_pictures/sym_4_11_sparse.pdf}\hfill\mbox{}}
+\caption{La règle de dissociation du modèle simplifié.
+Le lien entre deux occurrences de la protéine \agentfont{A} peut se rompre avec une constante de réaction $\KD$.}
+\label{Aruled}
 \end{figure}
 
 \subsubsection{États des systèmes stochastiques et différentiels sous-jacent.}
 
-Les états du système stochastique sous-jacent sont donc décrits par le nombre d'occurrences du monomère de la protéine \agent{A}{} (qui sont formées d'une occurrence de la protéine \agent{A}{}) et le nombre d'occurrences du dimère de la protéine \agent{A}{} (qui sont formées de deux occurrences de la protéine \agent{A}{} liées entre-elles). Un tel état sera noté $\Qgen$ avec $i$ le nombre d'occurrences du monomère et $j$ le nombre d'occurrences de dimères de la protéine \agent{A}{}.
+Les états du système stochastique sous-jacent sont donc décrits par le nombre d'occurrences du monomère de la protéine \agent{A}{} (qui sont formées  d'une occurrence de la protéine \agent{A}{}) et le nombre d'occurrences du dimère de la protéine \agent{A}{} (qui sont formées de deux occurrences de la protéine \agent{A}{} liées entre-elles). Un tel état sera noté $\Qgen$ avec $i$ le nombre d'occurrences du monomère et $j$ le nombre d'occurrences de dimères de la protéine \agent{A}{}.
 
 Quant à eux, les états du système différentiel sous-jacent sont décrits par deux concentrations. La concentration en monomère est notée $\conc{\mono}$ alors que celle en dimère est notée $\conc{\dimer}$.
 
@@ -702,7 +722,7 @@ la contrainte sur les constantes de dissociation n'est plus satisfaite. Les cons
 Elle est prise arbitrairement égale à la moyenne entre la constante de dissociation des liens symétriques et celle des liens asymétriques, à savoir $3$.   On peut alors constater à la fois dans le cadre stochastique et dans le cadre différentiel un écart entre le comportement du modèle initial et du modèle simplifié (voir en Fig.~\ref{figctmcnonsymkd} et en Fig.~\ref{figodenonsymkd}). Une telle disparité aurait été observée quelque soit la valeur de la constante $\KD$.
 
 
-\item Le troisième jeu de paramètres a pour but de tester l'importance éventuelle de l'état initial. Par rapport au premier jeu de paramètres, seule la distribution des états initiaux (ou l'état initial dans le cadre différentiel) est modifiée. Le système stochastique débute dans un état avec deux occurrences de la protéine \agent{A}{} sans lien, et deux occurrences du dimère symétrique  de la protéine \agent{A}{} formées par des liens sur les sites \site{x}{}{}. Quant au système différentiel, il démare d'un état où les monomères et les dimères $\sitefont{x}-\sitefont{x}$ sont en concentration $2$, alors que les deux autres formes de dimère sont en concentration $0$.  l'évolution des distributions d'états des deux systèmes stochastiques sous-jacents est dessinée en Fig.~\ref{figctmcnotsyminitial}, alors que l'évolution des concentrations en monomère et en dimère dans les deux systèmes différentiels sous-jacents est donnée en Fig.~\ref{figodenotsyminitial}.
+\item Le troisième jeu de paramètres a pour but de tester l'importance éventuelle de l'état initial. Par rapport au premier jeu de paramètres, seule la distribution des états initiaux (ou l'état initial dans le cadre différentiel) est modifiée. Le système stochastique débute dans un état avec deux occurrences de la protéine \agent{A}{} sans lien, et deux occurrences du dimère symétrique  de la protéine \agent{A}{} formées par des liens sur les sites \site{x}{}{}. Quant au système différentiel, il démarre d'un état où les monomères et les dimères $\sitefont{x}-\sitefont{x}$ sont en concentration $2$, alors que les deux autres formes de dimère sont en concentration $0$.  l'évolution des distributions d'états des deux systèmes stochastiques sous-jacents est dessinée en Fig.~\ref{figctmcnotsyminitial}, alors que l'évolution des concentrations en monomère et en dimère dans les deux systèmes différentiels sous-jacents est donnée en Fig.~\ref{figodenotsyminitial}.
 À la fois, le cadre stochastique et dans le cadre différentiel,
 les courbes coïncident entre le modèle initial et le modèle simplifié, ce qui suggère que la correction de la simplification du modèle ne dépend pas de la distribution initiale (ou de l'état initial dans le cadre stochastique).
 
@@ -711,7 +731,7 @@ les courbes coïncident entre le modèle initial et le modèle simplifié, ce qui su
 
 
 Ainsi, si l'égalité entre les constantes de dissociation
-semble cruciale pour pouvoir simplifier le modèle de manière exacte, le choix de la distribution initiale (ou de l'état initial) et des constantes d'association ne semblent pas importantes. Pour les constantes d'association, ceci s'explique par la simplicité du cas d'étude, puisque que les règles de liaison ne lient que des monomères et que ces monomères sont invariants par échange de leurs sites \site{x}{}{} et \site{y}{}{}. De manière général, les conditions sur les constantes cinétique portent sur des règles qui effectuent des actions similaires sur des motifs équivalents à permutation de sites près. La correction du modèle simplifiée peut alors s'expliquer par une bisimulation en-avant \cite{1347609} sur l'espace des états du système stochastique sous-jacent ou de son analogue différentiel \cite{Cardelli2015ForwardAB}.
+semble cruciale pour pouvoir simplifier le modèle de manière exacte, le choix de la distribution initiale (ou de l'état initial) et des constantes d'association ne semblent pas importantes. Pour les constantes d'association, ceci s'explique par la simplicité du cas d'étude, puisque que les règles de liaison ne lient que des monomères et que ces monomères sont invariants par échange de leurs sites \site{x}{}{} et \site{y}{}{}. De manière général, les conditions sur les constantes cinétique portent sur des règles qui effectuent des actions similaires sur des motifs équivalents à échange de sites près. La correction du modèle simplifiée peut alors s'expliquer par une bisimulation en-avant \cite{1347609} sur l'espace des états du système stochastique sous-jacent ou de son analogue différentiel \cite{Cardelli2015ForwardAB}.
 
 \subsubsection{Invariants quantitatifs}
 
@@ -825,7 +845,7 @@ L'invariance de ces rapports de proportionnalité, pour certains jeux de paramètr
 d'une chaîne de Markov pour certaines distributions d'états initiales tout en restant Markovien \cite{buchholz94}.
 De même, cela permet de réduire le système différentiel sous-jacent pour certains états initiaux.
 
-Dans le cas du premier jeu de paramètres, le quotient opère même à plus bas-niveau, puisqu'il s'exprime au niveau réactionnel: à chaque réaction, peut être associée une réaction symétrique obtenue en échangeant les instances des sites \site{x}{}{} et \site{y}{}{} dans certaines occurrences de la protéine \agent{A}{}, ce qui permet de montrer l'existence d'une bisimulation arrière \cite{1347609} sur système de transition stochastique sous-jacent ou de réduire le système différentiel sous-jacent.
+Dans le cas du premier jeu de paramètres, le quotient opère même à plus bas-niveau, puisqu'il s'exprime au niveau réactionnel: à chaque réaction, peut être associée une réaction symétrique obtenue en échangeant les occurrences des sites \site{x}{}{} et \site{y}{}{} dans certaines occurrences de la protéine \agent{A}{}, ce qui permet de montrer l'existence d'une bisimulation arrière \cite{1347609} sur système de transition stochastique sous-jacent ou de réduire le système différentiel sous-jacent.
 
 \subsection{Conclusion sur le cas d'étude}
 
@@ -1011,88 +1031,12 @@ for any rule $r'$, the value $\symrules{r'}$ denotes the number of automorphisms
 \newcommand{\newr}{\actiongraphlong{(\sigmaL,\sigmaR)}{r}}
 \newcommand{\newrbis}{\actiongraphlong{(\sigmaLbis,\sigmaRbis)}{r'}}
 
-\section{symetries in rule-based models}
 
+\section{Échanges de sites dans des graphes à sites} 
 
+Pour rester simple, le cadre général ne sera pas décrit. Au lieu de cela, la présentation se concentre sur le cas particulier où les symétries prennent la forme d'échanges de sites. Le but de cette section est de définir l'effet de la permutation de sites dans les différents éléments du langage Kappa, c'est à dire les motifs, les plongements, les règles et l'application des règles.
 
-\begin{figure*}
-\subfigure[${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_u$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_p$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$]{\label{fig:sym:a}%
-\incgraphics[0.3\linewidth]{generated_pictures/sym_dimer1_uu_pp.pdf}}
-\hfill\subfigure[${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_p$\sitesep$\sitefont{y}_u$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$]{\label{fig:sym:b}%
-\incgraphics[0.3\linewidth]{generated_pictures/sym_dimer1_up.pdf}}
-\hfill\subfigure[${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$]{\label{fig:sym:c}%
-\incgraphics[0.3\linewidth]{generated_pictures/sym_dimer1_uu.pdf}}
-\caption{Three sites graphs. The first one ${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_u$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_p$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$ is both $\groupsetone$-symetric and $\groupsettwo$- symetric; its $\iso$-equivalence class is both $\groupsetone$-symetric and $\groupsettwo$-symetric as well. The seconc one ${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_p$\sitesep$\sitefont{y}_u$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$ is neither $\groupsetone$-symetric, nor $\groupsettwo$-symetric; but its $\iso$-equivalence class is $\groupsettwo$-symetric (but not $\groupsetone$-symetric). The third one ${\agent{A$_1$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_2$}{}@z}$}\agentsep\agent{A$_2$}{$\sitefont{x}_u$\sitesep$\sitefont{y}_p$\sitesep$\sitefont{z}^{\agent{A$_1$}{}@z}$}}$  is neither $\groupsetone$-symetric, nor $\groupsettwo$-symetric; its $\iso$-equivalence class is neither $\groupsetone$-symetric, nor $\groupsettwo$-symetric too.}
-\label{fig:sym}
-\end{figure*}
-
-\begin{example}\label{exmp:sym-sitegraph-one}
-\end{example}
-
-
-
-\begin{example}\label{exmp:sym-sitegraph-two}
-We take the same signature as in Exa.~\ref{exmp:siteswap}.
-We consider both the set $\groupsetone$ of heterogeneous permutations of sites  (as defined in Exa.~\ref{exmp:siteswap}) and the set $\groupsettwo$ of the homogeneous permutations of sites (as defined in Exa.~\ref{exmp:siteswapbis}).
-
-We consider the $\iso$-equivalence class of the three site graphs that are drawn in Fig.~\ref{fig:sym}.
-({\eg}see Fig.~\ref{fig:sym:c}) is not  $\groupsettwo$-symetric (and thus, by Prop.~\ref{prop:sub:sym:two}, it is not $\groupsetone$-symetric as well). In particular, if we apply the homogeneous permutation of sites $\{1,2\}$ which consists in swapping the state of the sites \sitefont{x} and \sitefont{y} both in the agent with the label $1$, and in the agent with label $2$, we get the following site graph:
-which is not isomorphic to the initial one.
-%\end{enumerate}
-\end{example}
-
-
-\subsection{symetries among a set of rules}
-
-
-Now we can define a more general notion of symetric models.
-\begin{definition}[symetric model]
-\label{symetricmodels}
-A model is said to be symetric with respect to a valid set of transformations $\groupset[]$ over site graphs if and only if  it is $\equivmodel$-equivalent to a model that is strongly symetric with respect to the set of transformations  $\groupset[]$.
-\end{definition}
-
-Def.~\ref{symetricmodels} does not provide an effective decision procedure to decide wether or not a model is symetric with respect to a set of transformations.
-
-Now, we give a direct characterisation  of symetric models.
-\begin{prop}\label{prop:sym:model:efficient}
-Let $M\bydef(r_i,k_i)_{i\in I}$ be a model and $\groupset$ be a valid set of transformations over site graphs.
-
-
-Then, the following assertions are equivalent:
-\begin{enumerate}
-\item the model $M$ is symetric with respect to the set of transformations $\groupset$;
-\item for two rules $r'\;:\;L'  \actionmap R'$ and $r''\;:\;L'' \actionmap R''$ such that
-$r' \groupequiv r''$, the following equation is satisfied:
-\begin{equation*}
-\sum_{\substack{i\in I\suchthat\\ r_i \iso r' }} \myfrac{\symrules{r'}{\cdot}k_i}{\aut{L'}}
-=
-\sum_{\substack{j\in I\suchthat\\ r_{j}\iso r''}}
-\myfrac{\symrules{r''}{\cdot}k_j}{\aut{L''}},\end{equation*}
-
-where:
-\begin{enumerate}
-\item  for any rule $r$, the value $\symrules{r}$ denotes the number of automorphisms of the rule $r$ (that is say the number of pairs of automorphisms $(h_L,h_R)$ such that the triple $(r,h_L,h_R)$ is a refinement of the rule $r$);
-\item  and, for any site graph $E$, the value $\aut{E}$ denotes the number of automorphisms of the site graph $E$,
-\end{enumerate}
-\end{enumerate}
-\end{prop}
-
-
-
-The checking whether, or not, a model is symetric with respect to a given (valid) set of transformations between site graph can be done in two steps. Firstly,
-we gather rules  into $\iso$-equivalence classes.
-Then, we scan over the $\iso$-equivalence classes of rules of the model in the following way.
-We pick an $\iso$-equivalence class of rules in the model among the ones that we have not already dealt with. We pick an arbitrary  rule in that $\iso$-equivalence class and we compute the image of this rule by each pair of transformations that can be applied to this rule. For each so-obtained image, we check whether the condition about the rates of the $\iso$-equivalence classes of the initial rules and its image is satisfied. If it is satisfied for each image,  we mark the isomorphic class of each image as dealt with, and we keep on iterating, otherwise we have proved that the model is not symetric. If we can deal with each rule without failing a condition over the rates of $\iso$-equivalence classes of rules, then we have proved that the model is symetric.
-
-
-Notice, that in Prop.~\ref{prop:sym:model:efficient}, thanks to Prop.~\ref{countisorule}, we could have multiply the rate of each rule $r$ by the number $\card([r]_\iso\cap [r]_{\groupequiv})$ of the rules which are both symetric and isomorphic to this rule, instead of multiplying by the number of automorphisms of this rule.
-}
-
-\section{Permutations de sites dans des graphes à sites} 
-
-Pour rester simple, le cadre général ne sera pas décrit. Au lieu de cela, la présentation se concentre sur le cas particulier où les symétries prennent la forme de permutation de sites. Le but de cette section est de définir l'effet de la permutation de sites dans les différents éléments du langage Kappa, c'est à dire les motifs, les plongements, les règles et l'application des règles.
-
-Les permutations de sites forment un groupe. Ainsi il est possible de les composer et chaque permutation admet une permutation inverse. De plus, ce groupe est engendré par les transpositions de sites (qui consistent à échanger uniquement deux sites). Aussi, seul l'effet des transpositions de sites sera décrit, l'effet des autres permutations pouvant être déduit en décomposant ses permutations en séquences de transpositions.
+Les échanges de sites forment un groupe. Ainsi il est possible de les composer et chaque échange de sites admet un échange inverse. De plus, ce groupe est engendré par les échanges entre deux sites (qui consistent à permuter l'état de deux sites dans l'occurrence d'une protéine). Aussi, seul l'effet des échanges entre deux sites sera décrit, l'effet des autres transformations pouvant être déduit en décomposant séquentiellement ces échanges élementaires de sites.
 
 
 
@@ -1108,67 +1052,74 @@ Les permutations de sites forment un groupe. Ainsi il est possible de les compos
 \newcommand{\sympatternd}[2]{\xymatrix@C=8mm@R=20mm{%
 \incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_#2.pdf} \ar@[brown]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_g#1_op_#2_op.pdf}}}
 
+\newcommand{\symrulel}[2]{\xymatrix@C=20mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_id_id.pdf} \ar@[green]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_inv_id.pdf}}}
+
+\newcommand{\symruler}[2]{\xymatrix@C=20mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_id_id.pdf} \ar@[red]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_id_inv.pdf}}}
+
+\newcommand{\symruled}[2]{\xymatrix@C=20mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_id_id.pdf} \ar@[brown]@2@<3.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_4_2_#1_#2_inv_inv.pdf}}}
+
 \subsection{Transposition de deux sites dans un complexe biochimique}
+
 
 \begin{figure}[htp]
 
-\hfill\subfigure[Transposition des sites dans complexes biochimiques formées d'une seule instance de la protéine \agentfont{A}.]%
+\hfill\subfigure[Transposition des sites dans les occurrences du monomère  de la protéine \agentfont{A}.]%
 {\label{fig:trans:mono}%
 \begin{minipage}{\linewidth}\hfill\sympatternm{}{Free_Free}\hfill\mbox{}\end{minipage}}%
 \hfill\mbox{}
 
-\hfill\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A}.]%
+\hfill\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les occurrences de dimères de la protéine \agentfont{A}.]%
 {\label{fig:trans:dimg}%
 \sympatternl{sdimer}{x_x_Free_Free}%
 \hspace*{2cm}\sympatternl{sdimer}{x_y_Free_Free}}%
 \hfill\mbox{}
 
-\hfill\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A}.]%
+\hfill\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les occurrences de dimères de la protéine \agentfont{A}.]%
 {\label{fig:trans:dimd}%
 \sympatternr{sdimer}{x_x_Free_Free}%
 \hspace*{2cm}\sympatternr{sdimer}{x_y_Free_Free}}%
 \hfill\mbox{}
 
-\hfill\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A}.]{%
+\hfill\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les occurrences de dimères de la protéine \agentfont{A}.]{%
 \label{fig:trans:dimboth}%
 \sympatternd{sdimer}{x_x_Free_Free}%
 \hspace*{2cm}\sympatternd{sdimer}{x_y_Free_Free}}%
 \hfill\mbox{}
 
-\caption{Effet des transpositions de site sur les complexes biochimiques du modèle jouet.}
+\caption{Effet des échanges de sites sur les différentes formes de complexes biochimiques du modèle jouet.}
 \label{fig:sym:complex}
 \end{figure}
 
 
-
+Il est possible d'échanger l'état de deux sites de la même occurrence d'un agent dans un complexe biochimique. Plutôt que d'échanger leurs états, il est possible de représenter duallement cette transformation en échangeant le nom des sites correspondants. Des exemples sont donnés en Fig.~\ref{fig:sym:complex}. Deux complexes biochimiques qui peuvent être obtenus l'un à partir de l'autre en permutant éventuellement des paires de sites dans une ou plusieurs occurrences de protéines, seront appelées \index{symétriques (complexes biochimiques)}{symétriques}\index{complexes biochimiques (symétriques)}.
 
 \begin{example}
-En Figs.~\ref{fig:sym:complex} et \ref{fig:sym:motifs} sont montrés des exemples de transpositions de sites dans des graphes à sites.
-L'action d'une permutation de site qui transforme un graphe à site en un autre est notée par une double flèche ondulée colorée. Les couleurs représentent différentes sortes de permutation.  Dans le cas particulier des transpositions de sites, cette flèche est bidirectionnelle puisque cette action est involutive (appliquer deux fois une transposition revient à ne rien changer). L'effet des transpositions sur les graphes à site est dessiné en échangeant la couleur et le nom des sites qui sont permutés, sans changer leurs états de liaison (les sites n'ont pas d'états d'activation dans ce modèle, sinon eux-aussi auraient été conservés).
+En Fig.~\ref{fig:sym:complex}, les échanges de sites sont appliqués aux complexes biochimiques de l'exemple étudiés dans ce chapitre (voir en Fig.~\ref{fig:chemicalspecies}). En Fig.~\ref{fig:trans:mono} est montré l'effet des échanges de sites sur les occurrences du monomère  de la protéine \agentfont{A}.
+Il n'y a donc qu'un échange possible, puisqu'il n'y a qu'une occurrence de la protéine \agentfont{A}. Cet échange est dessiné en orange. Les deux sites de l'occurrence de la protéine \agentfont{A} sont nécessairement libres, sinon ce ne serait pas un monomère. Du coup, l'échange des deux sites laisse la configuration de ce complexe biochimique inchangée (puisqu'en effet la position des sites dans une occurrence de protéine n'a pas de signification particulière en Kappa).
 
-En Fig.~\ref{fig:sym:complex}, les transpositions de sites sont appliquées aux complexes biochimiques de l'exemple étudié dans ce chapitre (voir en Fig.~\ref{fig:threerules}). En Fig.~\ref{fig:trans:mono} est montré l'effet des transpositions de sites sur les complexes biochimiques qui ne sont formées que d'une instance de la protéine \agentfont{A}.
-Il n'y a donc qu'une transposition possible, puisqu'il n'y a qu'une instance de la protéine \agentfont{A}. Cette transposition est dessinée en orange. Les deux sites de l'instance de la protéine \agentfont{A} sont nécessairement libres, sinon ce ne serait pas un monomère. Du coup, la transposition des deux sites laisse la configuration de l'complexe biochimique inchangée (puisqu'en effet la position des sites dans une instance de protéine n'a pas de signification particulière en Kappa).
-
-Pour les complexes chimiques formées de deux instances de la protéine \agentfont{A}, il est possible de permuter les sites de l'instance de gauche, les sites de l'instance de droite, ou les deux.
-En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition des sites de gauche. En Fig.~\ref{fig:trans:dimd} est montré, en rouge, l'effet de la transposition des sites de droite. Enfin en Fig.~{fig:trans:dimboth} est montré, en marron, l'effet de la combinaison des deux transpositions. L'ordre n'a pas d'influence sur le résultat. Hormis dans le cas où les sites de deux occurrences de la protéine \agentfont{A} sont échangées dans le dimer formé par une liason entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence de la protéine \agentfont{A}, l'application des transpositions de sites changent l'complexe biochimique. Essentiellement, les liaisons entre deux sites identiques deviennent des liaisons entre deux sites différents lorsque les sites sont évhangés dans une seule instance de la protéine \agentfont{A} (voir en Figs.~\ref{fig:trans:dimg} et \ref{fig:trans:dimd}), alors que réciproquement, les liaisons entre deux sites différents deviennent des liaisons entre deux sites identiques (le site en question dépend de quel côté la transposition est appliquée). Lorsque les transpositions de sites sont appliquées simultanément aux deux occurrences de la protéine \agentfont{A} (voir en Fig.~\ref{fig:trans:dimboth}), l'effet est de transformer un dimer formé par une liaison entre les deux sites \site{x}{} des instances de la protéine \agentfont{A} en un dimer formé par une liaison entre les deux sites \site{y}{} des instances de la protéine \agentfont{A}, et réciproquement. Dans le cas d'un dimer formé d'une liaison entre le site \sitefont{x} d'une occurrence de la protéine \agentfont{A} et le site \sitefont{y} de l'autre occurrence, le rôle des deux instances est échangé. Ceci ne change pas l'complexe biochimique. Le résultat de la transformation est isomorphe au complexe biochimique initial.
+Pour les occurrences de dimères de la protéine  \agent{A}{}, il est possible de permuter les sites de l'occurrence de gauche de la protéine \agent{A}{}, les sites de l'occurrence de droite \agent{A}{}, ou les deux.
+En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de l'échange des sites de l'occurrence gauche de la protéine \agent{A}{}. En Fig.~\ref{fig:trans:dimd} est montré, en rouge, l'effet de l'échange des sites de l'occurrence droite de la protéine \agent{A}{}. Enfin en Fig.~\ref{fig:trans:dimboth} est montré, en marron, l'effet de la combinaison des deux échanges de sites. L'ordre n'a pas d'influence sur le résultat. L'échange des sites de deux occurrences de la protéine \agent{A}{} dans une occurrence du dimère asymétrique donne également une occurrence de dimère asymétrique, comme le montre la partie droite de la Fig.~\ref{fig:trans:dimboth}. Hormis ce cas particulier, l'application des échanges de sites aux autres configurations de complexes biochimiques les change. Essentiellement, les liaisons entre deux sites identiques deviennent des liaisons entre deux sites différents lorsque les sites sont échangés dans une seule occurrence de la protéine \agent{A}{}(voir en Figs.~\ref{fig:trans:dimg} et \ref{fig:trans:dimd}), alors que réciproquement, les liaisons entre deux sites différents deviennent des liaisons entre deux sites identiques (le site en question dépend de quel côté l'échange est appliqué). Lorsque les échanges de sites sont appliqués simultanément aux deux occurrences de la protéine \agent{A}{}(voir en Fig.~\ref{fig:trans:dimboth}), l'effet est de transformer un dimer formé par une liaison entre les deux sites \site{x}{}{} des occurrences de la protéine \agent{A}{} en un dimer formé par une liaison entre les deux sites \site{y}{}{} des occurrences de la protéine \agentfont{A}, et réciproquement.
 \end{example}
-
 
 \subsection{Transposition de deux sites dans un motif}
 
 
 \begin{figure}[htp]
 
-\subfigure[Transposition des sites sur les motifs avec une seule instance de la protéine \agentfont{A} partiellement définie.]{%
+\subfigure[Transposition des sites sur les autres motifs avec une seule occurrence de la protéine \agentfont{A} partiellement définie.]{%
+\label{fig:sym:motifs:a}%
 \hspace*{2cm}{\sympatternm{}{None_None}}%
 \hspace*{1cm}{\sympatternm{}{None_Free}}%
 \hspace*{1cm}{\sympatternm{}{None_Bound}}%
 \hspace*{1cm}{\sympatternm{}{Free_Bound}}%
-%\hfill{\sympatternr{}{Bound_Bound}}%
-\hfill\mbox{}}
+%\hspace*{1cm}{\sympatternr{}{Bound_Bound}}%
+\hspace*{2cm}\mbox{}}
 
-\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
-{\begin{minipage}{\linewidth}\hfill{\sympatternl{sdimer}{x_x_None_None}}%
+\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les autres motifs formées de deux occurrences de la protéine \agentfont{A} partiellement définies.]%
+{\label{fig:sym:motifs:b}\begin{minipage}{\linewidth}\hfill{\sympatternl{sdimer}{x_x_None_None}}%
 \hspace*{2cm}{\sympatternl{sdimer}{x_y_None_None}}%
 \hfill\mbox{} \bigskip\\
 
@@ -1181,8 +1132,8 @@ En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition de
 \hfill\mbox{} \bigskip\\
 \end{minipage}}
 
-\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
-{\begin{minipage}{\linewidth}\hfill{\sympatternr{sdimer}{x_x_None_None}}%
+\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les autres motifs formées de deux occurrences de la protéine \agentfont{A} partiellement définies.]%
+{\label{fig:sym:motifs:c}\begin{minipage}{\linewidth}\hfill{\sympatternr{sdimer}{x_x_None_None}}%
 \hspace*{2cm}{\sympatternr{sdimer}{x_y_None_None}}%
 \hfill\mbox{} \bigskip\\
 
@@ -1194,8 +1145,8 @@ En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition de
 \hspace*{2cm}{\sympatternr{sdimer}{x_y_Free_None}}%
 \hfill\mbox{} \bigskip\\ \end{minipage}}
 
-\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les complexes biochimiques formées de deux instances de la protéine \agentfont{A} partiellement définies.]%
-{\begin{minipage}{\linewidth}\hfill{\sympatternd{sdimer}{x_x_None_None}}%
+\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les autres motifs formées de deux occurrences de la protéine \agentfont{A} partiellement définies.]%
+{\label{fig:sym:motifs:d}\begin{minipage}{\linewidth}\hfill{\sympatternd{sdimer}{x_x_None_None}}%
 \hspace*{2cm}{\sympatternd{sdimer}{x_y_None_None}}%
 \hfill\mbox{} \bigskip\\
 
@@ -1208,18 +1159,213 @@ En Fig.~\ref{fig:trans:dimg} est montré, en vert, l'effet de la transposition de
 \hfill\mbox{} \bigskip\\\end{minipage}
 
 }
-\caption{Effet des transpositions de sites dans les motifs connexes qui ne sont pas des complexes biochimiques.}
+\caption{Effet des échanges de sites dans les motifs connexes qui ne sont pas des complexes biochimiques.}
 \label{fig:sym:motifs}
 \end{figure}
 
-Il est possible d'échanger deux sites dans une instance de protéine dans un motif. Pour cela il suffit de choisir une instance de protéine dans un motif, et deux sites dans l'interface de la sorte de protéine correspondante.
-Si l'instance de protéine ne contient aucun de ces deux sites, alors le motif reste tel qu'il est. Si l'instance de protéine contient exactement un des deux sites, alors celui-ci est remplacé par l'autre site en gardant ses éventuels états d'activation et de liaison. Enfin, si l'instance de protéine contient les deux sites, alors l'un est remplacé par l'autre, et réciproquement. De ce fait, les deux sites échangent leurs éventuels états d'activation et de liaison. Le motif reste inchangé si les deux sites avaient les mêmes états.
+Il est possible d'échanger deux sites dans une occurrence de protéine dans un motif. Pour cela il suffit de choisir une occurrence de protéine dans un motif, et deux sites dans l'interface de la sorte de protéine correspondante.
+Si l'occurrence de protéine ne contient aucun de ces deux sites, alors le motif reste tel qu'il est. Si l'occurrence de protéine contient exactement un des deux sites, alors celui-ci est remplacé par l'autre site en gardant ses éventuels états d'activation et de liaison. Enfin, si l'occurrence de protéine contient les deux sites, alors l'un est remplacé par l'autre, et réciproquement. De ce fait, les deux sites échangent leurs éventuels états d'activation et de liaison. Le motif reste inchangé si les deux sites avaient les mêmes états.
+Deux motifs qui peuvent être obtenus l'un à partir de l'autre en échangeant éventuellement des paires de sites dans une ou plusieurs occurrences d'une protéine sont appelés \index{symétriques (motifs)}{motifs}\index{motifs symétriques}{} symétriques. On dit également que l'un est le symétrique de l'autre en précisant éventuellement par quels échanges de sites.
 
-\subsection{Restriction d'une transposition de deux sites au domaine d'un plongement}
+\begin{example}
+L'effet des échanges de sites dans les occurrences des protéines des motifs connexes qui ne forment pas des complexes biochimiques (parce l'une de leur occurrence de la protéine \agent{A}{} y est partiellement définie) est décrit en Fig.~\ref{fig:sym:motifs}.
 
-\subsection{Effet d'une transposition de sites sur une règle}
 
-\subsection{Effet d'une transposition de sites sur une réaction induite par une règle}
+L'effet des échanges de sites dans les motifs formés d'une seule occurrence de la protéine \agent{A}{} est décrit en Fig.~\ref{fig:sym:motifs:a}. Les transformations correspondantes sont représentées par des doubles flèches  ondulées oranges. Permuter les sites \site{x}{}{} et \site{y}{}{} dans l'occurrence de la protéine \agent{A}{} dans un motif qui ne contient aucun site, laisse cette occurrence inchangée. Lorsqu'une occurrence de la protéine \agent{A}{} ne contient que le site \site{x}{}{}, son symétrique ne contient que le site \site{y}{}{} en préservant son état de liaison (qui peut être libre ou lié sans préciser à quel site) et réciproquement. Le cas d'une instance du monomère de la protéine \agent{A}{} dont les deux sites sont libres, a déjà été vu. En effet, c'est un complexe biochimique (voir en Fig.~\ref{fig:trans:mono}). Par ailleurs, il est impossible dans ce modèle de trouver une instance de la protéine \agent{A}{} avec ses deux sites liés, il reste donc uniquement le cas d'une instance de protéine avec deux sites, l'un libre, et l'autre lié à un site inconnu. Dans ce cas, échanger les sites revient à rendre libre le site qui était lié et lié celui qui était libre.
+
+En Fig.~\ref{fig:sym:motifs:b}, sont représentés par des doubles flèches ondulées vertes l'échange des sites \sitefont{x}{}{} et \sitefont{y}{}{} dans l'occurrence de gauche de la protéine \agent{A}{} dans des motifs formés de deux occurrences de la protéine \agent{A}{} connectées entre elles. Les liens symétriques sont transformés en des liens asymétriques, et réciproquement (le type de lien étant défini par la site qui était lié dans l'occurrence de droite de la protéine \agent{A}{}). De plus, si le motif contenait un site libre, celui-ci est conservé mais change de nom s'il était situé dans l'occurrence de gauche de la protéine.
+
+En Fig.~\ref{fig:sym:motifs:c}, sont représentés par des doubles flèches ondulées rouges l'échange des sites \sitefont{x}{}{} et \sitefont{y}{}{} dans l'occurrence de droite de la protéine \agent{A}{} dans des motifs formés de deux occurrences de la protéine \agent{A}{} connectées entre elles. Les liens symétriques sont transformés en des liens asymétriques, et réciproquement (le type de lien étant défini par la site qui était lié dans l'occurrence de droite de la protéine \agent{A}{}). De plus, si le motif contenait un site libre, celui-ci est conservé mais change de nom s'il était situé dans l'occurrence de gauche de la protéine.
+
+En Fig.~\ref{fig:sym:motifs:d}, sont représentés par des doubles flèches marrons l'échange des sites \sitefont{x}{}{} et \sitefont{y}{}{} dans les deux occurrences de la protéine \agent{A}{} dans les motifs formés de deux occurrences de la protéine \agent{A}{} connectées entre elles. Les liens symétriques restent symétriques mais sont portés par l'autre site. Les liens asymétriques restent asymétriques (mais le rôle des deux occurrences de la protéine \agent{A}{} sont échangés). De plus, si le motif contenait un site libre, celui-ci est conservé mais change de nom tout en restant dans la même occurrence de la protéine \agent{A}{}.
+\end{example}
+
+\subsection{Application d'échanges de sites à un plongement}
+
+L'application d'une règle repose sur l'existence d'un plongement du membre gauche de cette règle et le graphe représentant soit l'état du système, soit des complexes biochimiques à transformer. Pour raisonner sur les échanges de sites, nous avons donc besoin de définir le symétrique d'un plongement d'un motif dans un autre par un échange de sites.
+
+Pour définir un échange de sites dans un plongement d'un motif source  dans un motif cible, nous choisissons un échange de sites à appliquer au motif cible. Ensuite, nous appliquons à chaque agent du motif source, le même échange de sites que celui qui a été appliqué à son image dans le motif cible. Ainsi, les échanges de sites qui s'appliquent à des agents du motif image sans antécédent n'ont pas d'effet sur le motif source.
+
+Par construction, la correspondance entre les agents du motif source et ceux du motif cible est toujours valide dans leur symétrique. Du coup, cette correspondance induit  également un plongement entre le symétrique du motif source et le symétrique du motif cible. Nous appelons ce plongement le \index{symétriques (de  plongements)}{symétrique}\index{plongements (symétriques}{} du plongement initial par l'échange de sites en question. On dit alors que ces deux plongements sont symétriques.
+
+\newcommand{\symembedmono}[3]{\xymatrix@C=15mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_embedding_mono_#1_#2_#3_id.pdf
+} \ar@[brown]@2@<11.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_embedding_mono_#1_#2_#3_inv.pdf}}}
+
+
+\begin{figure}[p]
+
+
+
+\hfill\subfigure[Échange des sites dans les plongements vers les occurrences du monomère de la protéine \agentfont{A}.]%
+{\label{fig:sym:plongement:a}%
+{\begin{minipage}{\linewidth}%
+\hfill\symembedmono{.}{Free}{Free}\hfill
+\hfill\symembedmono{a..}{Free}{Free}\hfill
+\hfill\symembedmono{ax.}{Free}{Free}\hfill\mbox{}
+
+\hfill\symembedmono{a.y}{Free}{Free}\hfill
+\hfill\symembedmono{identity}{Free}{Free}\hfill\mbox{}
+\end{minipage}}}\hfill\mbox{}
+
+\hfill\subfigure[Échange des sites dans les plongements vers le motif constitué d'une occurrence de la protéine \agentfont{A} avec le site \sitefont{x} lié et le site \sitefont{y} non documenté.]%
+{\label{fig:sym:plongement:b}%
+{\begin{minipage}{\linewidth}%
+\hfill\symembedmono{.}{Bound}{None}\hfill
+\hfill\symembedmono{a..}{Bound}{None}\hfill
+\hfill\symembedmono{ax.}{Bound}{None}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+\caption{Effet des échanges de sites sur les plongements vers des motifs consitutés d'une seule occurrence de la protéine \agentfont{A}.}
+\label{fig:sym:plongement:mono}
+\end{figure}
+
+\newcommand{\symembeddim}[8]{\xymatrix@C=15mm@R=20mm{%
+\incgraphics[0.4\linewidth]{generated_pictures/sym_embedding_dimer_#2_#3_#4_#5_#6_id_id.pdf
+} \ar@[#1]@2@<11.7mm>@/_/@{<~>}[r]&\incgraphics[0.4\linewidth]{generated_pictures/sym_embedding_dimer_#2_#3_#4_#5_#6_#7_#8.pdf}}}
+
+\newcommand{\symgroup}[3]{
+\hfill \symembeddim{#1}{..}{Free}{None}{x}{x}{#2}{#3} \hfill\mbox\\
+
+\hfill\symembeddim{#1}{a...}{Free}{None}{x}{x}{#2}{#3} \hfill\symembeddim{#1}{ax..}{Free}{None}{x}{x}{#2}{#3} \hfill\mbox\\
+
+\hfill \symembeddim{#1}{a.y.}{Free}{None}{x}{x}{#2}{#3} \hfill \symembeddim{#1}{axy.}{Free}{None}{x}{x}{#2}{#3} \hfill\mbox\\
+
+\hfill \symembeddim{#1}{.a..}{Free}{None}{x}{x}{#2}{#3} \hfill \symembeddim{#1}{.ax.}{Free}{None}{x}{x}{#2}{#3} \hfill\mbox\\
+
+
+\hfill\symembeddim{#1}{ax.ax.}{Free}{None}{x}{x}{#2}{#3} \hfill\symembeddim{#1}{axyax.}{Free}{None}{x}{x}{#2}{#3} \hfill\mbox
+
+}
+
+\begin{figure}[htp]
+\begin{minipage}{\linewidth}%
+
+\symgroup{red}{inv}{id}
+
+\end{minipage}
+\caption{Effet de l'échange des sites de l'occurrence gauche de la protéine \agentfont{A} dans un plongement vers un motifs formé de deux occurrences de la protéine \agentfont{A}.}
+\label{fig:trans:bingingd}
+\end{figure}
+
+\begin{figure}[htp]
+\begin{minipage}{\linewidth}%
+\symgroup{green}{id}{inv}
+\end{minipage}
+\caption{Effet de l'échange des sites de l'occurrence droite de la protéine \agentfont{A} dans un plongement vers un motifs formé de deux occurrences de la protéine \agentfont{A}.}
+\label{fig:trans:bingingd}
+\end{figure}
+
+\begin{figure}[htp]
+\begin{minipage}{\linewidth}%
+\symgroup{orange}{inv}{inv}
+\end{minipage}
+\caption{Effet de l'échange des sites de chacune des occurrences de la protéine \agentfont{A} dans un plongement vers un motifs formé de deux occurrences de la protéine \agentfont{A}.}
+\label{fig:trans:bingingboth}
+\end{figure}
+
+
+\begin{example}
+Des exemples de plongements symétriques sont donnés en Fig.~\ref{fig:sym:plongement}.
+
+\begin{itemize}
+\item Le premier exemple décrit l'application de permutations de sites à l'identité d'un motif dans lui-même (voir en Fig.~\ref{fig:sym:plongement:a}). Les mêmes permutations de sites sont appliqués au motif cible et au motif source.
+\item moins d'agent
+\item moins de sites
+\item image complete
+\end{itemize}
+\end{example}
+
+
+
+\subsection{Effet d'un échange de sites sur une règle}
+
+
+\begin{figure}[p]
+
+
+
+\hfill\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les règles de liaison.]%
+{\label{fig:trans:bingingg}%
+{\begin{minipage}{\linewidth}%
+\hfill\symrulel{asso}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symrulel{asso}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symrulel{asso}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les règles de liaison.]%
+{\label{fig:trans:bingingd}%
+{\begin{minipage}{\linewidth}%
+\hfill\symruler{asso}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symruler{asso}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symruler{asso}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les règles de liaison.]%
+{\label{fig:trans:bingingboth}%
+{\begin{minipage}{\linewidth}%
+\hfill\symruled{asso}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symruled{asso}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symruled{asso}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\caption{Effet des échanges de sites dans les règles de liaison  du modèle jouet.}
+\label{fig:sym:binging_rule}
+\end{figure}
+
+
+
+\begin{figure}[p]
+
+
+
+\hfill\subfigure[Transposition des sites de l'occurrence gauche de la protéine \agentfont{A} dans les règles de dissociation.]%
+{\label{fig:trans:dissg}%
+{\begin{minipage}{\linewidth}%
+\hfill\symrulel{diss}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symrulel{diss}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symrulel{diss}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites de l'occurrence droite de la protéine \agentfont{A} dans les règles de liaison.]%
+{\label{fig:trans:dissd}%
+{\begin{minipage}{\linewidth}%
+\hfill\symruler{diss}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symruler{diss}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symruler{diss}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\hfill\subfigure[Transposition des sites des deux occurrences de la protéine \agentfont{A} dans les règles de dissociation.]%
+{\label{fig:trans:dissboth}%
+{\begin{minipage}{\linewidth}%
+\hfill\symruled{diss}{a}\hfill\mbox{} \bigskip\\
+
+\hfill\symruled{diss}{b}\hfill\mbox{} \bigskip\\
+
+\hfill\symruled{diss}{c}\hfill\mbox{} \bigskip\\
+
+\end{minipage}}}\hfill\mbox{}
+
+\caption{Effet des échanges de sites dans les règles de dissociation  du modèle jouet.}
+\label{fig:sym:diss_rule}
+\end{figure}
+
+\subsection{Effet d'un échange de sites sur le raffinement d'une règle}
 
 
 
@@ -1318,14 +1464,14 @@ Moreover each embedding is $\symsymbol[]$-compatible (as defined in Def.~\ref{de
 
 Pour conclure ce chapitre, cette approche est appliquée sur le modèle jouet qui avait été introduit Sec.~\ref{sec:modele} page \pageref{sec:modele}.
 
-\newcommand{\orbit}[4]{%
-\xymatrix@C=0mm@R=20mm{%
+\newcommand{\orbit}[5]{%
+\xymatrix@C=0mm@R=#5mm{%
 & \begin{minipage}{#1}\incbox{#2}{#3}{generated_pictures/#4_id_id.pdf}\end{minipage}\ar@[green]@2@/_{1.5cm}/@{<~>}[dl]\ar@[red]@2@/^{1.5cm}/@{<~>}[dr]\ar@[brown]@2@/^{0.5cm}/@{<~>}[dd] & \cr
 \begin{minipage}[b]{#1}\incbox{#2}{#3}{generated_pictures/#4_inv_id.pdf}\end{minipage}\ar@[red]@2@/_{1.5cm}/@{<~>}[dr]\ar@[brown]@2@/^{0.5cm}/@{<~>}[rr] & &
 \begin{minipage}[t]{#1}\incbox{#2}{#3}{generated_pictures/#4_id_inv.pdf}\end{minipage}\ar@[green]@2@/^{1.5cm}/@{<~>}[dl] \cr
 &\begin{minipage}{#1}\incbox{#2}{#3}{generated_pictures/#4_inv_inv.pdf}\end{minipage}}}
 
-\newcommand{\orbitrules}[1]{\orbit{5cm}{23.6mm}{165.5mm}{sym_4_2_#1_a}}
+\newcommand{\orbitrules}[1]{\orbit{5cm}{23.6mm}{165.5mm}{sym_4_2_#1_a}{15}}
 
 \begin{figure*}
 \subfigure[Les règles d'association sous forme d'orbite.]%
@@ -1348,9 +1494,9 @@ Pour conclure ce chapitre, cette approche est appliquée sur le modèle jouet qui 
 \hfill\subfigure[Orbite des occurrences de dimère.]%
 {\label{fig:orbit:dimer}%
 \begin{minipage}{0.59\linewidth}
-\orbit{2cm}{23.6mm}{65.6mm}{sym_4_2_dimer_a}\end{minipage}}\hfill\mbox{}
+\orbit{2cm}{23.6mm}{65.6mm}{sym_4_2_dimer_a}{10}\end{minipage}}\hfill\mbox{}
 \caption{Quitte à permuter les sites \sitefont{x} et \sitefont{y} dans les occurrences de la protéine \agentfont{A}, les complexes biochimiques se classent en deux catégories, les monomères (voir en Fig.~\ref{fig:orbit:mono}) et les dimères (voir en Fig.~\ref{fig:orbit:dimer}).
-Pour les monomères, la seule transformation possible consiste à permuter les sites de l'unique instance de la protéine (ce qui est dessiné avec une double flèche ondulée orange). Ceci ne change par la conformation de la protéine puisque l'ordre des sites n'a pas d'importance dans le langage Kappa. Pour les dimères, le rÃ´le des sites peuvent être échangés dans l'occurrence gauche (ce qui est dessiné avec une double flèche ondulée verte), dans l'occurrence droite (rouge) ou dans les deux simultanément (noire). Quite à changer l'ordre des agents et des sites de liaisons, les deux représentations graphiques des dimères asymétriques sont équivalentes du point de vue de la sémantique du langage Kappa.}
+Pour les monomères, la seule transformation possible consiste à permuter les sites de l'unique occurrence de la protéine (ce qui est dessiné avec une double flèche ondulée orange). Ceci ne change par la conformation de la protéine puisque l'ordre des sites n'a pas d'importance dans le langage Kappa. Pour les dimères, le rôle des sites peuvent être échangés dans l'occurrence gauche (ce qui est dessiné avec une double flèche ondulée verte), dans l'occurrence droite (rouge) ou dans les deux simultanément (noire). Quite à changer l'ordre des agents et des sites de liaisons, les deux représentations graphiques des dimères asymétriques sont équivalentes du point de vue de la sémantique du langage Kappa.}
 \label{fig:orbit:complex}
 \end{figure*}
 
@@ -1359,8 +1505,8 @@ Dans ce modèle, quite à intervertir les sites \site{x}{}{} et \site{y}{}{} dans 
 les règles d'association et les règles de dissociation. Ces deux catégories sont dessinées en Fig.~\ref{fig:rule:orbits}, ainsi que les permutations de sites qui permettent de passer d'une règle à une autre au sein de chaque catégorie.
 %Les doubles flèches ondulées vertes représentent la permutation des sites \site{x}{}{} et \site{y}{}{} dans l'occurrence gauche de la protéine \agent{A}{}~; les doubles flèches ondulées rouges représentent la permutation des sites \site{x}{}{} et \site{y}{}{} dans l'occurrence droite de la protéine \agent{A}{} et  les doubles flèches ondulées noires représentent la permutation des sites \site{x}{}{} et \site{y}{}{} dans les deux occurrences de la protéine \agent{A}{} à la fois.
 Dans chacune des ces deux catégories, deux règles
-correspondent à la même, quite à échanger le rÃ´le des deux occurrences de la protéine \agent{A}{}. Il s'agit des deux règles d'association  asymétrique pour lier le site \site{x}{}{} d'une des occurrences de la protéine \agent{A}{} au site \site{y}{}{} de l'autre occurrence de la protéine \agent{A}{} (les deux règles sur la ligne du milieu en Fig.~\ref{fig:orbit:asso}) et des deux règles de dissociation asymétriques
-(les deux règles sur la ligne du milieu en Fig.~\ref{fig:orbit:disso}). Ainsi, pour que les sites \site{x}{}{} et \site{y}{}{} aient un rÃ´le équivalent dans le modèle, il suffit que
+correspondent à la même, quite à échanger le rôle des deux occurrences de la protéine \agent{A}{}. Il s'agit des deux règles d'association  asymétrique pour lier le site \site{x}{}{} d'une des occurrences de la protéine \agent{A}{} au site \site{y}{}{} de l'autre occurrence de la protéine \agent{A}{} (les deux règles sur la ligne du milieu en Fig.~\ref{fig:orbit:asso}) et des deux règles de dissociation asymétriques
+(les deux règles sur la ligne du milieu en Fig.~\ref{fig:orbit:disso}). Ainsi, pour que les sites \site{x}{}{} et \site{y}{}{} aient un rôle équivalent dans le modèle, il suffit que
 les constantes corrigées des quatre règles d'association soient égales et que celles des quatre règles de dissociation le soient également. Ainsi, en tenant compte, du coefficient de correction des constantes de réaction  et des répétitions des règles au sein de chaque catégorie de règles, cela donne les contraintes suivantes~:
 \begin{equation*}
 \myfrac{\kxx}{2\cdot{1}}=\myfrac{\kyy}{2\cdot{1}}=\myfrac{\kxy}{2\cdot{2}}
@@ -1374,7 +1520,7 @@ Dans ces fractions, le premier facteur des dénominateurs représente la correctio
 Il s'en suit les contraintes suivantes:
 \begin{equation*}
 \begin{cases}
-\kxx=kyy \cr
+\kxx=\kyy \cr
 \kxy=2\kxx \cr
 \kdxx=\kdyy \cr
 \kdxx=\kdxy\cr
@@ -1387,13 +1533,13 @@ Cette bisimulation permet de réduire ces systèmes en oubliant la différence entr
 
 Par ailleurs, cette bisimulation permet de caractériser des sous-espaces de distributions d'états (dans le cadre stochastique) et des sous-espaces de concentrations (dans le cas différentiel) stables.
 
-L'examen des différents complexes et de leur relation vis à vis des permutations de sites équivalent permet de trouver un sous-espace stable de concentrations. Quitte à permuter l'état des sites \site{x}{}{} et \site{y}{}{} dans une ou plusieurs instances de la protéine \agent{A}{}, l'ensemble de tous les complexes biochimiques du modèle jouet se classe en deux catégories~: les monomères et les dimères. Celles-ci sont ressinées  en Fig.~\ref{fig:orbit:complex} sous la forme de deux orbites.
+L'examen des différents complexes et de leur relation vis à vis des permutations de sites équivalent permet de trouver un sous-espace stable de concentrations. Quitte à permuter l'état des sites \site{x}{}{} et \site{y}{}{} dans une ou plusieurs occurrences de la protéine \agent{A}{}, l'ensemble de tous les complexes biochimiques du modèle jouet se classe en deux catégories~: les monomères et les dimères. Celles-ci sont redessinées  en Fig.~\ref{fig:orbit:complex} sous la forme de deux orbites.
 Les permutations qui permettent de passer d'un complexe biochimique à un autre au sein de chaque catégorie sont représentées par des doubles flèches ondulées.
-PlutÃ´t que d'intervertir l'état des sites, l'action de ses permutations a été représenté en échangeant, de manière équivalente, les sites.
+Plutôt que d'intervertir l'état des sites, l'action de ses permutations a été représenté en échangeant, de manière équivalente, les sites.
 %Les permutations qui consistent à intervertir les sites \site{x}{}{} et \site{y}{}{} dans l'unique occurrence de la protéine \agent{A}{} d'un monomère sont représentées en orange.
 %Les permutations qui consistent à intervertir les sites \site{x}{}{} et \site{y}{}{} dans l'occurrence de gauche de la protéine \agent{A}{} dans un dimère sont représentées en vert, celles pour l'occurrence de gauche en rouge, et enfin les permutations qui intervertissent simultanément les sites \site{x}{}{} et \site{y}{}{} dans les deux occurrences de la protéine \agent{A}{} dans un dimère sont représentées en marron.
 Étant donné que l'ordre des sites dans une occurrence de protéine n'a pas de signification particulière en Kappa, il existe une seule forme de monomère. Leur concentration n'est  donc pas contrainte dans le sous-espace stable de concentrations qui découle de l'équivalence entre les sites \site{x}{}{} et \site{y}{}{} dans les occurrences de la protéine \agent{A}{}. Il existe en revanche trois formes de dimères~: les dimères symétriques avec une liaison entre deux sites \site{x}{}{}~; les dimères symétriques avec une liaison entre deux sites \site{y}{}{} et les dimères asymétriques avec une liaison entre un site \site{x}{}{} d'une occurrence de la protéine \agent{A}{} et le site \site{y}{}{} d'une autre occurrence de la protéine \agent{A}{}.
-Quitte à échanger le rÃ´le des deux occurrences des protéines \agent{A}{}, cette dernière forme de dimère apparaît deux fois. En conséquence, le sous-espace stable de concentrations qui découle de l'équivalence entre les sites \site{x}{}{} et \site{y}{}{} doit satisfaire les contraintes suivantes~: les dimères asymétriques doivent constituer la moitié de la concentration totale en dimère et chacune des deux formes de dimère symétrique doit constituer un quart de la concentration totale en dimère. Il s'agit des mêmes proportions que pour le jeu de "pile" ou "face".
+Quitte à échanger le rôle des deux occurrences des protéines \agent{A}{}, cette dernière forme de dimère apparaît deux fois. En conséquence, le sous-espace stable de concentrations qui découle de l'équivalence entre les sites \site{x}{}{} et \site{y}{}{} doit satisfaire les contraintes suivantes~: les dimères asymétriques doivent constituer la moitié de la concentration totale en dimère et chacune des deux formes de dimère symétrique doit constituer un quart de la concentration totale en dimère. Il s'agit des mêmes proportions que pour le jeu de "pile" ou "face".
 
 
 

@@ -1,261 +1,36 @@
 open Config
 open Geometry
-open Sig_kappa
-
-let init_0 config = init {config with site_colors = ["white";"cyan"] ; agent_colors = ["\"#6767f2\""]}
-
-let init_1 config =
-  init {config with site_colors = ["white"]}
-
-let
-    [
-      a,
-      [
-	a_x,[];
- a_y,[];
- a_x_op,[];
- a_y_op,[];
-      ]],
-  signature_sym
-  =
-  add_in_signature
-    [
-      "$\text{\agent{A}{}}$",[Width 0.8;Height 0.8;Shape "square";],
-      [
-        "$\text{\site{x}{}{}}$",[Direction (of_degree 60.)],[];
-        "$\text{\site{y}{}{}}$",[Direction (of_degree 120.)],[];
-        "$\text{\site{x}{}{}}$",[Direction (of_degree 120.)],[];
-        "$\text{\site{y}{}{}}$",[Direction (of_degree 60.)],[];
-      ]
-    ]
-    (snd (init_0 config))
-
-let string_of_state_opt x =
-  match x with
-  | None -> "None"
-  | Some true -> "Bound"
-  | Some false -> "Free"
-
-let string_of_op x =
-  if x then "_op" else ""
-
-let build_mono ~sitex ~sitey ~op =
-  let [s_a,_],g_a =
-    add_in_graph
-      [a,0.,0.,[],[]]
-      signature_sym
-  in
-  let a_x,a_y =
-    if op then a_x_op,a_y_op else a_x,a_y
-  in
-  let g_a_x =
-    match sitex with
-    | None -> g_a
-    | Some true ->
-      let a_x,g_a = add_site s_a a_x g_a in
-      snd (add_bound a_x g_a)
-    | Some false ->
-      let a_x,g_a = add_site s_a a_x g_a in
-      snd (add_free_list [a_x,[]] g_a)
-  in
-  let g_a_xy =
-      match sitey with
-      | None -> g_a_x
-      | Some true ->
-        let a_y,g_a_x = add_site s_a a_y g_a_x in
-        snd (add_bound a_y g_a_x)
-      | Some false ->
-        let a_y,g_a_x = add_site s_a a_y g_a_x in
-        snd (add_free_list [a_y,[]] g_a_x)
-  in
-  let s =
-    Format.sprintf "sym_g%s_%s_%s.ladot"
-      (string_of_op op)
-      (string_of_state_opt (if op then sitey else sitex))
-      (string_of_state_opt (if op then sitex else sitey))
-  in
-  let _ = dump s g_a_xy in
-  ()
-
-let list_op = [true;false]
-let list_state = [None;Some true;Some false]
-
-let _ =
-  List.iter
-    (fun op ->
-       List.iter
-         (fun sitex ->
-           List.iter
-             (fun sitey ->
-                build_mono ~sitex ~sitey ~op
-             )
-             list_state)
-         list_state)
-    list_op
-
-let build_d_dimer ~op1 ~op2 ~sitex1 ~sitex2 =
-  let [s_a,[sax,_;say,_]],g_a =
-    add_in_graph
-      [a,0.,0.,[],[(if op1 then a_x_op else a_x),[],[];
-                   (if op1 then a_y_op else a_y),[],[]]]
-      signature_sym
-  in
-  let [s_a',[sax',_;say',_]],g_a' =
-    add_in_graph
-      [a,0.,0.,[],[(if op2 then a_x_op else a_x),[],[];
-                   (if op2 then a_y_op else a_y),[],[]]]
-      signature_sym
-  in
-  let g_a' = move_remanent_right_to 0.3 (vertical_swap g_a') g_a in
-  let sigma,sigma',g = disjoint_union g_a g_a' in
-  let g =
-    if sitex1 = sitex2 then
-      add_link_list
-        [
-          lift_site sigma sax,lift_site sigma' sax';
-          lift_site sigma say,lift_site sigma' say'
-        ]
-        g
-    else
-    add_link_list
-      [
-        lift_site sigma sax,lift_site sigma' say';
-        lift_site sigma say,lift_site sigma' sax'
-      ]
-      g
-  in
-  let () =
-    dump
-      (Format.sprintf
-         "sym_gddimer%s_%s%s.ladot"
-         (string_of_op op1)
-         (if sitex1=sitex2 then "par" else "crossed")
-         (string_of_op op2))
-      g
-  in
-  ()
-
-let () =
-  List.iter
-    (fun op1 ->
-       List.iter
-         (fun op2 ->
-            List.iter
-              (fun sitex1->
-                 List.iter
-                   (fun sitex2 ->
-                      build_d_dimer ~op1 ~op2 ~sitex1 ~sitex2)
-                   list_op)
-              list_op)
-         list_op)
-    list_op
-
-let build_s_dimer ~op1 ~op2 ~sitex1b ~sitex2b ~site1 ~site2 =
-  let [s_a,[sax,_]],g_a =
-    add_in_graph
-      [a,0.,0.,[],
-       [(match sitex1b,op1 with
-        | true, true -> a_x_op
-        | true, false -> a_x
-        | false, true -> a_y_op
-        | false, false -> a_y), [],[]]]
-      signature_sym
-  in
-  let [s_a',[sax',_]],g_a' =
-    add_in_graph
-      [a,0.,0.,[],[(match sitex2b,op2 with
-           | true, true -> a_x_op
-           | true, false -> a_x
-           | false, true -> a_y_op
-           | false, false -> a_y), [],[]]]
-      signature_sym
-  in
-  let g_a' =
-    let sy =
-      match sitex2b,op2 with
-      | true, true -> a_y_op
-      | true, false -> a_y
-      | false, true -> a_x_op
-      | false, false -> a_x
-    in
-    match site2 with
-    | None -> g_a'
-    | Some true ->
-      let sy, g_a' = add_site s_a sy g_a' in
-      snd (add_bound sy g_a')
-    | Some false ->
-      let sy, g_a' = add_site s_a sy g_a' in
-      snd (add_free_list [sy,[]] g_a')
-  in
-  let g_a' = move_remanent_right_to 0.3 (vertical_swap g_a') g_a in
-  let sigma,sigma',g = disjoint_union g_a g_a' in
-  let g =
-      add_link_list
-        [lift_site sigma sax,lift_site sigma' sax']
-        g
-  in
-  let g =
-    let sy =
-      match sitex1b,op1 with
-      | true, true -> a_y_op
-      | true, false -> a_y
-      | false, true -> a_x_op
-      | false, false -> a_x
-    in
-    match site1 with
-    | None -> g
-    | Some true ->
-      let sy, g = add_site (lift_agent sigma s_a) sy g in
-      snd (add_bound sy g)
-    | Some false ->
-      let sy, g = add_site (lift_agent sigma s_a) sy g in
-      snd (add_free_list [sy,[]] g)
-  in
-  let () =
-    dump
-      (Format.sprintf "sym_gsdimer%s_%s_%s_%s_%s%s.ladot"
-         (string_of_op op1)
-         (if ((not op1) && sitex1b) || (op1 && not sitex1b)
-          then "x" else "y")
-         (if ((not op2) && sitex2b) || (op2 && not sitex2b)
-          then "x" else "y")
-         (string_of_state_opt site1)
-         (string_of_state_opt site2)
-         (string_of_op op2))
-         g
-  in
-  ()
-
-let () =
-      List.iter
-        (fun op1 ->
-           List.iter
-             (fun op2 ->
-                List.iter
-                  (fun sitex1b ->
-                     List.iter
-                       (fun sitex2b ->
-                          List.iter
-                            (fun site1 ->
-                               List.iter
-                                 (fun site2 ->
-                                    build_s_dimer ~op1 ~op2 ~sitex1b ~sitex2b ~site1 ~site2)
-                                 list_state)
-                            list_state)
-                       list_op)
-                  list_op)
-             list_op)
-        list_op
+open Chp4_sig
 
 let [s_a,[sax,_;say,_]],g_a =
   add_in_graph
     [a,0.,0.,[],[a_x,[],[];a_y,[],[]]]
     signature_sym
 
-let [sa_op,[sax_op,_;say_op,_]],g_a_op =
+let [s_a_op,[sax_op,_;say_op,_]],g_a_op =
   add_in_graph
     [a,0.,0.,[],[a_y_op,[],[];a_x_op,[],[]]]
     signature_sym
+
+let [s_ax,[saxx,_]],g_ax =
+      add_in_graph
+        [a,0.,0.,[],[a_x,[],[]]]
+        signature_sym
+
+let [s_ax_op,[saxx_op,_]],g_ax_op =
+      add_in_graph
+        [a,0.,0.,[],[a_y_op,[],[]]]
+        signature_sym
+
+let [s_ay,[sayy,_]],g_ay =
+          add_in_graph
+            [a,0.,0.,[],[a_y,[],[]]]
+            signature_sym
+
+        let [s_ay_op,[sayy_op]],g_ay_op =
+          add_in_graph
+            [a,0.,0.,[],[a_x_op,[],[]]]
+            signature_sym
 
 let g_a_free ~op =
   let g_a,sax,say =
@@ -266,6 +41,40 @@ let g_a_free ~op =
       g_a,sax,say
   in
   snd (add_free_list [sax,[];say,[]] g_a)
+
+let g_a_free_x ~op =
+    let g_a,sax =
+      if op
+      then
+        g_ax_op, sax_op
+      else
+        g_ax,sax
+    in
+    snd (add_free_list [sax,[]] g_a)
+
+    let g_a_x_not ~op =
+          if op
+          then
+            g_ax_op
+          else
+            g_ax
+
+            let g_a_y_not ~op =
+                  if op
+                  then
+                    g_ay_op
+                  else
+                    g_ay
+
+    let g_a_free_y ~op =
+        let g_a,sax =
+          if op
+          then
+            g_ay_op, say_op
+          else
+            g_ay,say
+        in
+        snd (add_free_list [sax,[]] g_a)
 
 let _ = dump "sym_4_1_a.ladot" (g_a_free ~op:false)
 let _ = dump "sym_4_1_a_op.ladot" (g_a_free ~op:true)
@@ -281,6 +90,50 @@ let g_a_free_free ~op1 ~op2 =
   let _,_,g = disjoint_union g1 g2 in
   g
 
+
+  let g_a_free_free_xx ~op1 ~op2 =
+    let g1 =
+      g_a_free_x ~op:op1
+    in
+    let g2 =
+      g_a_free_x ~op:op2
+    in
+    let g2 = move_remanent_right_to 0.3 (vertical_swap g2) g1 in
+    let _,_,g = disjoint_union g1 g2 in
+    g
+
+    let g_a_free_free_yy ~op1 ~op2 =
+      let g1 =
+        g_a_free_y ~op:op1
+      in
+      let g2 =
+        g_a_free_y ~op:op2
+      in
+      let g2 = move_remanent_right_to 0.3 (vertical_swap g2) g1 in
+      let _,_,g = disjoint_union g1 g2 in
+      g
+
+      let g_a_free_free_xy ~op1 ~op2 =
+        let g1 =
+          g_a_free_x ~op:op1
+        in
+        let g2 =
+          g_a_free_y ~op:op2
+        in
+        let g2 = move_remanent_right_to 0.3 (vertical_swap g2) g1 in
+        let _,_,g = disjoint_union g1 g2 in
+        g
+
+        let g_a_free_free_yx ~op1 ~op2 =
+          let g1 =
+            g_a_free_y ~op:op1
+          in
+          let g2 =
+            g_a_free_x ~op:op2
+          in
+          let g2 = move_remanent_right_to 0.3 (vertical_swap g2) g1 in
+          let _,_,g = disjoint_union g1 g2 in
+          g
 
 let g_a_x_free = (snd (add_free sax g_a))
 let g_a_y_free = (snd (add_free say g_a))
@@ -308,20 +161,52 @@ let build_g site1 site2 ~op1 ~op2 =
   let inj1,inj2,g = disjoint_union gl g in
   add_link_list [lift_site inj1 site1,lift_site inj2 site2] g
 
-let g_a_xx ~op1 ~op2 = build_g sax sax ~op1 ~op2
-let g_a_yy ~op1 ~op2 = build_g say say ~op1 ~op2
-let g_a_xy ~op1 ~op2 = build_g sax say ~op1 ~op2
-let g_a_yx ~op1 ~op2 = build_g say sax ~op1 ~op2
-let _ = dump "sym_4_1_b.ladot" (g_a_xx ~op1:false ~op2:false)
-let _ = dump "sym_4_1_c.ladot" (g_a_yy ~op1:false ~op2:false)
-let _ = dump "sym_4_1_d.ladot" (g_a_xy ~op1:false ~op2:false)
+  let build_g_sparse site1 site2 ~op1 ~op2 =
+    let gl,site1 =
+      if site1 == sax
+      then g_a_x_not ~op:op1,saxx
+      else g_a_y_not ~op:op1,sayy
+    in
+    let gr,site2 =
+      if site2 == sax
+      then g_a_x_not ~op:op2,saxx
+      else g_a_y_not ~op:op2,sayy
+    in
+    let g = move_remanent_right_to 0.3 (vertical_swap gr) gl in
+    let inj1,inj2,g = disjoint_union gl g in
+    add_link_list [lift_site inj1 site1,lift_site inj2 site2] g
+
+(*let build_g_xx ~op1 ~op2 () = build_g_sparse sax sax ~op1 ~op2 ()
+let build_g_yy ~op1 ~op2 () = build_g_sparse say say ~op1 ~op2 ()
+let build_g_xy ~op1 ~op2 () = build_g_sparse sax say ~op1 ~op2 ()
+let build_g_yx ~op1 ~op2 () = build_g_sparse say sax ~op1 ~op2 ()*)
+
+let g_a_xx ?sparse ~op1 ~op2 () =
+  match sparse with
+   | None | Some false -> build_g sax sax ~op1 ~op2
+   | Some true -> build_g_sparse sax sax ~op1 ~op2
+let g_a_yy ?sparse ~op1 ~op2 () =
+match sparse with
+ | None | Some false -> build_g say say ~op1 ~op2
+ | Some true -> build_g_sparse say say ~op1 ~op2
+let g_a_xy ?sparse ~op1 ~op2 () =
+match sparse with
+ | None | Some false -> build_g sax say ~op1 ~op2
+| Some true -> build_g_sparse sax say ~op1 ~op2
+let g_a_yx ?sparse ~op1 ~op2 () =
+match sparse with
+ | None | Some false -> build_g say sax ~op1 ~op2
+| Some true -> build_g_sparse say sax ~op1 ~op2
+let _ = dump "sym_4_1_b.ladot" (g_a_xx ~op1:false ~op2:false ())
+let _ = dump "sym_4_1_c.ladot" (g_a_yy ~op1:false ~op2:false ())
+let _ = dump "sym_4_1_d.ladot" (g_a_xy ~op1:false ~op2:false ())
 
 let l g = (fun _ -> ([],[],[]),g)
 
 
 
 
-let buildrule k kd lhs rhs file  =
+let buildrule  k kd lhs rhs file  =
   let _,_,_,rule = build_rule ~reversible:true signature_sym (l lhs) (l rhs) in
   let txt = insert_text_here ("$@\; "^k^","^kd^"$") 0. 0. signature_sym in
   let txt  = move_remanent_right_to 0.6 txt rule in
@@ -336,7 +221,7 @@ let buildrule k kd lhs rhs file  =
   let () = dump ("sym_4_2_asso_"^file^"_rate.ladot") rule in
   let _,_,_,rule = build_rule  signature_sym (l rhs) (l lhs) in
     let () = dump ("sym_4_2_diss_"^file^".ladot") rule in
-  let txt = insert_text_here ("$@\; "^k^"$") 0. 0. signature_sym in
+  let txt = insert_text_here ("$@\; "^kd^"$") 0. 0. signature_sym in
   let txt  = move_remanent_right_to 0.4 txt rule in
   let _,_,rule = disjoint_union rule txt in
   let () = dump ("sym_4_2_diss_"^file^"_rate.ladot") rule in
@@ -368,22 +253,45 @@ let do_it ~op1 ~op2 =
       (permute_rate "\kxx" ~op1 ~op2)
       (permute_rate "\kdxx" ~op1 ~op2)
       (g_a_free_free ~op1 ~op2)
-      (g_a_xx ~op1 ~op2)(ext "a") in
+      (g_a_xx ~op1 ~op2 ()) (ext "a") in
   let _ =
     buildrule
       (permute_rate "\kyy" ~op1 ~op2)
       (permute_rate "\kdyy" ~op1 ~op2)
-      (g_a_free_free ~op1 ~op2) (g_a_yy ~op1 ~op2)  (ext "b") in
+      (g_a_free_free ~op1 ~op2) (g_a_yy ~op1 ~op2 ())  (ext "b") in
   let _ =
     buildrule
       (permute_rate "\kxy" ~op1 ~op2)
       (permute_rate "\kdxy"  ~op1 ~op2)
-      (g_a_free_free ~op1 ~op2) (g_a_xy ~op1 ~op2) (ext "c") in
+      (g_a_free_free ~op1 ~op2) (g_a_xy ~op1 ~op2 ()) (ext "c") in
   let _ =
     buildrule
       (permute_rate "\kxy" ~op1 ~op2)
       (permute_rate "\kdxy" ~op1 ~op2)
-      (g_a_free_free ~op1 ~op2) (g_a_yx ~op1 ~op2) (ext "d") in
+      (g_a_free_free ~op1 ~op2) (g_a_yx ~op1 ~op2 ()) (ext "d") in
+  let sparse = true in
+  let _ =
+        buildrule
+          (permute_rate "\kxx" ~op1 ~op2)
+          (permute_rate "\kdxx" ~op1 ~op2)
+          (g_a_free_free_xx ~op1 ~op2)
+          (g_a_xx ~sparse ~op1 ~op2 ()) (ext "a_sparse") in
+      let _ =
+        buildrule
+          (permute_rate "\kyy" ~op1 ~op2)
+          (permute_rate "\kdyy" ~op1 ~op2)
+          (g_a_free_free_yy  ~op1 ~op2) (g_a_yy ~sparse ~op1 ~op2 ())  (ext "b_sparse") in
+      let _ =
+        buildrule
+          (permute_rate "\kxy" ~op1 ~op2)
+          (permute_rate "\kdxy"  ~op1 ~op2)
+          (g_a_free_free_xy ~op1 ~op2) (g_a_xy ~sparse ~op1 ~op2 ()) (ext "c_sparse") in
+      let _ =
+        buildrule
+          (permute_rate "\kxy" ~op1 ~op2)
+          (permute_rate "\kdxy" ~op1 ~op2)
+          (g_a_free_free ~op1 ~op2) (g_a_yx ~op1 ~op2 ()) (ext "d_sparse") in
+
   ()
 
 let b = [true;false]
@@ -394,7 +302,6 @@ let () =
          (fun op2 ->
             do_it ~op1 ~op2)
     b) b
-
 
 
 let [sa,[]],g_a_empty =
@@ -454,7 +361,7 @@ let g_a_free =
 let _ = dump "sym_4_9_a.ladot" g_a_free
 
 let g_a_free_free =
-   let g = move_remanent_right_to 0.2 (vertical_swap g_a_free) g_a_free in
+   let g = move_remanent_right_to 0.3 (vertical_swap g_a_free) g_a_free in
   let inj1,inj2,g = disjoint_union g_a_free g in
   g
 
@@ -472,7 +379,7 @@ let build_g site1 site2=
     then g_a_y_free
     else g_a_x_free
   in
-  let g = move_remanent_right_to 0.2 (vertical_swap gr) gl in
+  let g = move_remanent_right_to 0.3 (vertical_swap gr) gl in
   let inj1,inj2,g = disjoint_union gl g in
   add_link_list [lift_site inj1 site1,lift_site inj2 site2] g
 
@@ -481,15 +388,56 @@ let _ = dump "sym_4_9_b.ladot" g_a_xx
 
 
 let l g = (fun _ -> ([],[],[]),g)
+
+let [sa,[sax,_]],g_a_sparse =
+  add_in_graph
+    [a,0.,0.,[],[a_x,[],[]]]
+    signature_sym
+
+let g_a_free_sparse =
+  snd (add_free_list [sax,[]] g_a_sparse)
+
+
+let g_a_free_free_sparse =
+   let g = move_remanent_right_to 0.3 (vertical_swap g_a_free_sparse) g_a_free_sparse in
+  let inj1,inj2,g = disjoint_union g_a_free_sparse g in
+  g
+
+let g_a_x_free_sparse = (snd (add_free sax g_a_sparse))
+let g_a_y_free_sparse = (snd (add_free say g_a_sparse))
+
+let build_g_sparse site1 site2=
+  let gl =
+    if site1 == sax
+    then g_a_y_free_sparse
+    else g_a_x_free_sparse
+  in
+  let gr =
+    if site2 == sax
+    then g_a_y_free_sparse
+    else g_a_x_free_sparse
+  in
+  let g = move_remanent_right_to 0.3 (vertical_swap gr) gl in
+  let inj1,inj2,g = disjoint_union gl g in
+  add_link_list [lift_site inj1 site1,lift_site inj2 site2] g
+
+let g_a_xx_sparse = build_g_sparse sax sax
+let _ = dump "sym_4_9_b_sparse.ladot" g_a_xx
+
+
+let l g = (fun _ -> ([],[],[]),g)
+
 let buildrule k kd lhs rhs file =
   let _,_,_,rule = build_rule (*~hgap:(Some 0.5)*)
-      ~reversible:true ~directives:[Width 0.8] signature_sym (l lhs) (l rhs) in
-  let txt = insert_text_here ("$@\, "^k^","^kd^"$") 0. 0. signature_sym in
+       ~directives:[Width 0.8] signature_sym (l lhs) (l rhs) in
+  let txt = insert_text_here ("$@\, "^k^"$") 0. 0. signature_sym in
   let txt  = move_remanent_right_to 0.6 txt rule in
   let _,_,rule = disjoint_union rule txt in
   dump file rule
 
 let _ = buildrule "\K" "\KD" g_a_free_free g_a_xx "sym_4_11.ladot"
+let _ = buildrule "\KD" "\K" g_a_xx_sparse g_a_free_free_sparse  "sym_4_11_sparse.ladot"
+
 
 let
     [
